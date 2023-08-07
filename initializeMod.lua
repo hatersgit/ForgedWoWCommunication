@@ -1,15 +1,11 @@
 local Forgeframe = CreateFrame("Frame")
-Forgeframe:RegisterEvent("PLAYER_LOGIN")
-Forgeframe:SetScript("OnEvent", function()
+Forgeframe:RegisterEvent("PLAYER_ENTERING_WORLD")
+Forgeframe:SetScript("OnEvent", function(initialLogin,ReloadUI)
     InitializeTalentTree()
     InitializeTooltips()
     InitializePerks()
-    
-    ezCollections.Collections.OwnedItems.Enabled = true;
-    ezCollections.Collections.Skins.Enabled = true;
-    ezCollections.Collections.TakenQuests.Enabled = true;
-    ezCollections.Collections.RewardedQuests.Enabled = true;
-    ezCollections.Collections.Toys.Enabled = true;
 
+    --add a reloadUI check to show perks a top
+    
     PushForgeMessage(ForgeTopic.COLLECTION_INIT, "-1");
 end)

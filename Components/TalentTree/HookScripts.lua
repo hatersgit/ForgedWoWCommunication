@@ -1,4 +1,4 @@
-SpellBookFrame:HookScript("OnShow", function() 
+SpellBookFrame:HookScript("OnShow", function()
     HideMainWindow();
 end)
 
@@ -6,10 +6,10 @@ QuestLogFrame:HookScript("OnShow", function()
     HideMainWindow();
 end)
 
-FriendsFrame:HookScript("OnShow", function() 
+FriendsFrame:HookScript("OnShow", function()
     HideMainWindow();
 end)
 
-GameMenuFrame:HookScript("OnShow", function() 
+GameMenuFrame:HookScript("OnShow", function()
     HideMainWindow();
 end)
