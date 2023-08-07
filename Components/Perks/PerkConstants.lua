@@ -90,8 +90,7 @@ StaticPopupDialogs["REROLL_PERK"] = {
     spellId = "%s",
     spellName = "%s",
     OnAccept = function(self)
-        print(lastSelectedSpell)
-        PushForgeMessage(ForgeTopic.REROLL_PERK, GetActiveTalentGroup()-1 .. ";" .. lastSelectedSpell);
+        PushForgeMessage(ForgeTopic.REROLL_PERK, GetSpecID() .. ";" .. lastSelectedSpell);
     end,
     sound = "levelup2",
     timeout = 30,

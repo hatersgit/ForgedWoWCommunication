@@ -1,4 +1,4 @@
-function InitializePerks()
+function InitializePerks(reloadUI)
     PushForgeMessage(ForgeTopic.GET_PERKS, "-1");
     InitializeSelectionWindow();
     InitializePerkExplorer();
@@ -22,7 +22,7 @@ function InitializePerks()
                     end
                 end
             end
-            LoadCurrentPerks(GetActiveTalentGroup()-1);
+            LoadCurrentPerks(GetSpecID());
         else
             print(msg)
         end
@@ -63,4 +63,6 @@ function InitializePerks()
     SubscribeToForgeTopic(ForgeTopic.PRESTIGE_ERROR, function(msg)
         print("Prestige halted: " .. msg);
     end)
+
+    PushForgeMessage(ForgeTopic.OFFER_SELECTION, GetSpecID());
 end

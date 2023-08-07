@@ -528,3 +528,7 @@ DeserializerDefinitions = {
         }
     }
 }
+
+function GetSpecID()
+    return GetActiveTalentGroup()-1
+end
