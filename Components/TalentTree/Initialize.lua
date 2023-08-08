@@ -78,5 +78,7 @@ SubscribeToForgeTopic(ForgeTopic.GET_TALENTS, function(msg)
             UpdateTalent(talent.TabId, talent.Talents)
         end
     end
-    SelectTab(TalentTree.FORGE_TABS[1]);
+    if (TalentTreeWindow.TabsLeft ~= nil) then
+        SelectTab(TalentTree.FORGE_TABS[1]);
+    end
 end)
