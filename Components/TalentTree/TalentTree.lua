@@ -12,64 +12,59 @@ TalentTree = {
     INITIALIZED = false
 }
 
-TalentTreeWindow = CreateFrame("Frame", NULL, UIParent);
-TalentTreeWindow:SetSize(1385, 1500); --- LEFT/RIGHT -- --UP/DOWN --
-TalentTreeWindow:SetPoint("CENTER", 0, -320) --- LEFT/RIGHT -- --UP/DOWN --
-TalentTreeWindow:SetFrameLevel(1);
-TalentTreeWindow:SetBackdrop({
-    bgFile = CONSTANTS.UI.MAIN_BG,
-    tile = false
-});
-TalentTreeWindow:Hide();
-TalentTreeWindow.Container = CreateFrame("Frame", TalentTreeWindow.Container, TalentTreeWindow);
-TalentTreeWindow.Container:SetSize(1370, 1500); -- Talent Tree Window's Background --
-TalentTreeWindow.Container:SetPoint("CENTER", 0, 0)
-TalentTreeWindow.Container:SetFrameLevel(2);
-TalentTreeWindow.CloseButton = CreateFrame("Button", TalentTreeWindow.CloseButton, TalentTreeWindow,
-    "UIPanelCloseButton")
-TalentTreeWindow.CloseButton:SetSize(46, 47); -- Exit Button on Upper Right--
-TalentTreeWindow.CloseButton:SetPoint("TOPRIGHT", 3, -14);
+TalentTreeWindow = CreateFrame("Frame", TalentTreeWindow, UIParent);
+TalentTreeWindow:SetSize(settings.width, 30); --- LEFT/RIGHT -- --UP/DOWN --
+TalentTreeWindow:SetPoint("LEFT", GetScreenWidth()/10, 7*GetScreenHeight()/10); --- LEFT/RIGHT -- --UP/DOWN --
+TalentTreeWindow:SetFrameStrata("DIALOG")
+TalentTreeWindow:SetToplevel(true)
+TalentTreeWindow:EnableMouse(true)
+TalentTreeWindow:SetMovable(true)
+TalentTreeWindow:SetFrameLevel(1)
+TalentTreeWindow:SetClampedToScreen(true)
 
-TalentTreeWindow.ClassIcon = CreateFrame("Frame", TalentTreeWindow.ClassIcon, TalentTreeWindow);
-TalentTreeWindow.ClassIcon:SetSize(90, 94);
-TalentTreeWindow.ClassIcon:SetFrameLevel(0);
-TalentTreeWindow.ClassIcon:SetPoint("TOPLEFT", 8, -4);
-TalentTreeWindow.ClassIcon.Texture = TalentTreeWindow.ClassIcon:CreateTexture()
-TalentTreeWindow.ClassIcon.Texture:SetAllPoints(TalentTreeWindow.ClassIcon)
-SetPortraitToTexture(TalentTreeWindow.ClassIcon.Texture, CONSTANTS.classIcon[string.upper(CONSTANTS.CLASS)])
-
-TalentTreeWindow.Container.CloseButtonForgeSkills = CreateFrame("Button",
-    TalentTreeWindow.Container.CloseButtonForgeSkills, TalentTreeWindow.Container)
-
-TalentTreeWindow.Container.CloseButtonForgeSkills:SetScript("OnClick", function()
-    HideForgeSkills();
+TalentTreeWindow.header = CreateFrame("BUTTON", nil, TalentTreeWindow)
+TalentTreeWindow.header:SetSize(settings.width, 30)
+TalentTreeWindow.header:SetPoint("TOP", 0, 0);
+TalentTreeWindow.header:SetFrameLevel(TalentTreeWindow:GetFrameLevel()+1)
+TalentTreeWindow.header:EnableMouse(true)
+TalentTreeWindow.header:RegisterForClicks("AnyUp", "AnyDown")
+TalentTreeWindow.header:SetScript("OnMouseDown", function()
+    TalentTreeWindow:StartMoving()
 end)
-TalentTreeWindow.Container.CloseButtonForgeSkills:SetSize(34, 34);
-TalentTreeWindow.Container.CloseButtonForgeSkills:SetPoint("TOPRIGHT", -15, -75);
-TalentTreeWindow.Container.CloseButtonForgeSkills.Circle = CreateFrame("Frame", TalentTreeWindow.Container
-    .CloseButtonForgeSkills.Circle, TalentTreeWindow.Container.CloseButtonForgeSkills)
-TalentTreeWindow.Container.CloseButtonForgeSkills.Circle:SetSize(40, 40);
-TalentTreeWindow.Container.CloseButtonForgeSkills.Circle:SetPoint("CENTER", -1.5, -1);
-TalentTreeWindow.Container.CloseButtonForgeSkills.Circle:SetBackdrop({
-    bgFile = CONSTANTS.UI.BORDER_CLOSE_BTN
-})
-TalentTreeWindow.Container.CloseButtonForgeSkills:Hide();
+TalentTreeWindow.header:SetScript("OnMouseUp", function()
+    TalentTreeWindow:StopMovingOrSizing()
+end)
+SetTemplate(TalentTreeWindow.header);
 
-TalentTreeWindow.ChoiceSpecs = CreateFrame("Frame", TalentTreeWindow.ChoiceSpecs, TalentTreeWindow.Container);
-TalentTreeWindow.ChoiceSpecs:SetSize(TalentTreeWindow:GetWidth(), TalentTreeWindow:GetHeight());
-TalentTreeWindow.ChoiceSpecs:SetPoint("TOP", 30, 30);
-TalentTreeWindow.ChoiceSpecs:SetFrameLevel(15)
-TalentTreeWindow.ChoiceSpecs:SetBackdrop({
-    edgeSize = 24,
-    bgFile = CONSTANTS.UI.BACKGROUND_SPECS
-})
-TalentTreeWindow.ChoiceSpecs.Spec = {};
-TalentTreeWindow.ChoiceSpecs:Hide();
+TalentTreeWindow.header.close = CreateFrame("BUTTON", "InstallCloseButton", TalentTreeWindow.header, "UIPanelCloseButton")
+TalentTreeWindow.header.close:SetPoint("TOPRIGHT", TalentTreeWindow.header, "TOPRIGHT")
+TalentTreeWindow.header.close:SetScript("OnClick", function()
+    TalentTreeWindow:Hide()
+end)
+TalentTreeWindow.header.close:SetFrameLevel(TalentTreeWindow.header:GetFrameLevel() + 1)
+
+TalentTreeWindow.header.title = TalentTreeWindow.header:CreateFontString("OVERLAY");
+TalentTreeWindow.header.title:SetPoint("CENTER", TalentTreeWindow.header, "CENTER");
+TalentTreeWindow.header.title:SetFont("Fonts\\AvQest.TTF", 22);
+TalentTreeWindow.header.title:SetText("Talents");
+TalentTreeWindow.header.title:SetTextColor(188/255, 150/255, 28/255, 1); --rgb(188, 150, 28)
+
+TalentTreeWindow.body = CreateFrame("Frame", TalentTreeWindow.body, TalentTreeWindow);
+TalentTreeWindow.body:SetSize(settings.width, settings.height-30); -- Talent Tree Window's Background --
+TalentTreeWindow.body:SetPoint("TOP", 0, -30);
+TalentTreeWindow.body:SetFrameLevel(2);
+SetTemplate(TalentTreeWindow.body);
+
+TalentTreeWindow.body.ChoiceSpecs = CreateFrame("Frame", TalentTreeWindow.body.ChoiceSpecs, TalentTreeWindow.body);
+TalentTreeWindow.body.ChoiceSpecs:SetSize(TalentTreeWindow.body:GetWidth()-4, 30);
+TalentTreeWindow.body.ChoiceSpecs:SetPoint("TOP", 0, 0);
+TalentTreeWindow.body.ChoiceSpecs:SetFrameLevel(TalentTreeWindow.body:GetFrameLevel() + 1)
+TalentTreeWindow.body.ChoiceSpecs.Spec = {};
 
 -- Reset Talents --
-local resetButton = CreateFrame("Button", "ResetTalentsButton", TalentTreeWindow, "UIPanelButtonTemplate")
+local resetButton = CreateFrame("Button", "ResetTalentsButton", TalentTreeWindow.header, "UIPanelButtonTemplate")
 resetButton:SetSize(90, 30) -- Set the size of the button
-resetButton:SetPoint("TOPRIGHT", -580, -813) -- Position the button at the top right of the TalentTreeWindow
+resetButton:SetPoint("TOPLEFT", 8, 0) -- Position the button at the top right of the TalentTreeWindow
 resetButton:SetText("Reset Talents")
 
 resetButton:SetScript("OnClick", function()
@@ -78,9 +73,9 @@ resetButton:SetScript("OnClick", function()
     PushForgeMessage(ForgeTopic.UNLEARN_TALENT, "-1" .. ";" .. "0");
 end)
 
-local prestigeButton = CreateFrame("Button", prestigeButton, TalentTreeWindow, "UIPanelButtonTemplate")
+local prestigeButton = CreateFrame("Button", prestigeButton, TalentTreeWindow.header, "UIPanelButtonTemplate")
 prestigeButton:SetSize(90, 30) -- Set the size of the button
-prestigeButton:SetPoint("TOPRIGHT", -490, -813)
+prestigeButton:SetPoint("TOPLEFT", 106, 0)
 prestigeButton:SetText("Prestige") -- Set the text of the button
 
 prestigeButton:SetScript("OnClick", function()

@@ -43,3 +43,9 @@ CONSTANTS = {
     },
     CLASS = UnitClass("player")
 }
+
+settings = {
+    selectionIconSize = 60,
+    width = GetScreenWidth() / 2.4,
+    height = GetScreenHeight()*1.1
+}

@@ -55,7 +55,6 @@ function GetCharacterSpecs(msg)
         InitializeTabForSpellsToForge(TalentTree.FORGE_SPELLS_PAGES);
         SelectTab(TalentTree.FORGE_TABS[1]);
     end
-    InitializeProgressionBar();
     TalentTree.INITIALIZED = true;
 end
 

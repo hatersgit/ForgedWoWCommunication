@@ -38,24 +38,6 @@ function SetUpSingleTooltip(parent, id, anchor)
     perkBG:Show()
 end
 
-function SetTemplate(frame)
-    frame:SetBackdrop({
-        bgFile = "Interface\\Buttons\\WHITE8X8",
-        edgeFile = "",
-        tile = false,
-        tileSize = 0,
-        edgeSize = 0,
-        insets = {
-            left = 0,
-            right = 0,
-            top = 0,
-            bottom = 0
-        }
-    });
-    frame:SetBackdropColor(0, 0, 0, 1);
-    frame:SetAlpha(.75);
-end
-
 function clearTooltips()
     perkTooltip1:ClearLines(0)
     perkTooltip2:ClearLines(0)
