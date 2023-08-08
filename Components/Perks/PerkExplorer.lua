@@ -9,11 +9,10 @@ function InitializePerkExplorer()
     PerkExplorer:SetMovable(true)
     PerkExplorer:SetFrameLevel(99)
     PerkExplorer:SetClampedToScreen(true)
-    PerkExplorer:RegisterEvent("PLAYER_LEVEL_CHANGED")
-    PerkExplorer:SetScript("OnEvent",
-        function() -- level, healthDelta, powerDelta, numNewTalents, numNewPvpTalentSlots, strengthDelta, agilityDelta, staminaDelta, intellectDelta
-            PushForgeMessage(ForgeTopic.OFFER_SELECTION, GetSpecID());
-        end)
+    PerkExplorer:RegisterEvent("UNIT_LEVEL")
+    PerkExplorer:SetScript("OnEvent", function()
+        PushForgeMessage(ForgeTopic.OFFER_SELECTION, GetSpecID());
+    end)
 
     PerkExplorer.header = CreateFrame("BUTTON", nil, PerkExplorer)
     PerkExplorer.header:SetSize(settings.width, 30)
