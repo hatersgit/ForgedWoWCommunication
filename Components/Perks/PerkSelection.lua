@@ -96,7 +96,7 @@ function AddSelectCard(id, index, count, carryover)
                 end
             end
         end
-        PushForgeMessage(ForgeTopic.LEARN_PERK, GetActiveTalentGroup() - 1 .. ";" .. id);
+        PushForgeMessage(ForgeTopic.LEARN_PERK, GetSpecID() .. ";" .. id);
         PerkSelectionWindow:Hide();
     end);
 end
