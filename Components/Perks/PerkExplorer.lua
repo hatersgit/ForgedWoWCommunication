@@ -271,6 +271,7 @@ function LoadAllPerksList(filterText)
 end
 
 function LoadCurrentPerks(spec)
+    HideCharPerks();
     local i = 1;
     for specId, perk in ipairs(PerkExplorerInternal.PERKS_SPEC) do
         for spellId, meta in pairs(PerkExplorerInternal.PERKS_SPEC[specId]) do
@@ -322,3 +323,8 @@ function SetRankTexture(current, rank)
     end
 end
 
+function HideCharPerks()
+    for i = 1, 40, 1 do
+        PerkExplorer.body.perkbox.yourPerks.perks[i]:Hide();
+    end
+end
