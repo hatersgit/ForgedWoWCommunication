@@ -70,7 +70,8 @@ resetButton:SetText("Reset Talents")
 resetButton:SetScript("OnClick", function()
     -- Call the UnlearnTalents function when the button is clicked
     UnlearnTalents()
-    PushForgeMessage(ForgeTopic.UNLEARN_TALENT, "-1" .. ";" .. "0");
+    PushForgeMessage(ForgeTopic.UNLEARN_TALENT, "-1" .. ";" .. TalentTree.FORGE_SELECTED_TAB.Id);
+    SelectTab(TalentTree.FORGE_TABS[1]);
 end)
 
 local prestigeButton = CreateFrame("Button", prestigeButton, TalentTreeWindow.header, "UIPanelButtonTemplate")

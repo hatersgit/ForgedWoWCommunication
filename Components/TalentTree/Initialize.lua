@@ -66,7 +66,7 @@ SubscribeToForgeTopic(ForgeTopic.GET_TALENTS, function(msg)
     if not TalentTree.FORGE_TALENTS then
         TalentTree.FORGE_TALENTS = {};
     end
-    for tabId, talent in ipairs(DeserializeMessage(DeserializerDefinitions.GET_TALENTS, msg)) do
+    for i, talent in ipairs(DeserializeMessage(DeserializerDefinitions.GET_TALENTS, msg)) do
         if talent.Talents then
             for spellId, rank in pairs(talent.Talents) do
                 if not TalentTree.FORGE_TALENTS[talent.TabId] then

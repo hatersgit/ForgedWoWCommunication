@@ -81,11 +81,14 @@ function UpdateTalent(tabId, talents)
             local talent = FindTalent(spellId, tab.Talents)
             local ColumnIndex = tonumber(talent.ColumnIndex);
             local RowIndex = tonumber(talent.RowIndex);
-            if tab.TalentType == CharacterPointType.FORGE_SKILL_TREE then
-                RankUpTalent(TalentTreeWindow.body.GridForgeSkill.Talents[ColumnIndex][RowIndex], rank, talent, tabId)
-            else
-                RankUpTalent(TalentTreeWindow.body.GridTalent.Talents[ColumnIndex][RowIndex], rank, talent, tabId)
+            if TalentTreeWindow.body.GridTalent.Talents[ColumnIndex] then
+                if tab.TalentType == CharacterPointType.FORGE_SKILL_TREE then
+                    RankUpTalent(TalentTreeWindow.body.GridForgeSkill.Talents[ColumnIndex][RowIndex], rank, talent, tabId)
+                else
+                    RankUpTalent(TalentTreeWindow.body.GridTalent.Talents[ColumnIndex][RowIndex], rank, talent, tabId)
+                end
             end
+            SetPoints(tabId);
         end
     end
 end
@@ -285,9 +288,11 @@ function ShowTypeTalentPoint(CharacterPointType, str)
 end
 
 function GetPointSpendByTabId(id)
-    for tabId, points in pairs(FORGE_ACTIVE_SPEC.PointsSpent) do
-        if tabId == id then
-            return points;
+    if FORGE_ACTIVE_SPEC then
+        for tabId, points in pairs(FORGE_ACTIVE_SPEC.PointsSpent) do
+            if tabId == id then
+                return points;
+            end
         end
     end
 end
@@ -296,6 +301,17 @@ function InitializePreviewSpecialization(tabId)
     TalentTreeWindow.SpecializationPreview = CreateFrame("Frame", TalentTreeWindow.SpecializationPreview,
         TalentTreeWindow)
     TalentTreeWindow.SpecializationPreview:SetSize(40, 40);
+end
+
+function SetPoints(tabId)
+    if TalentTreeWindow.body.ChoiceSpecs[tabId] then
+        local pointsSpent = GetPointSpendByTabId(tabId);
+        if (pointsSpent) then
+            TalentTreeWindow.body.ChoiceSpecs[tabId].Points.Text:SetText(pointsSpent);
+        else
+            TalentTreeWindow.body.ChoiceSpecs[tabId].Points.Text:SetText("0");
+        end
+    end
 end
 
 function InitializeTalentLeft()
@@ -340,7 +356,7 @@ function InitializeTalentLeft()
                 TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points:CreateFontString("OVERLAY");
             TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points.Text:SetFont("Fonts\\AvQest.TTF", 10, "THICK, MONOCHROME")
             TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points.Text:SetPoint("CENTER", 0, 0)
-            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points.Text:SetText(pointsSpent);
+            SetPoints(tab.Id);
         end
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetScript("OnClick", function()
             SelectTab(tab);

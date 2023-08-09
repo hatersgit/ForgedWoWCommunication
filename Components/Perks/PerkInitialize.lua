@@ -46,6 +46,7 @@ function InitializePerks(reloadUI)
     end);
 
     SubscribeToForgeTopic(ForgeTopic.OFFER_SELECTION, function(msg)
+        print(msg)
         local perks = DeserializeMessage(PerkDeserializerDefinitions.PERKSEL, msg);
         PerkSelectionWindow.SelectionPool:SetSize(#perks * settings.selectionIconSize + (#perks - 1) *
                                                       settings.selectionIconSize, settings.selectionIconSize);
