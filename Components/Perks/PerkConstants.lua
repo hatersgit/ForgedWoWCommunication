@@ -11,7 +11,12 @@ assets = {
     ranktwo = "Interface\\BUTTONS\\CheckButtonGlow",
     rankthree = "Interface\\BUTTONS\\CheckButtonGlow",
     hourglass = "Interface\\AddOns\\ForgedWoWCommunication\\UI\\Perk\\hourglass",
-    highlight = "Interface\\AddOns\\ForgedWoWCommunication\\UI\\Perk\\highlight"
+    highlight = "Interface\\AddOns\\ForgedWoWCommunication\\UI\\Perk\\highlight",
+
+    minimize = "Interface\\BUTTONS\\UI-Panel-SmallerButton-Up",
+    minPushed = "Interface\\BUTTONS\\UI-Panel-SmallerButton-Down",
+    maximize = "Interface\\BUTTONS\\UI-Panel-BiggerButton-Up",
+    maxPushed = "Interface\\BUTTONS\\UI-Panel-BiggerButton-Down"
 }
 
 PerkExplorerInternal = {

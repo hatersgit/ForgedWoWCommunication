@@ -30,6 +30,8 @@ function InitializePerkExplorer()
 
     PerkExplorer.header.close = CreateFrame("BUTTON", "InstallCloseButton", PerkExplorer.header, "UIPanelCloseButton")
     PerkExplorer.header.close:SetPoint("TOPRIGHT", PerkExplorer.header, "TOPRIGHT")
+    PerkExplorer.header.close:SetNormalTexture(assets.maximize)
+    PerkExplorer.header.close:SetPushedTexture(assets.maxPushed)
     PerkExplorer.header.close:SetScript("OnClick", function()
         ToggleBox(PerkExplorer.body:IsVisible())
     end)
@@ -93,7 +95,7 @@ function InitializePerkExplorer()
     PerkExplorer.body.subheader.catalogue.title = PerkExplorer.body.subheader.catalogue:CreateFontString("OVERLAY");
     PerkExplorer.body.subheader.catalogue.title:SetPoint("CENTER", PerkExplorer.body.subheader.catalogue, "CENTER");
     PerkExplorer.body.subheader.catalogue.title:SetFont("Fonts\\AvQest.TTF", 16);
-    --PerkExplorer.body.subheader.catalogue.title:SetFont("Fonts\\FRIZQT__.TTF", 16)
+    -- PerkExplorer.body.subheader.catalogue.title:SetFont("Fonts\\FRIZQT__.TTF", 16)
     PerkExplorer.body.subheader.catalogue.title:SetText("Perk Catalogue");
     PerkExplorer.body.subheader.catalogue.title:SetTextColor(1, 1, 1, 1);
 
@@ -189,9 +191,13 @@ function ToggleBox(visible)
     if (visible) then
         PerkExplorer.body:Hide();
         PerkExplorer.header:SetSize(settings.width / 3, 30)
+        PerkExplorer.header.close:SetNormalTexture(assets.maximize)
+        PerkExplorer.header.close:SetPushedTexture(assets.maxPushed)
     else
         PerkExplorer.header:SetSize(settings.width, 30)
         PerkExplorer.body:Show(settings.width, 30);
+        PerkExplorer.header.close:SetNormalTexture(assets.minimize)
+        PerkExplorer.header.close:SetPushedTexture(assets.minPushed)
     end
 end
 
