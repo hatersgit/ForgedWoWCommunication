@@ -51,7 +51,7 @@ function InitializePerks(reloadUI)
         PerkSelectionWindow.SelectionPool:SetSize(#perks * settings.selectionIconSize + (#perks - 1) *
                                                       settings.selectionIconSize, settings.selectionIconSize);
         for index, perk in ipairs(perks) do
-            --print(index .. " " .. perk.SpellId)
+            print(index .. " " .. perk.SpellId)
             AddSelectCard(perk.SpellId, index, #perks, perk.carryover);
         end
         TogglePerkSelectionFrame(false);
