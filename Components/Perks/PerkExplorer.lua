@@ -1,5 +1,8 @@
 function InitializePerkExplorer()
 
+    if (PerkExplorer) then
+        return
+    end
     PerkExplorer = CreateFrame("FRAME", "PerkExplorer", UIParent);
     PerkExplorer:SetSize(settings.width / 3, 30);
     PerkExplorer:SetPoint("CENTER", 0, 0);
