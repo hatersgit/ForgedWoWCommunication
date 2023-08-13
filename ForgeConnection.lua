@@ -209,7 +209,7 @@ function PairsByKeys(t, f)
     local i = 0
     local iter = function()
         i = i + 1
-        if keys[i]  then
+        if keys[i] then
             return keys[i], t[keys[i]]
         else
             return nil

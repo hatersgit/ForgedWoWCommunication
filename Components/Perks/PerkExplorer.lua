@@ -311,7 +311,7 @@ end
 
 function SetRankTexture(current, rank)
     if (rank == 1) then
-        if current.Rank  then
+        if current.Rank then
             current.Rank:Hide()
         end
         return
