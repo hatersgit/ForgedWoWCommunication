@@ -29,13 +29,11 @@ function ResursiveSerilize(serializerDefinition, obj, msg)
         end
     elseif serializerDefinition.DELIMITER and serializerDefinition.FIELDS then
         for i, field in ipairs(serializerDefinition.FIELDS) do
-
             if msg == "" then
                 msg = msg .. obj[field.NAME]
             else
                 msg = msg .. serializerDefinition.DELIMITER .. obj[field.NAME]
             end
-
         end
     end
 
@@ -61,12 +59,10 @@ function DeserializeMessage(deserializerDefinition, msg)
             for i, objStr in ipairs(serializedObjs) do
                 objects[i] = ParseObjectPart({}, objStr, deserializerDefinition.FIELDS)
             end
-
         elseif deserializerDefinition.TYPE then
             for i, objStr in ipairs(serializedObjs) do
                 objects[i] = ParseType(deserializerDefinition, objStr)
             end
-
         else
             objects = serializedObjs;
         end
@@ -89,16 +85,13 @@ function ParseObjectPart(obj, objStr, fields)
             if kvp[1] then
                 local key = kvp[1];
                 local val = kvp[2];
-
                 if fields.TYPE then
                     key = ParseType(fields, kvp[1]);
                 end
-
                 if fields.FIELDS then
                     val = {}
                     val = ParseObjectPart(val, fields.FIELDS, kvp[2])
                 end
-
                 dict[key] = val; -- regular kvp of dict
             end
         end
@@ -123,7 +116,6 @@ function ParseObjectPart(obj, objStr, fields)
             obj = ParseObjectPart(obj, fldStr, fields.FIELDS[j])
         end
     end
-
     return obj;
 end
 
