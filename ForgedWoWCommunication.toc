@@ -19,7 +19,7 @@ Components\Perks\PerkExplorer.lua
 Components\Perks\PerkSelection.lua
 Components\Perks\PerkInitialize.lua
 
-Components\Tooltips\spells.lua
+Components\Tooltips\items.lua
 
 # Core Code
 Core\UIFixes.lua

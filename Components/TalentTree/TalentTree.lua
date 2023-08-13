@@ -21,6 +21,7 @@ TalentTreeWindow:EnableMouse(true)
 TalentTreeWindow:SetMovable(true)
 TalentTreeWindow:SetFrameLevel(1)
 TalentTreeWindow:SetClampedToScreen(true)
+TalentTreeWindow:Hide()
 
 TalentTreeWindow.header = CreateFrame("BUTTON", nil, TalentTreeWindow)
 TalentTreeWindow.header:SetSize(settings.width, 30)

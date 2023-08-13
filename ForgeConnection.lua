@@ -1,6 +1,5 @@
 local playerName = UnitName("player")
 local listeners = {}
-local listenerIndex = {}
 local awaitingMessage = {}
 
 --- Serializes a message
@@ -14,7 +13,7 @@ end
 
 --- @return string string The serialized string
 function ResursiveSerilize(serializerDefinition, obj, msg)
-    if serializerDefinition.OBJECT ~= nil then
+    if serializerDefinition.OBJECT then
         for i, f in ipairs(serializerDefinition.FIELDS) do
             if f.OBJECT ~= nil then
                 msg = ResursiveSerilize(serializerDefinition, obj, msg)
@@ -49,41 +48,36 @@ end
 --- @return table Object deserialized message
 --- @useage local listOfObjects = DeserializeMessage(DeserializerDefinitions.GET_SPELL_TALENTS, message)
 function DeserializeMessage(deserializerDefinition, msg)
-    if deserializerDefinition == nil or deserializerDefinition.OBJECT == nil then
+    if not deserializerDefinition or not deserializerDefinition.OBJECT then
         return {}
     end
     local objects = {}
 
-    if (deserializerDefinition.DICT ~= nil) then
+    if deserializerDefinition.DICT then
         objects = ParseObjectPart(objects, msg, deserializerDefinition)
     else
         local serializedObjs = ForgeSplit(deserializerDefinition.OBJECT, msg)
-
-        if deserializerDefinition.FIELDS ~= nil then
+        if deserializerDefinition.FIELDS then
             for i, objStr in ipairs(serializedObjs) do
-                local obj = {}
-                obj = ParseObjectPart(obj, objStr, deserializerDefinition.FIELDS)
-                objects[i] = obj
+                objects[i] = ParseObjectPart({}, objStr, deserializerDefinition.FIELDS)
             end
+
+        elseif deserializerDefinition.TYPE then
+            for i, objStr in ipairs(serializedObjs) do
+                objects[i] = ParseType(deserializerDefinition, objStr)
+            end
+
         else
-            if deserializerDefinition.TYPE ~= nil then
-                for i, objStr in ipairs(serializedObjs) do
-                    objects[i] = ParseType(deserializerDefinition, objStr)
-                end
-            else
-                objects = serializedObjs;
-            end
+            objects = serializedObjs;
         end
     end
-
     return objects
-
 end
 
 --- internal for deserializer.
 function ParseObjectPart(obj, objStr, fields)
-    if fields == nil then
-        return obj;
+    if not fields then
+        return obj
     end
 
     if fields.DICT ~= nil then
@@ -134,22 +128,15 @@ function ParseObjectPart(obj, objStr, fields)
 end
 
 function ParseType(fields, objStr)
-    if fields.TYPE then
-        if fields.TYPE == FieldType.NUMBER then
-            if objStr then
-                return tonumber(objStr) or 0;
-            else
-                return 0;
-            end
-        elseif fields.TYPE == FieldType.BOOL then
-            if objStr and objStr == "1" then
-                return true;
-            else
-                return false;
-            end
+    local typeValue = fields.TYPE
+    if typeValue then
+        if typeValue == FieldType.NUMBER then
+            return tonumber(objStr) or 0
+        elseif typeValue == FieldType.BOOL then
+            return objStr == "1"
         end
     end
-
+    return nil
 end
 
 --- Subscribes to a topic
@@ -157,17 +144,7 @@ end
 --- @param listener function
 --- @return nil nil Void return
 function SubscribeToForgeTopic(topic, listener)
-    if listeners[topic] == nil then
-        listeners[topic] = {}
-    end
-
-    if listenerIndex[topic] == nil then
-        listenerIndex[topic] = 0
-    end
-
-    local currentIndex = listenerIndex[topic]
-    listeners[topic][currentIndex] = listener
-    listenerIndex[topic] = currentIndex + 1
+    listeners[topic] = listener
 end
 
 --- Sends a message to the server, ForgeTopic has descriptors on each enum value for what the message contents should be
@@ -185,83 +162,57 @@ local fs = CreateFrame("Frame")
 fs:RegisterEvent("CHAT_MSG_ADDON")
 fs:SetScript("OnEvent", function(self, event, ...)
     local prefix, msg, msgType, sender = ...
-    if event == "CHAT_MSG_ADDON" then
-        if prefix ~= MESSAGE_PREFIX or msgType ~= "WHISPER" then
-            return
+    if event ~= "CHAT_MSG_ADDON" or prefix ~= MESSAGE_PREFIX or msgType ~= "WHISPER" then
+        return
+    end
+    local split = ForgeSplit(":", msg)
+    local numberStartIndex = string.find(split[1], "}")
+    local messageContent = split[2]
+
+    if numberStartIndex then
+        local headerSplit = ForgeSplit("}", split[1]) -- we got a big message, its coming in parts.
+        local topic = headerSplit[1]
+
+        awaitingMessage[topic] = awaitingMessage[topic] or {}
+        awaitingMessage[topic][headerSplit[2]] = messageContent
+
+        if #awaitingMessage[topic] == headerSplit[3] then
+            awaitingMessage[topic] = nil
+            if listeners[topic] and awaitingMessage[topic] then
+                listeners[topic](table.concat(awaitingMessage[topic], ""))
+            end
         end
-        local split = ForgeSplit(":", msg)
-        local numberStartIndex = string.find(split[1], "}")
-        local messageContent = split[2]
-        if numberStartIndex then
-            local headerSplit = ForgeSplit("}", split[1]) -- we got a big message, its coming in parts.
-            local topic = tonumber(headerSplit[1])
-            local messageNuber = tonumber(headerSplit[2])
-            local numberOfMessages = tonumber(headerSplit[3])
-
-            if awaitingMessage[topic] == nil then
-                awaitingMessage[topic] = {}
-            end
-
-            if awaitingMessage[topic][messageNuber] == nil then
-                awaitingMessage[topic][messageNuber] = {}
-            end
-
-            awaitingMessage[topic][messageNuber]["messageNuber"] = messageNuber
-            awaitingMessage[topic][messageNuber]["numberOfMessages"] = numberOfMessages
-            awaitingMessage[topic][messageNuber]["messageContent"] = messageContent
-
-            local numMsg = table.getn(awaitingMessage[topic])
-
-            if numMsg == numberOfMessages then
-
-                local entireMessage = "";
-
-                for i = 1, numberOfMessages, 1 do
-                    entireMessage = entireMessage .. awaitingMessage[topic][i]["messageContent"];
-                end
-
-                table.remove(awaitingMessage, topic); -- remove messages from queue
-                if listeners[topic] ~= nil then
-                    for k, topicListener in pairs(listeners[topic]) do
-                        topicListener(entireMessage)
-                    end
-                end
-            end
-
-        else
-            local topic = tonumber(split[1]);
-            if listeners[topic] ~= nil then
-                for k, topicListener in pairs(listeners[topic]) do
-                    topicListener(messageContent)
-                end
-            end
+    else
+        local topic = tonumber(split[1]);
+        if listeners[topic] then
+            listeners[topic](messageContent)
         end
     end
 end)
 
 function SplitByChunk(text, chunkSize)
-    local s = {}
+    local chunks = {}
     for i = 1, #text, chunkSize do
-        s[#s + 1] = strsub(text, i, i + chunkSize - 1)
+        table.insert(chunks, text:sub(i, i + chunkSize - 1))
     end
-
-    return s
+    return chunks
 end
 
 -- This will sort by key and itterate over the key
 function PairsByKeys(t, f)
-    local a = {}
-    for n in pairs(t) do
-        table.insert(a, n)
+    local keys = {}
+    for key in pairs(t) do
+        table.insert(keys, key)
     end
-    table.sort(a, f)
-    local i = 0 -- iterator variable
-    local iter = function() -- iterator function
+    table.sort(keys, f)
+
+    local i = 0
+    local iter = function()
         i = i + 1
-        if a[i] == nil then
+        if keys[i] == nil then
             return nil
         else
-            return a[i], t[a[i]]
+            return keys[i], t[keys[i]]
         end
     end
     return iter
@@ -269,14 +220,14 @@ end
 
 function dump(o)
     if type(o) == 'table' then
-        local s = '{ '
+        local s = '{'
         for k, v in pairs(o) do
             if type(k) ~= 'number' then
                 k = '"' .. k .. '"'
             end
             s = s .. '[' .. k .. '] = ' .. dump(v) .. ','
         end
-        return s .. '} '
+        return s .. '}'
     else
         return tostring(o)
     end

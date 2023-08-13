@@ -83,7 +83,8 @@ function UpdateTalent(tabId, talents)
             local RowIndex = tonumber(talent.RowIndex);
             if TalentTreeWindow.body.GridTalent.Talents[ColumnIndex] then
                 if tab.TalentType == CharacterPointType.FORGE_SKILL_TREE then
-                    RankUpTalent(TalentTreeWindow.body.GridForgeSkill.Talents[ColumnIndex][RowIndex], rank, talent, tabId)
+                    RankUpTalent(TalentTreeWindow.body.GridForgeSkill.Talents[ColumnIndex][RowIndex], rank, talent,
+                        tabId)
                 else
                     RankUpTalent(TalentTreeWindow.body.GridTalent.Talents[ColumnIndex][RowIndex], rank, talent, tabId)
                 end
@@ -243,7 +244,8 @@ function SelectTab(tab)
     if TalentTree.FORGE_SELECTED_TAB then
         if TalentTreeWindow.body.ChoiceSpecs[TalentTree.FORGE_SELECTED_TAB.Id] then
             TalentTreeWindow.body.ChoiceSpecs[TalentTree.FORGE_SELECTED_TAB.Id]:SetButtonState("NORMAL");
-            TalentTreeWindow.body.ChoiceSpecs[TalentTree.FORGE_SELECTED_TAB.Id].Title:SetTextColor(188/255, 150/255, 28/255, 1);
+            TalentTreeWindow.body.ChoiceSpecs[TalentTree.FORGE_SELECTED_TAB.Id].Title:SetTextColor(188 / 255, 150 / 255,
+                28 / 255, 1);
         end
     end
     TalentTree.FORGE_SELECTED_TAB = tab;
@@ -273,6 +275,7 @@ function SelectTab(tab)
     elseif tab.TalentType == CharacterPointType.TALENT_SKILL_TREE then
         ShowTypeTalentPoint(CharacterPointType.TALENT_SKILL_TREE, strTalentType)
     end
+    TalentTreeWindow.body.GridTalent.bg:SetTexture(PATH .. "tabBG\\" .. tab.Background);
 end
 
 function GetPointByCharacterPointType(type)
@@ -327,23 +330,24 @@ function InitializeTalentLeft()
         TalentTreeWindow.body.ChoiceSpecs[tab.Id] = CreateFrame("Button", TalentTreeWindow.body.ChoiceSpecs[tab.Id],
             TalentTreeWindow.body.ChoiceSpecs);
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetPoint("TOPLEFT", x, 0);
-        TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetFrameLevel(TalentTreeWindow.body.ChoiceSpecs:GetFrameLevel()+1);
-        TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetSize((TalentTreeWindow.body.ChoiceSpecs:GetWidth()-20)/5, 30);
+        TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetFrameLevel(TalentTreeWindow.body.ChoiceSpecs:GetFrameLevel() + 1);
+        TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetSize((TalentTreeWindow.body.ChoiceSpecs:GetWidth() - 20) / 5, 30);
         SetTemplate(TalentTreeWindow.body.ChoiceSpecs[tab.Id]);
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetAlpha(1);
 
-        TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title = TalentTreeWindow.body.ChoiceSpecs[tab.Id]:CreateFontString("OVERLAY")
+        TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title = TalentTreeWindow.body.ChoiceSpecs[tab.Id]:CreateFontString(
+            "OVERLAY")
         TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetFont("Fonts\\AvQest.TTF", 14, "THICK, MONOCHROME")
         TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetPoint("Center", 0, 0)
         TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetText(tab.Name)
-        TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetTextColor(188/255, 150/255, 28/255, 1);
+        TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetTextColor(188 / 255, 150 / 255, 28 / 255, 1);
 
-        TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetScript("OnEnter", function ()
-            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetTextColor(1,1,1,1);
+        TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetScript("OnEnter", function()
+            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetTextColor(1, 1, 1, 1);
         end);
-        TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetScript("OnLeave", function ()
+        TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetScript("OnLeave", function()
             if (TalentTree.FORGE_SELECTED_TAB ~= tab) then
-                TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetTextColor(188/255, 150/255, 28/255, 1);
+                TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetTextColor(188 / 255, 150 / 255, 28 / 255, 1);
             end
         end);
 
@@ -362,7 +366,7 @@ function InitializeTalentLeft()
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetScript("OnClick", function()
             SelectTab(tab);
         end)
-        x = x + (TalentTreeWindow.body.ChoiceSpecs:GetWidth()-20)/5 + 4;
+        x = x + (TalentTreeWindow.body.ChoiceSpecs:GetWidth() - 20) / 5 + 4;
     end
 end
 
@@ -381,14 +385,16 @@ function InitializeGridForTalent()
     end
     TalentTreeWindow.body.GridTalent = CreateFrame("Frame", TalentTreeWindow.body.GridTalent, TalentTreeWindow.body);
     TalentTreeWindow.body.GridTalent:SetPoint("TOP", 0, -30);
-    TalentTreeWindow.body.GridTalent:SetSize(TalentTreeWindow.body:GetWidth(), TalentTreeWindow.body:GetHeight()-50);
+    TalentTreeWindow.body.GridTalent:SetSize(TalentTreeWindow.body:GetWidth(), TalentTreeWindow.body:GetHeight() - 50);
     SetTemplate(TalentTreeWindow.body.GridTalent);
+    TalentTreeWindow.body.GridTalent.bg = TalentTreeWindow.body.GridTalent:CreateTexture(nil, "OVERLAY");
+    TalentTreeWindow.body.GridTalent.bg:SetAllPoints();
     TalentTreeWindow.body.GridTalent:SetAlpha(1);
     if not TalentTreeWindow.body.GridTalent.Talents then
         TalentTreeWindow.body.GridTalent.Talents = {};
     end
 
-    local iconSize = (TalentTreeWindow.body.GridTalent:GetWidth()-8*15)/9;
+    local iconSize = (TalentTreeWindow.body.GridTalent:GetWidth() - 8 * 15) / 9;
     for i = 0, 8 do
         if not TalentTreeWindow.body.GridTalent.Talents[i] then
             TalentTreeWindow.body.GridTalent.Talents[i] = {};
@@ -403,28 +409,30 @@ function InitializeGridForTalent()
                     TalentTreeWindow.body.GridTalent.Talents[i][j].Tooltip[2]:hide();
                 end
             end
-            TalentTreeWindow.body.GridTalent.Talents[i][j] = CreateFrame("Button", TalentTreeWindow.body.GridTalent.Talents[i][j],
-                TalentTreeWindow.body.GridTalent);
-            TalentTreeWindow.body.GridTalent.Talents[i][j]:SetPoint("TOPLEFT", 15*i+(i)*iconSize, depth)
-            TalentTreeWindow.body.GridTalent.Talents[i][j]:SetFrameLevel(TalentTreeWindow.body.GridTalent:GetFrameLevel()+1);
+            TalentTreeWindow.body.GridTalent.Talents[i][j] =
+                CreateFrame("Button", TalentTreeWindow.body.GridTalent.Talents[i][j], TalentTreeWindow.body.GridTalent);
+            TalentTreeWindow.body.GridTalent.Talents[i][j]:SetPoint("TOPLEFT", 15 * i + (i) * iconSize, depth)
+            TalentTreeWindow.body.GridTalent.Talents[i][j]:SetFrameLevel(
+                TalentTreeWindow.body.GridTalent:GetFrameLevel() + 1);
             TalentTreeWindow.body.GridTalent.Talents[i][j]:SetSize(iconSize, iconSize);
 
             TalentTreeWindow.body.GridTalent.Talents[i][j].TextureIcon =
                 TalentTreeWindow.body.GridTalent.Talents[i][j]:CreateTexture();
             TalentTreeWindow.body.GridTalent.Talents[i][j].TextureIcon:SetAllPoints()
 
-            TalentTreeWindow.body.GridTalent.Talents[i][j].Border = CreateFrame("Frame",
-                TalentTreeWindow.body.GridTalent.Talents[i][j].Border, TalentTreeWindow.body.GridTalent.Talents[i][j])
+            TalentTreeWindow.body.GridTalent.Talents[i][j].Border =
+                CreateFrame("Frame", TalentTreeWindow.body.GridTalent.Talents[i][j].Border,
+                    TalentTreeWindow.body.GridTalent.Talents[i][j])
             TalentTreeWindow.body.GridTalent.Talents[i][j].Border:SetFrameLevel(10);
             TalentTreeWindow.body.GridTalent.Talents[i][j].Border:SetPoint("CENTER", 0, 0);
-            TalentTreeWindow.body.GridTalent.Talents[i][j].Border:SetSize(1.5*iconSize, 1.5*iconSize);
+            TalentTreeWindow.body.GridTalent.Talents[i][j].Border:SetSize(1.5 * iconSize, 1.5 * iconSize);
 
             TalentTreeWindow.body.GridTalent.Talents[i][j].Exclusivity =
                 CreateFrame("Frame", TalentTreeWindow.body.GridTalent.Talents[i][j].Exclusivity,
                     TalentTreeWindow.body.GridTalent.Talents[i][j])
             TalentTreeWindow.body.GridTalent.Talents[i][j].Exclusivity:SetFrameLevel(12);
             TalentTreeWindow.body.GridTalent.Talents[i][j].Exclusivity:SetPoint("CENTER", 0, 0);
-            TalentTreeWindow.body.GridTalent.Talents[i][j].Exclusivity:SetSize(1.5*iconSize, 1.5*iconSize);
+            TalentTreeWindow.body.GridTalent.Talents[i][j].Exclusivity:SetSize(1.5 * iconSize, 1.5 * iconSize);
 
             TalentTreeWindow.body.GridTalent.Talents[i][j].Exclusivity:SetBackdrop({
                 bgFile = CONSTANTS.UI.BORDER_EXCLUSIVITY
@@ -611,7 +619,8 @@ function InitializeGridForForgeSkills()
     if TalentTreeWindow.body.GridForgeSkill then
         TalentTreeWindow.body.GridForgeSkill:Hide();
     end
-    TalentTreeWindow.body.GridForgeSkill = CreateFrame("Frame", TalentTreeWindow.body.GridForgeSkill, TalentTreeWindow.body);
+    TalentTreeWindow.body.GridForgeSkill = CreateFrame("Frame", TalentTreeWindow.body.GridForgeSkill,
+        TalentTreeWindow.body);
     TalentTreeWindow.body.GridForgeSkill:SetPoint("LEFT", -375, 25);
     TalentTreeWindow.body.GridForgeSkill:SetSize(946, 946);
     TalentTreeWindow.body.GridForgeSkill.Talents = {};
@@ -621,8 +630,9 @@ function InitializeGridForForgeSkills()
         TalentTreeWindow.body.GridForgeSkill.Talents[i] = {};
         local posY = 0;
         for j = 1, 9 do
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j] = CreateFrame("Button",
-                TalentTreeWindow.body.GridForgeSkill.Talents[i][j], TalentTreeWindow.body.GridForgeSkill);
+            TalentTreeWindow.body.GridForgeSkill.Talents[i][j] =
+                CreateFrame("Button", TalentTreeWindow.body.GridForgeSkill.Talents[i][j],
+                    TalentTreeWindow.body.GridForgeSkill);
             TalentTreeWindow.body.GridForgeSkill.Talents[i][j]:SetPoint("CENTER", posX, posY)
             TalentTreeWindow.body.GridForgeSkill.Talents[i][j]:SetFrameLevel(9);
             TalentTreeWindow.body.GridForgeSkill.Talents[i][j]:SetSize(30, 30);
@@ -637,8 +647,9 @@ function InitializeGridForForgeSkills()
             TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Border:SetPoint("CENTER", 0, 0);
             TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Border:SetSize(48, 48);
 
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Exclusivity = CreateFrame("Frame",
-                TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Exclusivity, TalentTreeWindow.body.GridForgeSkill.Talents[i][j])
+            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Exclusivity =
+                CreateFrame("Frame", TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Exclusivity,
+                    TalentTreeWindow.body.GridForgeSkill.Talents[i][j])
             TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Exclusivity:SetFrameLevel(12);
             TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Exclusivity:SetPoint("CENTER", 0, 0);
             TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Exclusivity:SetSize(48, 48);
