@@ -160,19 +160,18 @@ fs:SetScript("OnEvent", function(self, event, ...)
     local split = ForgeSplit(":", msg)
     local numberStartIndex = string.find(split[1], "}")
     local messageContent = split[2]
-
     if numberStartIndex then
         local headerSplit = ForgeSplit("}", split[1]) -- we got a big message, its coming in parts.
-        local topic = headerSplit[1]
+        local topic = tonumber(headerSplit[1])
 
         awaitingMessage[topic] = awaitingMessage[topic] or {}
-        awaitingMessage[topic][headerSplit[2]] = messageContent
+        awaitingMessage[topic][tonumber(headerSplit[2])] = messageContent
 
-        if #awaitingMessage[topic] == headerSplit[3] then
-            awaitingMessage[topic] = nil
-            if listeners[topic] and awaitingMessage[topic] then
-                listeners[topic](table.concat(awaitingMessage[topic], ""))
+        if #awaitingMessage[topic] == tonumber(headerSplit[3]) then
+            if listeners[topic] then
+                listeners[topic](table.concat(awaitingMessage[topic]))
             end
+            awaitingMessage[topic] = nil
         end
     else
         local topic = tonumber(split[1]);

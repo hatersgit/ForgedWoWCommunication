@@ -64,6 +64,4 @@ function InitializePerks(reloadUI)
     SubscribeToForgeTopic(ForgeTopic.PRESTIGE_ERROR, function(msg)
         print("Prestige halted: " .. msg);
     end)
-
-    PushForgeMessage(ForgeTopic.OFFER_SELECTION, GetSpecID());
 end
