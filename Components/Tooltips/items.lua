@@ -69,7 +69,7 @@ local function addTertiaryStats(tooltip)
                 local prevText = prev:GetText()
                 local text = line:GetText()
                 if text and prevText then
-                    if (string.find(prevText, "+") and string.find(text, "+") == nil) then
+                    if not string.find(prevText, "+") and string.find(text, "+") then
                         prev:SetText(prevText .. genTertiaryStatString(itemID))
                         return
                     end

@@ -1,5 +1,5 @@
 function CreateRankedTooltip(id, parent, tt, depth, width, anchor, unique)
-    if (GetSpellInfo(id) == nil) then
+    if not GetSpellInfo(id) then
         tt:ClearLines()
         tt:SetSize(0, 0)
         tt:Hide()

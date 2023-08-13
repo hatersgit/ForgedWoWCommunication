@@ -15,7 +15,7 @@ end
 function ResursiveSerilize(serializerDefinition, obj, msg)
     if serializerDefinition.OBJECT then
         for i, f in ipairs(serializerDefinition.FIELDS) do
-            if f.OBJECT ~= nil then
+            if f.OBJECT then
                 msg = ResursiveSerilize(serializerDefinition, obj, msg)
             else
                 for i, field in ipairs(serializerDefinition.FIELDS) do
@@ -27,7 +27,7 @@ function ResursiveSerilize(serializerDefinition, obj, msg)
                 end
             end
         end
-    elseif serializerDefinition.DELIMITER ~= nil and serializerDefinition.FIELDS ~= nil then
+    elseif serializerDefinition.DELIMITER and serializerDefinition.FIELDS then
         for i, field in ipairs(serializerDefinition.FIELDS) do
 
             if msg == "" then
@@ -80,7 +80,7 @@ function ParseObjectPart(obj, objStr, fields)
         return obj
     end
 
-    if fields.DICT ~= nil then
+    if fields.DICT then
         local dict = {}
         local kvps = ForgeSplit(fields.OBJECT, objStr)
 
@@ -90,11 +90,11 @@ function ParseObjectPart(obj, objStr, fields)
                 local key = kvp[1];
                 local val = kvp[2];
 
-                if fields.TYPE ~= nil then
+                if fields.TYPE then
                     key = ParseType(fields, kvp[1]);
                 end
 
-                if fields.FIELDS ~= nil then
+                if fields.FIELDS then
                     val = {}
                     val = ParseObjectPart(val, fields.FIELDS, kvp[2])
                 end
@@ -103,16 +103,16 @@ function ParseObjectPart(obj, objStr, fields)
             end
         end
 
-        if fields.NAME ~= nil then
+        if fields.NAME then
             obj[fields.NAME] = dict
         else
             obj = dict
         end
 
-    elseif fields.OBJECT ~= nil then
+    elseif fields.OBJECT then
         obj[fields.NAME] = DeserializeMessage(fields, objStr); -- list of objects
-    elseif fields.NAME ~= nil then
-        if fields.TYPE ~= nil then
+    elseif fields.NAME then
+        if fields.TYPE then
             obj[fields.NAME] = ParseType(fields, objStr)
         else
             obj[fields.NAME] = objStr; -- field
@@ -209,10 +209,10 @@ function PairsByKeys(t, f)
     local i = 0
     local iter = function()
         i = i + 1
-        if keys[i] == nil then
-            return nil
-        else
+        if keys[i]  then
             return keys[i], t[keys[i]]
+        else
+            return nil
         end
     end
     return iter

@@ -229,7 +229,7 @@ function SplitSpellsByChunk(array, nb)
     local chunks = {};
     local i = 1;
     for index, value in ipairs(array) do
-        if chunks[i] == nil then
+        if not chunks[i] then
             chunks[i] = {};
         end
         table.insert(chunks[i], value);
@@ -483,7 +483,7 @@ function LearnTalent(tabId, spell)
 end
 
 function CreateTooltip(spell, SpellId, NextSpellId, parent, CurrentRank)
-    if (SpellId == nil) then
+    if not SpellId then
         return
     end
     FirstRankToolTip:SetOwner(parent, "ANCHOR_RIGHT");
@@ -816,7 +816,7 @@ function switchPage(nextPage)
         TalentTree.FORGE_CURRENT_PAGE = TalentTree.FORGE_CURRENT_PAGE - 1;
     end
     local page = TalentTree.FORGE_SPELLS_PAGES[TalentTree.FORGE_CURRENT_PAGE];
-    if page == nil then
+    if not page then
         return;
     end
     if (TalentTree.FORGE_CURRENT_PAGE - 1) <= 0 then
