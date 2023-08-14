@@ -14,18 +14,19 @@ TalentTree = {
 
 TalentTreeWindow = CreateFrame("Frame", TalentTreeWindow, UIParent);
 TalentTreeWindow:SetSize(settings.width, 30); --- LEFT/RIGHT -- --UP/DOWN --
-TalentTreeWindow:SetPoint("LEFT", GetScreenWidth()/10, 7*GetScreenHeight()/10); --- LEFT/RIGHT -- --UP/DOWN --
+TalentTreeWindow:SetPoint("LEFT", GetScreenWidth() / 10, 7 * GetScreenHeight() / 10); --- LEFT/RIGHT -- --UP/DOWN --
 TalentTreeWindow:SetFrameStrata("DIALOG")
 TalentTreeWindow:SetToplevel(true)
 TalentTreeWindow:EnableMouse(true)
 TalentTreeWindow:SetMovable(true)
 TalentTreeWindow:SetFrameLevel(1)
 TalentTreeWindow:SetClampedToScreen(true)
+TalentTreeWindow:Hide()
 
 TalentTreeWindow.header = CreateFrame("BUTTON", nil, TalentTreeWindow)
 TalentTreeWindow.header:SetSize(settings.width, 30)
 TalentTreeWindow.header:SetPoint("TOP", 0, 0);
-TalentTreeWindow.header:SetFrameLevel(TalentTreeWindow:GetFrameLevel()+1)
+TalentTreeWindow.header:SetFrameLevel(TalentTreeWindow:GetFrameLevel() + 1)
 TalentTreeWindow.header:EnableMouse(true)
 TalentTreeWindow.header:RegisterForClicks("AnyUp", "AnyDown")
 TalentTreeWindow.header:SetScript("OnMouseDown", function()
@@ -36,7 +37,8 @@ TalentTreeWindow.header:SetScript("OnMouseUp", function()
 end)
 SetTemplate(TalentTreeWindow.header);
 
-TalentTreeWindow.header.close = CreateFrame("BUTTON", "InstallCloseButton", TalentTreeWindow.header, "UIPanelCloseButton")
+TalentTreeWindow.header.close = CreateFrame("BUTTON", "InstallCloseButton", TalentTreeWindow.header,
+    "UIPanelCloseButton")
 TalentTreeWindow.header.close:SetPoint("TOPRIGHT", TalentTreeWindow.header, "TOPRIGHT")
 TalentTreeWindow.header.close:SetScript("OnClick", function()
     TalentTreeWindow:Hide()
@@ -47,16 +49,16 @@ TalentTreeWindow.header.title = TalentTreeWindow.header:CreateFontString("OVERLA
 TalentTreeWindow.header.title:SetPoint("CENTER", TalentTreeWindow.header, "CENTER");
 TalentTreeWindow.header.title:SetFont("Fonts\\AvQest.TTF", 22);
 TalentTreeWindow.header.title:SetText("Talents");
-TalentTreeWindow.header.title:SetTextColor(188/255, 150/255, 28/255, 1); --rgb(188, 150, 28)
+TalentTreeWindow.header.title:SetTextColor(188 / 255, 150 / 255, 28 / 255, 1); -- rgb(188, 150, 28)
 
 TalentTreeWindow.body = CreateFrame("Frame", TalentTreeWindow.body, TalentTreeWindow);
-TalentTreeWindow.body:SetSize(settings.width, settings.height-30); -- Talent Tree Window's Background --
+TalentTreeWindow.body:SetSize(settings.width, settings.height - 30); -- Talent Tree Window's Background --
 TalentTreeWindow.body:SetPoint("TOP", 0, -30);
 TalentTreeWindow.body:SetFrameLevel(2);
 SetTemplate(TalentTreeWindow.body);
 
 TalentTreeWindow.body.ChoiceSpecs = CreateFrame("Frame", TalentTreeWindow.body.ChoiceSpecs, TalentTreeWindow.body);
-TalentTreeWindow.body.ChoiceSpecs:SetSize(TalentTreeWindow.body:GetWidth()-4, 30);
+TalentTreeWindow.body.ChoiceSpecs:SetSize(TalentTreeWindow.body:GetWidth() - 4, 30);
 TalentTreeWindow.body.ChoiceSpecs:SetPoint("TOP", 0, 0);
 TalentTreeWindow.body.ChoiceSpecs:SetFrameLevel(TalentTreeWindow.body:GetFrameLevel() + 1)
 TalentTreeWindow.body.ChoiceSpecs.Spec = {};

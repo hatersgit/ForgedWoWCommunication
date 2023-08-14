@@ -530,7 +530,7 @@ DeserializerDefinitions = {
 }
 
 function GetSpecID()
-    return GetActiveTalentGroup()-1
+    return GetActiveTalentGroup() - 1
 end
 
 function SetTemplate(frame)

@@ -225,7 +225,7 @@ function LoadAllPerksList(filterText)
             rowCount = 1
         end
 
-        if (name ~= nil) then
+        if name then
             if (string.match(string.upper(name), filterText) or filterText == "") then
                 perkFrame.perks[i] = CreateFrame("BUTTON", perkFrame.perks[i], perkFrame);
                 perkFrame.perks[i]:SetHighlightTexture("Interface\\Buttons\\CheckButtonHilight");
@@ -268,7 +268,7 @@ function LoadAllPerksList(filterText)
                 i = i + 1;
 
             else
-                if (perkFrame.perks[i] ~= nil) then
+                if perkFrame.perks[i] then
                     perkFrame.perks[i]:Hide();
                 end
             end
@@ -311,12 +311,12 @@ end
 
 function SetRankTexture(current, rank)
     if (rank == 1) then
-        if current.Rank ~= nil then
+        if current.Rank then
             current.Rank:Hide()
         end
         return
     end
-    if current.Rank == nil then
+    if not current.Rank then
         current.Rank = current:CreateTexture(nil, "ARTWORK", nil, current:GetFrameLevel() + 3);
     end
     current.Rank:SetSize((settings.width - settings.gap) / (settings.iconsPerRow * 1.18) * 2,
