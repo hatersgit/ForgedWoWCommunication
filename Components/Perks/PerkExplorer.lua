@@ -161,11 +161,14 @@ function InitializePerkExplorer()
     PerkExplorer.body.catalogue.searchBar:SetWidth(300)
     PerkExplorer.body.catalogue.searchBar:SetFont("Fonts\\ARIALN.TTF", 14);
     PerkExplorer.body.catalogue.searchBar:SetMaxLetters(90);
-    PerkExplorer.body.catalogue.searchBar:SetMultiLine(false);
+    PerkExplorer.body.catalogue.searchBar:SetAutoFocus(false)
     PerkExplorer.body.catalogue.searchBar:SetScript("OnTextChanged", function(self, input)
         if (input) then
             LoadAllPerksList(string.upper(self:GetText()))
         end
+    end)
+    PerkExplorer.body.catalogue.searchBar:SetScript("OnEscapePressed", function(self, input)
+        self:ClearFocus()
     end)
 
     searchtexBox = PerkExplorer.body.catalogue.searchBar:CreateTexture("", "BACKGROUND");
