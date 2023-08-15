@@ -46,6 +46,7 @@ CONSTANTS = {
 
 settings = {
     selectionIconSize = 60,
-    width = GetScreenWidth() / 2.8,
-    height = GetScreenHeight() * 0.85
+    width = GetScreenWidth() / 4.5,
+    height = GetScreenHeight() / 1.74,
+    headerheight = (GetScreenHeight() / 1.8) / 25
 }

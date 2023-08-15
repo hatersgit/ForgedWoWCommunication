@@ -1,3 +1,5 @@
+local headerheight = (GetScreenHeight() / 1.9) / 25;
+
 function HideMainWindow()
     if TalentTreeWindow:IsShown() then
         TalentTreeWindow:Hide()
@@ -311,9 +313,9 @@ function SetPoints(tabId)
     if TalentTreeWindow.body.ChoiceSpecs[tabId] then
         local pointsSpent = GetPointSpendByTabId(tabId);
         if (pointsSpent) then
-            TalentTreeWindow.body.ChoiceSpecs[tabId].Points.Text:SetText(pointsSpent);
+            TalentTreeWindow.body.ChoiceSpecs[tabId].Points:SetText(pointsSpent);
         else
-            TalentTreeWindow.body.ChoiceSpecs[tabId].Points.Text:SetText("0");
+            TalentTreeWindow.body.ChoiceSpecs[tabId].Points:SetText("0");
         end
     end
 end
@@ -331,13 +333,13 @@ function InitializeTalentLeft()
             TalentTreeWindow.body.ChoiceSpecs);
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetPoint("TOPLEFT", x, 0);
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetFrameLevel(TalentTreeWindow.body.ChoiceSpecs:GetFrameLevel() + 1);
-        TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetSize((TalentTreeWindow.body.ChoiceSpecs:GetWidth() - 20) / 5, 30);
+        TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetSize((TalentTreeWindow.body.ChoiceSpecs:GetWidth() - 20) / 5, (GetScreenHeight() / 1.9) / 25);
         SetTemplate(TalentTreeWindow.body.ChoiceSpecs[tab.Id]);
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetAlpha(1);
 
         TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title = TalentTreeWindow.body.ChoiceSpecs[tab.Id]:CreateFontString(
             "OVERLAY")
-        TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetFont("Fonts\\AvQest.TTF", 14, "THICK, MONOCHROME")
+        TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetFont("Fonts\\AvQest.TTF", 8, "THICK, MONOCHROME")
         TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetPoint("Center", 0, 0)
         TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetText(tab.Name)
         TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetTextColor(188 / 255, 150 / 255, 28 / 255, 1);
@@ -352,15 +354,10 @@ function InitializeTalentLeft()
         end);
 
         if tab.TalentType ~= CharacterPointType.SKILL_PAGE then
-            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points = CreateFrame("Button",
-                TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points, TalentTreeWindow.body.ChoiceSpecs[tab.Id]);
-            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points:SetPoint("TOPRIGHT", 0, 0)
-            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points:SetFrameLevel(12);
-            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points:SetSize(18, 18);
-            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points.Text =
-                TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points:CreateFontString("OVERLAY");
-            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points.Text:SetFont("Fonts\\AvQest.TTF", 10, "THICK, MONOCHROME")
-            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points.Text:SetPoint("CENTER", 0, 0)
+            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points =
+                TalentTreeWindow.body.ChoiceSpecs[tab.Id]:CreateFontString("OVERLAY");
+            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points:SetFont("Fonts\\AvQest.TTF", 8, "THICK, MONOCHROME")
+            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points:SetPoint("TOPRIGHT", 1, 1)
             SetPoints(tab.Id);
         end
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetScript("OnClick", function()
@@ -375,7 +372,7 @@ function InitializeForgePoints()
         return;
     end
     TalentTreeWindow.body.PointsBottom = TalentTreeWindow.body:CreateFontString()
-    TalentTreeWindow.body.PointsBottom:SetFont("Fonts\\AvQest.TTF", 14, "OUTLINE")
+    TalentTreeWindow.body.PointsBottom:SetFont("Fonts\\AvQest.TTF", 10, "OUTLINE")
     TalentTreeWindow.body.PointsBottom:SetPoint("BOTTOMRIGHT", -3, 3);
 end
 
@@ -384,8 +381,8 @@ function InitializeGridForTalent()
         TalentTreeWindow.body.GridTalent:Hide();
     end
     TalentTreeWindow.body.GridTalent = CreateFrame("Frame", TalentTreeWindow.body.GridTalent, TalentTreeWindow.body);
-    TalentTreeWindow.body.GridTalent:SetPoint("TOP", 0, -30);
-    TalentTreeWindow.body.GridTalent:SetSize(TalentTreeWindow.body:GetWidth(), TalentTreeWindow.body:GetHeight() - 50);
+    TalentTreeWindow.body.GridTalent:SetPoint("TOP", 0, -headerheight);
+    TalentTreeWindow.body.GridTalent:SetSize(TalentTreeWindow.body:GetWidth(), TalentTreeWindow.body:GetHeight() - 2*headerheight);
     SetTemplate(TalentTreeWindow.body.GridTalent);
     TalentTreeWindow.body.GridTalent.bg = TalentTreeWindow.body.GridTalent:CreateTexture(nil, "OVERLAY");
     TalentTreeWindow.body.GridTalent.bg:SetAllPoints();
@@ -394,12 +391,13 @@ function InitializeGridForTalent()
         TalentTreeWindow.body.GridTalent.Talents = {};
     end
 
-    local iconSize = (TalentTreeWindow.body.GridTalent:GetWidth() - 8 * 15) / 9;
+    local numIconsPerRow = 9;
+    local iconSize = (TalentTreeWindow.body.GridTalent:GetWidth() - 8 * 12) / numIconsPerRow;
     for i = 0, 8 do
         if not TalentTreeWindow.body.GridTalent.Talents[i] then
             TalentTreeWindow.body.GridTalent.Talents[i] = {};
         end
-        local depth = -15;
+        local depth = -headerheight/1.5;
         for j = 1, 12 do
             if TalentTreeWindow.body.GridTalent.Talents[i][j] then
                 TalentTreeWindow.body.GridTalent.Talents[i][j]:Hide();
@@ -423,17 +421,14 @@ function InitializeGridForTalent()
             TalentTreeWindow.body.GridTalent.Talents[i][j].Border =
                 CreateFrame("Frame", TalentTreeWindow.body.GridTalent.Talents[i][j].Border,
                     TalentTreeWindow.body.GridTalent.Talents[i][j])
-            TalentTreeWindow.body.GridTalent.Talents[i][j].Border:SetFrameLevel(10);
             TalentTreeWindow.body.GridTalent.Talents[i][j].Border:SetPoint("CENTER", 0, 0);
             TalentTreeWindow.body.GridTalent.Talents[i][j].Border:SetSize(1.5 * iconSize, 1.5 * iconSize);
 
             TalentTreeWindow.body.GridTalent.Talents[i][j].Exclusivity =
                 CreateFrame("Frame", TalentTreeWindow.body.GridTalent.Talents[i][j].Exclusivity,
                     TalentTreeWindow.body.GridTalent.Talents[i][j])
-            TalentTreeWindow.body.GridTalent.Talents[i][j].Exclusivity:SetFrameLevel(12);
             TalentTreeWindow.body.GridTalent.Talents[i][j].Exclusivity:SetPoint("CENTER", 0, 0);
             TalentTreeWindow.body.GridTalent.Talents[i][j].Exclusivity:SetSize(1.5 * iconSize, 1.5 * iconSize);
-
             TalentTreeWindow.body.GridTalent.Talents[i][j].Exclusivity:SetBackdrop({
                 bgFile = CONSTANTS.UI.BORDER_EXCLUSIVITY
             })
@@ -441,19 +436,17 @@ function InitializeGridForTalent()
 
             TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks = CreateFrame("Frame",
                 TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks, TalentTreeWindow.body.GridTalent.Talents[i][j]);
-            TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks:SetFrameLevel(13);
-            TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks:SetPoint("BOTTOM", 0, -2);
-            TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks:SetSize(32, 26);
-            TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks:SetBackdrop({
-                bgFile = PATH .. "rank_placeholder"
-            })
-            TalentTreeWindow.body.GridTalent.Talents[i][j].RankText =
-                TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks:CreateFontString()
-            TalentTreeWindow.body.GridTalent.Talents[i][j].RankText:SetFont("Fonts\\AvQest.TTF", 12, "OUTLINE")
-            TalentTreeWindow.body.GridTalent.Talents[i][j].RankText:SetPoint("BOTTOM", 0, 8.5)
+            TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks:SetFrameLevel(TalentTreeWindow.body.GridTalent.Talents[i][j]:GetFrameLevel() + 1);
+            TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks:SetPoint("BOTTOM", 0, -4);
+            TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks:SetSize(headerheight, headerheight*.6);
+
+            TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks.RankText =
+                TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks:CreateFontString("OVERLAY")
+            TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks.RankText:SetFont("Fonts\\AvQest.TTF", 8, "OUTLINE")
+            TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks.RankText:SetPoint("CENTER", 0, 0)
             TalentTreeWindow.body.GridTalent.Talents[i][j].node = {};
             TalentTreeWindow.body.GridTalent.Talents[i][j]:Hide();
-            depth = depth - (12 + iconSize)
+            depth = depth - (10 + iconSize)
         end
     end
 end
@@ -591,7 +584,7 @@ function InitializeViewFromGrid(children, spells, tabId, offset)
                 SecondRankToolTip:Hide();
                 frame.IsTooltipActive = false;
             end)
-            frame.RankText:SetText(CurrentRankSpell(CurrentRank) .. "/" .. spell.NumberOfRanks)
+            frame.Ranks.RankText:SetText(CurrentRankSpell(CurrentRank) .. "/" .. spell.NumberOfRanks)
             frame:SetScript("OnClick", function()
                 LearnTalent(tabId, spell)
             end)
