@@ -13,13 +13,17 @@ Components\TalentTree\Functions.lua
 Components\TalentTree\HookScripts.lua
 Components\TalentTree\Microbar.lua
 
-Components\Perks\PerkConstants.lua
-Components\Perks\PerkSharedFunctions.lua
-Components\Perks\PerkExplorer.lua
-Components\Perks\PerkSelection.lua
-Components\Perks\PerkInitialize.lua
+Components\Perks\Constants.lua
+Components\Perks\SharedFunctions.lua
+Components\Perks\Explorer.lua
+Components\Perks\Selection.lua
+Components\Perks\Initialize.lua
 
 Components\Tooltips\items.lua
+
+Components\AllStats\FrameCreation.lua
+Components\AllStats\PanelFunctions.lua
+Components\AllStats\FunctionOverrides.lua
 
 # Core Code
 Core\UIFixes.lua

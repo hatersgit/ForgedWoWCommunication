@@ -8,8 +8,9 @@ local subnameOptions = {
 local statOptions = {
     [17] = "+%d Thorns",
     [18] = "+%d Mastery",
-    [19] = "+%d Knockback",
-    [20] = "+%d Movespeed"
+    [19] = "+%d Avoidance",
+    [20] = "+%d Speed",
+    [21] = "+%d Leech"
 }
 
 local headerTooltipInfo = {} -- itemID:headerOptionID
