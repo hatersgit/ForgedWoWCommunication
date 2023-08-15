@@ -76,7 +76,7 @@ resetButton:SetScript("OnClick", function()
 end)
 
 local prestigeButton = CreateFrame("Button", prestigeButton, TalentTreeWindow.header, "UIPanelButtonTemplate")
-prestigeButton:SetSize(90, 30) -- Set the size of the button
+prestigeButton:SetSize(65, 30) -- Set the size of the button
 prestigeButton:SetPoint("TOPLEFT", 106, 0)
 prestigeButton:SetText("Prestige") -- Set the text of the button
 
