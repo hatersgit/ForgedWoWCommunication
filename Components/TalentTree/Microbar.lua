@@ -6,7 +6,6 @@ ForgedWoWMicrobarButton:SetPushedTexture(CONSTANTS.UI.PUSHED_TEXTURE_BTN)
 ForgedWoWMicrobarButton.tooltipText = MicroButtonTooltipText("Forge Talents", "TOGGLETALENTS");
 ForgedWoWMicrobarButton.newbieText = "View your Character, Priestige, Race and Forged Skill talents";
 ForgedWoWMicrobarButton:SetFrameLevel(1000);
-ForgedWoWMicrobarButton:SetFrameLevel(1000);
 ForgedWoWMicrobarButton:SetPoint("CENTER", "TalentMicroButton", "CENTER")
 ForgedWoWMicrobarButton:SetScript("OnClick", function()
     ToggleMainWindow();
