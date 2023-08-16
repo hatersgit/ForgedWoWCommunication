@@ -391,7 +391,7 @@ function InitializeGridForTalent()
     end
 
     local numIconsPerRow = 9;
-    local iconSize = (TalentTreeWindow.body.GridTalent:GetWidth() - (8 * 8)) / numIconsPerRow;
+    local iconSize = (TalentTreeWindow.body.GridTalent:GetWidth() - ((numIconsPerRow-1) * (headerheight/2))) / numIconsPerRow;
     for i = 0, 8 do
         if not TalentTreeWindow.body.GridTalent.Talents[i] then
             TalentTreeWindow.body.GridTalent.Talents[i] = {};
@@ -408,7 +408,7 @@ function InitializeGridForTalent()
             end
             TalentTreeWindow.body.GridTalent.Talents[i][j] =
                 CreateFrame("Button", TalentTreeWindow.body.GridTalent.Talents[i][j], TalentTreeWindow.body.GridTalent);
-            TalentTreeWindow.body.GridTalent.Talents[i][j]:SetPoint("TOPLEFT", 8 * i + (i) * iconSize, depth)
+            TalentTreeWindow.body.GridTalent.Talents[i][j]:SetPoint("TOPLEFT", (numIconsPerRow-1) * i + (i) * iconSize, depth)
             TalentTreeWindow.body.GridTalent.Talents[i][j]:SetFrameLevel(
                 TalentTreeWindow.body.GridTalent:GetFrameLevel() + 1);
             TalentTreeWindow.body.GridTalent.Talents[i][j]:SetSize(iconSize, iconSize);
@@ -442,11 +442,11 @@ function InitializeGridForTalent()
 
             TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks.RankText =
                 TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks:CreateFontString("OVERLAY")
-            TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks.RankText:SetFont("Fonts\\AvQest.TTF", 8, "OUTLINE")
+            TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks.RankText:SetFont("Fonts\\AvQest.TTF", (headerheight/2), "OUTLINE")
             TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks.RankText:SetPoint("CENTER", 0, 0)
             TalentTreeWindow.body.GridTalent.Talents[i][j].node = {};
             TalentTreeWindow.body.GridTalent.Talents[i][j]:Hide();
-            depth = depth - (10 + iconSize)
+            depth = depth - (headerheight/1.5 + iconSize)
         end
     end
 end
