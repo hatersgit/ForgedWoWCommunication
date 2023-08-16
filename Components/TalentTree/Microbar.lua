@@ -1,4 +1,4 @@
-local ForgedWoWMicrobarButton = CreateFrame("Button", "ForgedWoWMicrobarButton", MainMenuBarArtFrame,
+ForgedWoWMicrobarButton = CreateFrame("Button", "ForgedWoWMicrobarButton", MainMenuBarArtFrame,
     "MainMenuBarMicroButton");
 LoadMicroButtonTextures(ForgedWoWMicrobarButton, "Help");
 ForgedWoWMicrobarButton:SetNormalTexture(CONSTANTS.UI.NORMAL_TEXTURE_BTN)
