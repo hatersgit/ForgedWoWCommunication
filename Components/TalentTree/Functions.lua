@@ -334,7 +334,7 @@ function InitializeTalentLeft()
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetPoint("TOPLEFT", x, 0);
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetFrameLevel(TalentTreeWindow.body.ChoiceSpecs:GetFrameLevel() + 1);
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetSize((TalentTreeWindow.body.ChoiceSpecs:GetWidth() - 20) / 5,
-            (GetScreenHeight() / 1.9) / 25);
+            headerheight);
         SetTemplate(TalentTreeWindow.body.ChoiceSpecs[tab.Id]);
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetAlpha(1);
 
@@ -394,13 +394,13 @@ function InitializeGridForTalent()
     end
 
     local numIconsPerRow = 9;
-    local iconSize = (TalentTreeWindow.body.GridTalent:GetWidth() - 8 * 12) / numIconsPerRow;
+    local iconSize = (TalentTreeWindow.body.GridTalent:GetWidth() - (8 * 8)) / numIconsPerRow;
     for i = 0, 8 do
         if not TalentTreeWindow.body.GridTalent.Talents[i] then
             TalentTreeWindow.body.GridTalent.Talents[i] = {};
         end
-        local depth = -headerheight / 1.5;
-        for j = 1, 12 do
+        local depth = -headerheight/1.5;
+        for j = 1, 11 do
             if TalentTreeWindow.body.GridTalent.Talents[i][j] then
                 TalentTreeWindow.body.GridTalent.Talents[i][j]:Hide();
                 TalentTreeWindow.body.GridTalent.Talents[i][j] = nil;
@@ -411,7 +411,7 @@ function InitializeGridForTalent()
             end
             TalentTreeWindow.body.GridTalent.Talents[i][j] =
                 CreateFrame("Button", TalentTreeWindow.body.GridTalent.Talents[i][j], TalentTreeWindow.body.GridTalent);
-            TalentTreeWindow.body.GridTalent.Talents[i][j]:SetPoint("TOPLEFT", 15 * i + (i) * iconSize, depth)
+            TalentTreeWindow.body.GridTalent.Talents[i][j]:SetPoint("TOPLEFT", 8 * i + (i) * iconSize, depth)
             TalentTreeWindow.body.GridTalent.Talents[i][j]:SetFrameLevel(
                 TalentTreeWindow.body.GridTalent:GetFrameLevel() + 1);
             TalentTreeWindow.body.GridTalent.Talents[i][j]:SetSize(iconSize, iconSize);
