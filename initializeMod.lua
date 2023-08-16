@@ -6,6 +6,7 @@ Forgeframe:SetScript("OnEvent", function(self, event)
         InitializeTalentTree()
         initializeItemTooltips()
         InitializePerks()
+        initializeAllStats()
     else
         PushForgeMessage(ForgeTopic.OFFER_SELECTION, GetSpecID());
     end

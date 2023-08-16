@@ -14,7 +14,7 @@ local statOptions = {
 }
 
 local headerTooltipInfo = {} -- itemID:headerOptionID
-local statTooltipInfo = {} -- itemID:{{statType1,statValue1},{statType2,statValue2},}
+customItemStatTooltipData = {} -- itemID:{{statType1,statValue1},{statType2,statValue2},}
 local tooltips = {GameTooltip, ItemRefTooltip, ShoppingTooltip1, ShoppingTooltip2, ItemRefShoppingTooltip1,
                   ItemRefShoppingTooltip2}
 
@@ -53,7 +53,7 @@ end
 
 local function genTertiaryStatString(itemID)
     local data = {}
-    for i, v in pairs(statTooltipInfo[itemID]) do
+    for i, v in pairs(customItemStatTooltipData[itemID]) do
         table.insert(data, string.format(statOptions[v[1]], v[2]))
     end
     return "\n|r|cff25aef7" .. table.concat(data, "\n") .. "|r"
@@ -63,7 +63,7 @@ local function addTertiaryStats(tooltip)
     local _, ItemLink = tooltip:GetItem();
     if ItemLink then
         local itemID = select(3, strfind(ItemLink, "item:(%d+)"))
-        if (statTooltipInfo[itemID]) then
+        if (customItemStatTooltipData[itemID]) then
             for i = 2, tooltip:NumLines() do
                 local prev = _G[tooltip:GetName() .. "TextLeft" .. i - 1]
                 local line = _G[tooltip:GetName() .. "TextLeft" .. i]
