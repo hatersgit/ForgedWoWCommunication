@@ -9,7 +9,7 @@ local tertiaryStatLabel = {
 local tertiaryStatDescription = {
     [17] = "Applies damage of %d to any melee attackers.",
     [18] = "Increases Mastery value by %d%%",
-    [19] = "%d%% chance to reduce damage by 50%%.",
+    [19] = "Reduce damage from Area of Effect spells by %d%%.",
     [20] = "Increases movespeed by %d%%.",
     [21] = "Heals you for %d%% of damage dealt."
 }
