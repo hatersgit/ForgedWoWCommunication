@@ -82,7 +82,7 @@ TalentTreeWindow.body.bgbox.bg.texture:SetAllPoints();
 TalentTreeWindow.body.bgbox:SetScrollChild(TalentTreeWindow.body.bgbox.bg)
 
 -- Reset Talents --
-local resetButton = CreateFrame("Button", "ResetTalentsButton", TalentTreeWindow.header)
+local resetButton = CreateFrame("Button", "ResetTalentsButton", TalentTreeWindow.header, "UIPanelButtonTemplate")
 resetButton:SetSize(settings.headerheight, settings.headerheight) -- Set the size of the button
 resetButton:SetPoint("TOPLEFT", 8, 0) -- Position the button at the top right of the TalentTreeWindow
 resetButton:SetText("R")
