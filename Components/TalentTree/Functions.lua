@@ -277,7 +277,7 @@ function SelectTab(tab)
     elseif tab.TalentType == CharacterPointType.TALENT_SKILL_TREE then
         ShowTypeTalentPoint(CharacterPointType.TALENT_SKILL_TREE, strTalentType)
     end
-    TalentTreeWindow.body.GridTalent.bg:SetTexture(PATH .. "tabBG\\" .. tab.Background);
+    TalentTreeWindow.body.bgbox.bg.texture:SetTexture(PATH .. "tabBG\\" .. tab.Background);
 end
 
 function GetPointByCharacterPointType(type)
@@ -333,8 +333,8 @@ function InitializeTalentLeft()
             TalentTreeWindow.body.ChoiceSpecs);
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetPoint("TOPLEFT", x, 0);
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetFrameLevel(TalentTreeWindow.body.ChoiceSpecs:GetFrameLevel() + 1);
-        TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetSize((TalentTreeWindow.body.ChoiceSpecs:GetWidth() - 20) / 5,
-            (GetScreenHeight() / 1.9) / 25);
+        TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetSize((TalentTreeWindow.body.ChoiceSpecs:GetWidth() - 12) / 5,
+            headerheight);
         SetTemplate(TalentTreeWindow.body.ChoiceSpecs[tab.Id]);
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetAlpha(1);
 
@@ -364,7 +364,7 @@ function InitializeTalentLeft()
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetScript("OnClick", function()
             SelectTab(tab);
         end)
-        x = x + (TalentTreeWindow.body.ChoiceSpecs:GetWidth() - 20) / 5 + 4;
+        x = x + (TalentTreeWindow.body.ChoiceSpecs:GetWidth() - 14)/5 + 2;
     end
 end
 
@@ -385,22 +385,19 @@ function InitializeGridForTalent()
     TalentTreeWindow.body.GridTalent:SetPoint("TOP", 0, -headerheight);
     TalentTreeWindow.body.GridTalent:SetSize(TalentTreeWindow.body:GetWidth(),
         TalentTreeWindow.body:GetHeight() - 2 * headerheight);
-    SetTemplate(TalentTreeWindow.body.GridTalent);
-    TalentTreeWindow.body.GridTalent.bg = TalentTreeWindow.body.GridTalent:CreateTexture(nil, "OVERLAY");
-    TalentTreeWindow.body.GridTalent.bg:SetAllPoints();
-    TalentTreeWindow.body.GridTalent:SetAlpha(1);
+
     if not TalentTreeWindow.body.GridTalent.Talents then
         TalentTreeWindow.body.GridTalent.Talents = {};
     end
 
     local numIconsPerRow = 9;
-    local iconSize = (TalentTreeWindow.body.GridTalent:GetWidth() - 8 * 12) / numIconsPerRow;
+    local iconSize = (TalentTreeWindow.body.GridTalent:GetWidth() - (8 * 8)) / numIconsPerRow;
     for i = 0, 8 do
         if not TalentTreeWindow.body.GridTalent.Talents[i] then
             TalentTreeWindow.body.GridTalent.Talents[i] = {};
         end
-        local depth = -headerheight / 1.5;
-        for j = 1, 12 do
+        local depth = -headerheight/1.5;
+        for j = 1, 11 do
             if TalentTreeWindow.body.GridTalent.Talents[i][j] then
                 TalentTreeWindow.body.GridTalent.Talents[i][j]:Hide();
                 TalentTreeWindow.body.GridTalent.Talents[i][j] = nil;
@@ -411,7 +408,7 @@ function InitializeGridForTalent()
             end
             TalentTreeWindow.body.GridTalent.Talents[i][j] =
                 CreateFrame("Button", TalentTreeWindow.body.GridTalent.Talents[i][j], TalentTreeWindow.body.GridTalent);
-            TalentTreeWindow.body.GridTalent.Talents[i][j]:SetPoint("TOPLEFT", 15 * i + (i) * iconSize, depth)
+            TalentTreeWindow.body.GridTalent.Talents[i][j]:SetPoint("TOPLEFT", 8 * i + (i) * iconSize, depth)
             TalentTreeWindow.body.GridTalent.Talents[i][j]:SetFrameLevel(
                 TalentTreeWindow.body.GridTalent:GetFrameLevel() + 1);
             TalentTreeWindow.body.GridTalent.Talents[i][j]:SetSize(iconSize, iconSize);

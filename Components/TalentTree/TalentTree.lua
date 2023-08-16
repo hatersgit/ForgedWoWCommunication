@@ -11,12 +11,10 @@ TalentTree = {
     SPEC_PERKS = nil,
     INITIALIZED = false
 }
-
-TalentTreeWindow = CreateFrame("Frame", TalentTreeWindow, nil);
+TalentTreeWindow = CreateFrame("Frame", nil, TalentTreeWindow);
 TalentTreeWindow:SetSize(settings.width, settings.headerheight); --- LEFT/RIGHT -- --UP/DOWN --
 TalentTreeWindow:SetPoint("TOPLEFT", GetScreenWidth() / 20, -GetScreenHeight() / 10); --- LEFT/RIGHT -- --UP/DOWN --
 TalentTreeWindow:SetFrameStrata("DIALOG")
-TalentTreeWindow:SetToplevel(true)
 TalentTreeWindow:EnableMouse(true)
 TalentTreeWindow:SetMovable(true)
 TalentTreeWindow:SetFrameLevel(1)
@@ -62,16 +60,29 @@ TalentTreeWindow.body = CreateFrame("Frame", TalentTreeWindow.body, TalentTreeWi
 TalentTreeWindow.body:SetSize(settings.width, settings.height - settings.headerheight); -- Talent Tree Window's Background --
 TalentTreeWindow.body:SetPoint("TOP", 0, -settings.headerheight);
 TalentTreeWindow.body:SetFrameLevel(2);
-SetTemplate(TalentTreeWindow.body);
 
 TalentTreeWindow.body.ChoiceSpecs = CreateFrame("Frame", TalentTreeWindow.body.ChoiceSpecs, TalentTreeWindow.body);
-TalentTreeWindow.body.ChoiceSpecs:SetSize(TalentTreeWindow.body:GetWidth() - 4, settings.headerheight);
+TalentTreeWindow.body.ChoiceSpecs:SetSize(TalentTreeWindow.body:GetWidth(), settings.headerheight);
 TalentTreeWindow.body.ChoiceSpecs:SetPoint("TOP", 0, 0);
 TalentTreeWindow.body.ChoiceSpecs:SetFrameLevel(TalentTreeWindow.body:GetFrameLevel() + 1)
-TalentTreeWindow.body.ChoiceSpecs.Spec = {};
+SetTemplate(TalentTreeWindow.body.ChoiceSpecs);
+
+TalentTreeWindow.body.bgbox = CreateFrame("ScrollFrame", TalentTreeWindow.body.bgbox, TalentTreeWindow.body)
+TalentTreeWindow.body.bgbox:SetPoint("TOP", 0, -(TalentTreeWindow.body.ChoiceSpecs:GetHeight()-1));
+TalentTreeWindow.body.bgbox:SetSize(TalentTreeWindow.body:GetWidth(), TalentTreeWindow.body:GetHeight()-(TalentTreeWindow.body.ChoiceSpecs:GetHeight()-4))
+
+TalentTreeWindow.body.bgbox.bg = CreateFrame("FRAME", TalentTreeWindow.body.bgbox.bg, TalentTreeWindow.body.bgbox)
+TalentTreeWindow.body.bgbox.bg:SetPoint("TOP", 0, 0);
+TalentTreeWindow.body.bgbox.bg:SetFrameLevel(3)
+TalentTreeWindow.body.bgbox.bg:SetSize(TalentTreeWindow.body:GetHeight()-(TalentTreeWindow.body.ChoiceSpecs:GetHeight()-1), TalentTreeWindow.body:GetHeight()-(TalentTreeWindow.body.ChoiceSpecs:GetHeight()-1))
+
+TalentTreeWindow.body.bgbox.bg.texture = TalentTreeWindow.body.bgbox.bg:CreateTexture(nil, "OVERLAY");
+TalentTreeWindow.body.bgbox.bg.texture:SetAllPoints();
+
+TalentTreeWindow.body.bgbox:SetScrollChild(TalentTreeWindow.body.bgbox.bg)
 
 -- Reset Talents --
-local resetButton = CreateFrame("Button", "ResetTalentsButton", TalentTreeWindow.header, "UIPanelButtonTemplate")
+local resetButton = CreateFrame("Button", "ResetTalentsButton", TalentTreeWindow.header)
 resetButton:SetSize(settings.headerheight, settings.headerheight) -- Set the size of the button
 resetButton:SetPoint("TOPLEFT", 8, 0) -- Position the button at the top right of the TalentTreeWindow
 resetButton:SetText("R")
