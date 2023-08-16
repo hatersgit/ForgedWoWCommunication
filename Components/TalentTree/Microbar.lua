@@ -1,22 +1,19 @@
-local ForgedWoWMicrobarButton = CreateFrame("Button", "ForgedWoWMicrobarButton", MainMenuBarArtFrame,
-    "MainMenuBarMicroButton");
-LoadMicroButtonTextures(ForgedWoWMicrobarButton, "Help");
-ForgedWoWMicrobarButton:SetNormalTexture(CONSTANTS.UI.NORMAL_TEXTURE_BTN)
-ForgedWoWMicrobarButton:SetPushedTexture(CONSTANTS.UI.PUSHED_TEXTURE_BTN)
-ForgedWoWMicrobarButton.tooltipText = MicroButtonTooltipText("Forge Talents", "TOGGLETALENTS");
-ForgedWoWMicrobarButton.newbieText = "View your Character, Priestige, Race and Forged Skill talents";
-ForgedWoWMicrobarButton:SetFrameLevel(1000);
-ForgedWoWMicrobarButton:SetPoint("CENTER", "TalentMicroButton", "CENTER")
-ForgedWoWMicrobarButton:SetScript("OnClick", function()
-    ToggleMainWindow();
-end);
-
 hooksecurefunc("UpdateMicroButtons", function()
+    TalentMicroButton:SetNormalTexture(CONSTANTS.UI.NORMAL_TEXTURE_BTN)
+    TalentMicroButton:SetPushedTexture(CONSTANTS.UI.PUSHED_TEXTURE_BTN)
+    TalentMicroButton:SetDisabledTexture(CONSTANTS.UI.PUSHED_TEXTURE_BTN)
+    TalentMicroButton.tooltipText = MicroButtonTooltipText("Forge Talents", "TOGGLETALENTS");
+    TalentMicroButton.newbieText = "View your Character, Priestige, Race and Forged Skill talents";
+
+    TalentMicroButton:Enable()
+    TalentMicroButton:SetScript("OnClick", function()
+        ToggleMainWindow();
+    end);
     if TalentTreeWindow:IsShown() then
         PlaySound("TalentScreenOpen");
-        ForgedWoWMicrobarButton:SetButtonState("PUSHED", 1);
+        TalentMicroButton:SetButtonState("PUSHED", 1);
     else
         PlaySound("TalentScreenClose");
-        ForgedWoWMicrobarButton:SetButtonState("NORMAL");
+        TalentMicroButton:SetButtonState("NORMAL");
     end
 end);

@@ -3,7 +3,7 @@ local headerheight = (GetScreenHeight() / 1.9) / 25;
 function HideMainWindow()
     if TalentTreeWindow:IsShown() then
         TalentTreeWindow:Hide()
-        ForgedWoWMicrobarButton:SetButtonState("NORMAL");
+        TalentMicroButton:SetButtonState("NORMAL");
     end
 end
 
@@ -11,11 +11,11 @@ function ToggleMainWindow()
     if TalentTreeWindow:IsShown() then
         TalentTreeWindow:Hide()
         PlaySound("TalentScreenClose");
-        ForgedWoWMicrobarButton:SetButtonState("NORMAL");
+        TalentMicroButton:SetButtonState("NORMAL");
     else
         TalentTreeWindow:Show()
         PlaySound("TalentScreenOpen");
-        ForgedWoWMicrobarButton:SetButtonState("PUSHED", 1);
+        TalentMicroButton:SetButtonState("PUSHED", 1);
     end
     if SpellBookFrame:IsShown() then
         SpellBookFrame:Hide();
@@ -29,7 +29,7 @@ function ToggleMainWindow()
 end
 
 TalentTreeWindow:HookScript("OnHide", function()
-    ForgedWoWMicrobarButton:SetButtonState("NORMAL");
+    TalentMicroButton:SetButtonState("NORMAL");
 end)
 
 function FindTabInForgeSpell(tabId)
