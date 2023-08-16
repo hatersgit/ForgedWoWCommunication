@@ -21,9 +21,10 @@ Components\Perks\Initialize.lua
 
 Components\Tooltips\items.lua
 
+Components\AllStats\CustomPanel.lua
 Components\AllStats\FrameCreation.lua
-Components\AllStats\PanelFunctions.lua
 Components\AllStats\FunctionOverrides.lua
+Components\AllStats\Initialize.lua
 
 # Core Code
 Core\UIFixes.lua

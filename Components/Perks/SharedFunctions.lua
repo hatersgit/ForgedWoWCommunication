@@ -5,7 +5,7 @@ function CreateRankedTooltip(id, parent, tt, depth, width, anchor, unique)
         tt:Hide()
         return
     end
-    tt:SetOwner(parent, anchor, -5, -1 * depth);
+    tt:SetOwner(parent, anchor, -2, -1 * depth);
     tt:SetHyperlink('spell:' .. id);
     if unique == 1 then
         tt:AddLine("");

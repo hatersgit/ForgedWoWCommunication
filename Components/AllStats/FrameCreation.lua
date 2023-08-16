@@ -1,7 +1,7 @@
 local frameData = {}
-local names = {"Base Stats", "Melee", "Ranged", "Spell", "Defenses", "New Stats"}
+frameStatHeaderNames = {"Base Stats", "Melee", "Ranged", "Spell", "Defenses"}
 local lengths = {}
-local frameStatNames = { --
+frameStatNames = { --
 {"AllStatsFrameStat1", "AllStatsFrameStat2", "AllStatsFrameStat3", "AllStatsFrameStat4", "AllStatsFrameStat5"},
 {"AllStatsFrameStatMeleeDamage", "AllStatsFrameStatMeleeSpeed", "AllStatsFrameStatMeleePower",
  "AllStatsFrameStatMeleeHit", "AllStatsFrameStatMeleeCrit", "AllStatsFrameStatMeleeExpert"},
@@ -10,11 +10,13 @@ local frameStatNames = { --
 {"AllStatsFrameStatSpellDamage", "AllStatsFrameStatSpellHeal", "AllStatsFrameStatSpellHit",
  "AllStatsFrameStatSpellCrit", "AllStatsFrameStatSpellHaste", "AllStatsFrameStatSpellRegen"},
 {"AllStatsFrameStatDefense", "AllStatsFrameStatArmor", "AllStatsFrameStatDodge", "AllStatsFrameStatParry",
- "AllStatsFrameStatBlock", "AllStatsFrameStatResil"},
-{"AllStatsFrameStatThorns", "AllStatsFrameStatMastery", "AllStatsFrameStatAvoidance", "AllStatsFrameStatSpeed",
- "AllStatsFrameStatLeech"}}
-for i, v in pairs(frameStatNames) do
-    lengths[i] = #v
+ "AllStatsFrameStatBlock", "AllStatsFrameStatResil"}}
+
+for i, v in pairs(customFrameStatNames) do
+    table.insert(frameStatNames, v)
+end
+for i, v in pairs(customStatHeaderNames) do
+    table.insert(frameStatHeaderNames, v)
 end
 
 local AllStatsFrame = CreateFrame("Frame", "AllStatsFrame", PaperDollFrame)
@@ -69,28 +71,34 @@ AllStatsFrame.scrollchild:SetSize(1, 1);
 AllStatsFrame.scrollFrameParent = CreateFrame("Frame", nil, AllStatsFrame.scrollchild);
 AllStatsFrame.scrollFrameParent:SetAllPoints(AllStatsFrame.scrollchild);
 
-for statGroup = 1, #frameStatNames do
-    local prevFrame
-    for i, frameName in ipairs(frameStatNames[statGroup]) do
-        local frame = CreateFrame("Frame", frameName, AllStatsFrame.scrollFrameParent, "StatFrameTemplate")
-        if i == 1 then
-            local indexChange = 0
-            local inCheck = statGroup
-            while (inCheck > 1) do
-                inCheck = inCheck - 1
-                indexChange = indexChange + (15 * lengths[inCheck])
+function initializeFrameCreation()
+    for i, v in pairs(frameStatNames) do
+        lengths[i] = #v
+    end
 
+    for statGroup = 1, #frameStatNames do
+        local prevFrame
+        for i, frameName in ipairs(frameStatNames[statGroup]) do
+            local frame = CreateFrame("Frame", frameName, AllStatsFrame.scrollFrameParent, "StatFrameTemplate")
+            if i == 1 then
+                local indexChange = 0
+                local inCheck = statGroup
+                while (inCheck > 1) do
+                    inCheck = inCheck - 1
+                    indexChange = indexChange + (15 * lengths[inCheck])
+
+                end
+                frame:SetPoint("TOPLEFT", AllStatsFrame.scrollFrameParent, 6, -15 - indexChange)
+                local labelFontString = frame:CreateFontString(nil, "BACKGROUND", "GameFontHighlightSmall")
+                labelFontString:SetText(frameStatHeaderNames[statGroup])
+                labelFontString:SetPoint("BOTTOM", frame, "TOP", 0, 5)
+                frameData[statGroup] = {}
+                frameData[statGroup]["text"] = labelFontString
+            else
+                frame:SetPoint("TOPLEFT", prevFrame, "BOTTOMLEFT", 0, 1)
             end
-            frame:SetPoint("TOPLEFT", AllStatsFrame.scrollFrameParent, 6, -15 - indexChange)
-            local labelFontString = frame:CreateFontString(nil, "BACKGROUND", "GameFontHighlightSmall")
-            labelFontString:SetText(names[statGroup])
-            labelFontString:SetPoint("BOTTOM", frame, "TOP", 0, 5)
-            frameData[statGroup] = {}
-            frameData[statGroup]["text"] = labelFontString
-        else
-            frame:SetPoint("TOPLEFT", prevFrame, "BOTTOMLEFT", 0, 1)
+            prevFrame = frame
+            frameData[statGroup][i] = frame
         end
-        prevFrame = frame
-        frameData[statGroup][i] = frame
     end
 end
