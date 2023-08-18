@@ -31,6 +31,21 @@ AllStatsFrame:SetScript("OnShow", function(self)
     CharacterAttributesFrame:Hide()
     CharacterModelFrame:SetHeight(300);
 end)
+AllStatsFrame:RegisterEvent("UNIT_AURA")
+AllStatsFrame:RegisterEvent("UNIT_DAMAGE")
+AllStatsFrame:RegisterEvent("PLAYER_DAMAGE_DONE_MODS")
+AllStatsFrame:RegisterEvent("UNIT_ATTACK_SPEED")
+AllStatsFrame:RegisterEvent("UNIT_RANGEDDAMAGE")
+AllStatsFrame:RegisterEvent("UNIT_ATTACK")
+AllStatsFrame:RegisterEvent("UNIT_STATS")
+AllStatsFrame:RegisterEvent("UNIT_RANGED_ATTACK_POWER")
+AllStatsFrame:RegisterEvent("UNIT_RESISTANCES")
+AllStatsFrame:SetScript("OnEvent", function(self, event, ...)
+    local unit = ...;
+    if (unit == "player") then
+        PrintStats();
+    end
+end)
 
 local AllStatsFrameBG = CreateFrame("Frame", "AllStatsFrameBG", AllStatsFrame)
 AllStatsFrameBG:SetSize(AllStatsFrame:GetWidth(), AllStatsFrame:GetHeight() + 15)
