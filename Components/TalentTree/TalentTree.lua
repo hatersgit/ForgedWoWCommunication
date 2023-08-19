@@ -30,7 +30,7 @@ TalentTreeWindow:Hide()
 TalentTreeWindow.header = CreateFrame("BUTTON", nil, TalentTreeWindow)
 TalentTreeWindow.header:SetSize(settings.width, settings.headerheight)
 TalentTreeWindow.header:SetPoint("TOP", 0, 0);
-TalentTreeWindow.header:SetFrameLevel(TalentTreeWindow:GetFrameLevel() + 1)
+TalentTreeWindow.header:SetFrameLevel(4)
 TalentTreeWindow.header:EnableMouse(true)
 TalentTreeWindow.header:RegisterForClicks("AnyUp", "AnyDown")
 TalentTreeWindow.header:SetScript("OnMouseDown", function()
@@ -68,13 +68,16 @@ TalentTreeWindow.body.ChoiceSpecs:SetFrameLevel(TalentTreeWindow.body:GetFrameLe
 SetTemplate(TalentTreeWindow.body.ChoiceSpecs);
 
 TalentTreeWindow.body.bgbox = CreateFrame("ScrollFrame", TalentTreeWindow.body.bgbox, TalentTreeWindow.body)
-TalentTreeWindow.body.bgbox:SetPoint("TOP", 0, -(TalentTreeWindow.body.ChoiceSpecs:GetHeight()-1));
-TalentTreeWindow.body.bgbox:SetSize(TalentTreeWindow.body:GetWidth(), TalentTreeWindow.body:GetHeight()-(TalentTreeWindow.body.ChoiceSpecs:GetHeight()-4))
+TalentTreeWindow.body.bgbox:SetPoint("TOP", 0, -(TalentTreeWindow.body.ChoiceSpecs:GetHeight() - 1));
+TalentTreeWindow.body.bgbox:SetSize(TalentTreeWindow.body:GetWidth(), TalentTreeWindow.body:GetHeight() -
+    (TalentTreeWindow.body.ChoiceSpecs:GetHeight() - 4))
 
 TalentTreeWindow.body.bgbox.bg = CreateFrame("FRAME", TalentTreeWindow.body.bgbox.bg, TalentTreeWindow.body.bgbox)
 TalentTreeWindow.body.bgbox.bg:SetPoint("TOP", 0, 0);
 TalentTreeWindow.body.bgbox.bg:SetFrameLevel(3)
-TalentTreeWindow.body.bgbox.bg:SetSize(TalentTreeWindow.body:GetHeight()-(TalentTreeWindow.body.ChoiceSpecs:GetHeight()-1), TalentTreeWindow.body:GetHeight()-(TalentTreeWindow.body.ChoiceSpecs:GetHeight()-1))
+TalentTreeWindow.body.bgbox.bg:SetSize(TalentTreeWindow.body:GetHeight() -
+                                           (TalentTreeWindow.body.ChoiceSpecs:GetHeight() - 1),
+    TalentTreeWindow.body:GetHeight() - (TalentTreeWindow.body.ChoiceSpecs:GetHeight() - 1))
 
 TalentTreeWindow.body.bgbox.bg.texture = TalentTreeWindow.body.bgbox.bg:CreateTexture(nil, "OVERLAY");
 TalentTreeWindow.body.bgbox.bg.texture:SetAllPoints();
