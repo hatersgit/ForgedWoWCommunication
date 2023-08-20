@@ -340,7 +340,7 @@ function InitializeTalentLeft()
 
         TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title = TalentTreeWindow.body.ChoiceSpecs[tab.Id]:CreateFontString(
             "OVERLAY")
-        TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetFont(PATH.."Fonts\\AvQest.TTF", 8, "THICK, MONOCHROME")
+        TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetFont(PATH.."Fonts\\Expressway.TTF", headerheight/2)
         TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetPoint("Center", 0, 0)
         TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetText(tab.Name)
         TalentTreeWindow.body.ChoiceSpecs[tab.Id].Title:SetTextColor(188 / 255, 150 / 255, 28 / 255, 1);
@@ -357,8 +357,8 @@ function InitializeTalentLeft()
         if tab.TalentType ~= CharacterPointType.SKILL_PAGE then
             TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points =
                 TalentTreeWindow.body.ChoiceSpecs[tab.Id]:CreateFontString("OVERLAY");
-            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points:SetFont(PATH.."Fonts\\AvQest.TTF", 8, "THICK, MONOCHROME")
-            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points:SetPoint("TOPRIGHT", 1, 1)
+            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points:SetFont(PATH.."Fonts\\Expressway.TTF", headerheight/2)
+            TalentTreeWindow.body.ChoiceSpecs[tab.Id].Points:SetPoint("TOPRIGHT", -1, 0)
             SetPoints(tab.Id);
         end
         TalentTreeWindow.body.ChoiceSpecs[tab.Id]:SetScript("OnClick", function()
@@ -373,7 +373,7 @@ function InitializeForgePoints()
         return;
     end
     TalentTreeWindow.body.PointsBottom = TalentTreeWindow.header:CreateFontString("OVERLAY")
-    TalentTreeWindow.body.PointsBottom:SetFont(PATH.."Fonts\\AvQest.TTF", 10, "OUTLINE")
+    TalentTreeWindow.body.PointsBottom:SetFont(PATH.."Fonts\\Expressway.TTF", 10, "OUTLINE")
     TalentTreeWindow.body.PointsBottom:SetPoint("BOTTOMRIGHT", -3, -settings.height / 1.35);
     TalentTreeWindow.body.PointsBottom:Show()
 end
@@ -445,8 +445,8 @@ function InitializeGridForTalent()
 
             TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks.RankText =
                 TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks:CreateFontString("OVERLAY")
-            TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks.RankText:SetFont(PATH.."Fonts\\AvQest.TTF",
-                (headerheight / 2), "OUTLINE")
+            TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks.RankText:SetFont(PATH.."Fonts\\Expressway.TTF",
+                (headerheight / 2.2), "OUTLINE")
             TalentTreeWindow.body.GridTalent.Talents[i][j].Ranks.RankText:SetPoint("CENTER", 0, 0)
             TalentTreeWindow.body.GridTalent.Talents[i][j].node = {};
             TalentTreeWindow.body.GridTalent.Talents[i][j]:Hide();
