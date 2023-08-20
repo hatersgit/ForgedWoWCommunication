@@ -7,7 +7,7 @@ function InitializeSelectionWindow()
 
     PerkSelectionWindow.Title = PerkSelectionWindow:CreateFontString(nil, "OVERLAY", "GameFontHighlight");
     PerkSelectionWindow.Title:SetPoint("CENTER", nil, "CENTER", 0, (GetScreenHeight() / 2) - 100);
-    PerkSelectionWindow.Title:SetFont("Fonts\\AvQest.TTF", 72);
+    PerkSelectionWindow.Title:SetFont(PATH.."Fonts\\AvQest.TTF", 72);
     PerkSelectionWindow.Title:SetShadowOffset(1, -1);
     PerkSelectionWindow.Title:SetText("Select A Perk");
 

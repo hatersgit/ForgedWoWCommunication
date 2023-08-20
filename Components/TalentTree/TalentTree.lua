@@ -52,7 +52,7 @@ TalentTreeWindow.header.close:SetFrameLevel(TalentTreeWindow.header:GetFrameLeve
 
 TalentTreeWindow.header.title = TalentTreeWindow.header:CreateFontString("OVERLAY");
 TalentTreeWindow.header.title:SetPoint("CENTER", TalentTreeWindow.header, "CENTER");
-TalentTreeWindow.header.title:SetFont("Fonts\\AvQest.TTF", 14);
+TalentTreeWindow.header.title:SetFont(PATH.."Fonts\\AvQest.TTF", 14);
 TalentTreeWindow.header.title:SetText("Talents");
 TalentTreeWindow.header.title:SetTextColor(188 / 255, 150 / 255, 28 / 255, 1); -- rgb(188, 150, 28)
 
