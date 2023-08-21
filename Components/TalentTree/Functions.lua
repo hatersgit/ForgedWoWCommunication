@@ -177,47 +177,49 @@ function IsNodeUnlocked(talent, CurrentRank)
 end
 
 -- TODO FIX DRAWING
--- function DrawNode(startPosition, endPosition, parentFrame, parent, offSet, talent, CurrentRank, previousSpell)
---     local length = math.sqrt((endPosition.x - startPosition.x) ^ 2 + (endPosition.y - startPosition.y) ^ 2)
---     local cx = ((startPosition.x + endPosition.x) / 2 - length / 2) + offSet + 7
---     local cy = ((startPosition.y + endPosition.y) / 2 - 2.5 / 2) + 5
---     local angle = math.deg(math.atan2(startPosition.y - endPosition.y, startPosition.x - endPosition.x))
+function DrawNode(startPosition, endPosition, parentFrame, parent, offSet, talent, CurrentRank, previousSpell)
+    local length = math.sqrt((endPosition.x - startPosition.x) ^ 2 + (endPosition.y - startPosition.y) ^ 2)
+    local iconsize = (TalentTreeWindow.body.GridTalent:GetWidth() - (9 - 1)*(headerheight / 2) )/9;
 
---     if not parentFrame.node[talent.SpellId] then
---         parentFrame.node[talent.SpellId] = CreateFrame("Frame", parentFrame.node[talent.SpellId], parent);
---         parentFrame.node[talent.SpellId]:SetSize(length, 10);
---         parentFrame.node[talent.SpellId]:SetPoint("LEFT", cx, cy);
---         if IsNodeUnlocked(talent, CurrentRank) then
---             parentFrame.node[talent.SpellId]:SetBackdrop({
---                 bgFile = CONSTANTS.UI.CONNECTOR
---             })
---         else
---             parentFrame.node[talent.SpellId]:SetBackdrop({
---                 bgFile = CONSTANTS.UI.CONNECTOR_DISABLED
---             })
---         end
---         parentFrame.node[talent.SpellId].animation = parentFrame.node[talent.SpellId]:CreateAnimationGroup()
---         parentFrame.node[talent.SpellId].animation.spin = parentFrame.node[talent.SpellId].animation:CreateAnimation(
---             "Rotation")
---         parentFrame.node[talent.SpellId].animation.spin:SetOrder(1)
---         parentFrame.node[talent.SpellId].animation.spin:SetDuration(0)
---         parentFrame.node[talent.SpellId].animation.spin:SetDegrees(angle)
---         parentFrame.node[talent.SpellId].animation.spin:SetEndDelay(999999)
---         parentFrame.node[talent.SpellId].animation:Play()
---     else
---         if IsNodeUnlocked(talent, CurrentRank) then
---             parentFrame.node[talent.SpellId]:SetBackdrop({
---                 bgFile = CONSTANTS.UI.CONNECTOR
---             })
---         else
---             parentFrame.node[talent.SpellId]:SetBackdrop({
---                 bgFile = CONSTANTS.UI.CONNECTOR_DISABLED
---             })
---         end
---         parentFrame.node[talent.SpellId].animation:Stop()
---         parentFrame.node[talent.SpellId].animation:Play()
---     end
--- end
+    local cx = ((startPosition.x + endPosition.x) / 2 - length / 2 + iconsize/2)
+    local cy = ((startPosition.y + endPosition.y) / 2)
+    local angle = math.deg(math.atan2(startPosition.y - endPosition.y, startPosition.x - endPosition.x))
+
+    if not parentFrame.node[talent.SpellId] then
+        parentFrame.node[talent.SpellId] = CreateFrame("Frame", parentFrame.node[talent.SpellId], parent);
+        parentFrame.node[talent.SpellId]:SetSize(length, 10);
+        parentFrame.node[talent.SpellId]:SetPoint("TOPLEFT", cx, cy);
+        if IsNodeUnlocked(talent, CurrentRank) then
+            parentFrame.node[talent.SpellId]:SetBackdrop({
+                bgFile = CONSTANTS.UI.CONNECTOR
+            })
+        else
+            parentFrame.node[talent.SpellId]:SetBackdrop({
+                bgFile = CONSTANTS.UI.CONNECTOR_DISABLED
+            })
+        end
+        parentFrame.node[talent.SpellId].animation = parentFrame.node[talent.SpellId]:CreateAnimationGroup()
+        parentFrame.node[talent.SpellId].animation.spin = parentFrame.node[talent.SpellId].animation:CreateAnimation(
+            "Rotation")
+        parentFrame.node[talent.SpellId].animation.spin:SetOrder(1)
+        parentFrame.node[talent.SpellId].animation.spin:SetDuration(0)
+        parentFrame.node[talent.SpellId].animation.spin:SetDegrees(angle)
+        parentFrame.node[talent.SpellId].animation.spin:SetEndDelay(999999)
+        parentFrame.node[talent.SpellId].animation:Play()
+    else
+        if IsNodeUnlocked(talent, CurrentRank) then
+            parentFrame.node[talent.SpellId]:SetBackdrop({
+                bgFile = CONSTANTS.UI.CONNECTOR
+            })
+        else
+            parentFrame.node[talent.SpellId]:SetBackdrop({
+                bgFile = CONSTANTS.UI.CONNECTOR_DISABLED
+            })
+        end
+        parentFrame.node[talent.SpellId].animation:Stop()
+        parentFrame.node[talent.SpellId].animation:Play()
+    end
+end
 
 function Tablelength(T)
     local count = 0
@@ -866,8 +868,8 @@ function InitializeTabForSpellsToForge(SkillToForges)
     switchPage(true);
 end
 
--- Define the UnlearnTalents function	
+-- Define the UnlearnTalents function   
 function UnlearnTalents()
-    -- Call the WoW API function to confirm talent wipe	
+    -- Call the WoW API function to confirm talent wipe 
     ConfirmTalentWipe()
 end
