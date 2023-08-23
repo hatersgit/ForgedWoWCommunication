@@ -42,7 +42,7 @@ function InitializePerkExplorer()
 
     PerkExplorer.header.title = PerkExplorer.header:CreateFontString("OVERLAY");
     PerkExplorer.header.title:SetPoint("CENTER", PerkExplorer.header, "CENTER");
-    PerkExplorer.header.title:SetFont(PATH.."Fonts\\Expressway.TTF", 18);
+    PerkExplorer.header.title:SetFont(PATH .. "Fonts\\Expressway.TTF", 18);
     PerkExplorer.header.title:SetText("Perk Explorer");
     PerkExplorer.header.title:SetTextColor(1, 1, 1, 1);
 
@@ -76,7 +76,7 @@ function InitializePerkExplorer()
     PerkExplorer.body.subheader.yourPerksTab.title =
         PerkExplorer.body.subheader.yourPerksTab:CreateFontString("OVERLAY");
     PerkExplorer.body.subheader.yourPerksTab.title:SetPoint("CENTER", PerkExplorer.body.subheader.yourPerksTab, "CENTER");
-    PerkExplorer.body.subheader.yourPerksTab.title:SetFont(PATH.."Fonts\\Expressway.TTF", 16);
+    PerkExplorer.body.subheader.yourPerksTab.title:SetFont(PATH .. "Fonts\\Expressway.TTF", 16);
     PerkExplorer.body.subheader.yourPerksTab.title:SetText("Your Perks");
     PerkExplorer.body.subheader.yourPerksTab.title:SetTextColor(1, 1, 1, 1);
 
@@ -97,7 +97,7 @@ function InitializePerkExplorer()
 
     PerkExplorer.body.subheader.catalogue.title = PerkExplorer.body.subheader.catalogue:CreateFontString("OVERLAY");
     PerkExplorer.body.subheader.catalogue.title:SetPoint("CENTER", PerkExplorer.body.subheader.catalogue, "CENTER");
-    PerkExplorer.body.subheader.catalogue.title:SetFont(PATH.."Fonts\\Expressway.TTF", 16);
+    PerkExplorer.body.subheader.catalogue.title:SetFont(PATH .. "Fonts\\Expressway.TTF", 16);
     -- PerkExplorer.body.subheader.catalogue.title:SetFont("Fonts\\FRIZQT__.TTF", 16)
     PerkExplorer.body.subheader.catalogue.title:SetText("Perk Catalogue");
     PerkExplorer.body.subheader.catalogue.title:SetTextColor(1, 1, 1, 1);
@@ -313,12 +313,6 @@ function LoadCurrentPerks(spec)
 end
 
 function SetRankTexture(current, rank)
-    if (rank == 1) then
-        if current.Rank then
-            current.Rank:Hide()
-        end
-        return
-    end
     if not current.Rank then
         current.Rank = current:CreateTexture(nil, "ARTWORK", nil, current:GetFrameLevel() + 3);
     end
@@ -326,7 +320,9 @@ function SetRankTexture(current, rank)
         (settings.width - settings.gap) / (settings.iconsPerRow * 1.18) * 2)
     current.Rank:SetPoint("CENTER", 0, 0);
 
-    if (rank == 2) then
+    if (rank == 1) then
+        current.Rank:SetTexture(assets.rankone)
+    elseif (rank == 2) then
         current.Rank:SetTexture(assets.ranktwo)
     elseif (rank == 3) then
         current.Rank:SetTexture(assets.rankthree)
