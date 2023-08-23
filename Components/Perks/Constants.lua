@@ -7,11 +7,11 @@ settings = {
 }
 
 assets = {
-    -- rankone = "Interface\\AddOns\\ForgedWoW\\UI\\Perk\\rank1",--rank1 just has no glow
-    ranktwo = "Interface\\BUTTONS\\CheckButtonGlow",
-    rankthree = "Interface\\BUTTONS\\CheckButtonGlow",
-    hourglass = "Interface\\AddOns\\ForgedWoWCommunication\\UI\\Perk\\hourglass",
-    highlight = "Interface\\AddOns\\ForgedWoWCommunication\\UI\\Perk\\highlight",
+    rankone = PATH .. "", -- rank1 just has no glow
+    ranktwo = PATH .. "Perk\\CheckButtonGlowTwo",
+    rankthree = PATH .. "Perk\\CheckButtonGlowThree",
+    hourglass = PATH .. "Perk\\hourglass",
+    highlight = PATH .. "Perk\\highlight",
 
     minimize = "Interface\\BUTTONS\\UI-Panel-SmallerButton-Up",
     minPushed = "Interface\\BUTTONS\\UI-Panel-SmallerButton-Down",
