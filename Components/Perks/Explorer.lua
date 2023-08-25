@@ -238,7 +238,7 @@ function LoadAllPerksList(filterText)
                     -math.floor(i / (iconsPerRow + 1)) * (iconSize + settings.gap + 5));
                 perkFrame.perks[i].Texture = perkFrame.perks[i]:CreateTexture();
                 perkFrame.perks[i].Texture:SetAllPoints();
-                -- perkFrame.perks[i].Texture:SetTexCoord(.08, .92, .08, .92);
+                --perkFrame.perks[i].Texture:SetTexCoord(.08, .92, .08, .92);
                 perkFrame.perks[i].Texture:SetPoint("CENTER", 0, 0);
                 perkFrame.perks[i].Texture:SetTexture(icon);
 
@@ -313,12 +313,13 @@ function LoadCurrentPerks(spec)
 end
 
 function SetRankTexture(current, rank)
+
+    
     if not current.Rank then
-        current.Rank = current:CreateTexture(nil, "ARTWORK", nil, current:GetFrameLevel() + 3);
+        current.Rank = current:CreateTexture(nil, "OVERLAY", nil, current:GetFrameLevel() + 3);
     end
-    current.Rank:SetSize((settings.width - settings.gap) / (settings.iconsPerRow * 1.18) * 2,
-        (settings.width - settings.gap) / (settings.iconsPerRow * 1.18) * 2)
-    current.Rank:SetPoint("CENTER", 0, 0);
+    current.Rank:SetSize(current:GetWidth()/2,current:GetHeight()/2)
+    current.Rank:SetPoint("TOPRIGHT", -2, -2);
 
     if (rank == 1) then
         current.Rank:SetTexture(assets.rankone)

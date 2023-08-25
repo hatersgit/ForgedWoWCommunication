@@ -7,9 +7,9 @@ settings = {
 }
 
 assets = {
-    rankone = PATH .. "", -- rank1 just has no glow
-    ranktwo = PATH .. "Perk\\CheckButtonGlowTwo",
-    rankthree = PATH .. "Perk\\CheckButtonGlowThree",
+    rankone = PATH .. "Perk\\rank1",
+    ranktwo = PATH .. "Perk\\rank2",
+    rankthree = PATH .. "Perk\\rank3",
     hourglass = PATH .. "Perk\\hourglass",
     highlight = PATH .. "Perk\\highlight",
 
