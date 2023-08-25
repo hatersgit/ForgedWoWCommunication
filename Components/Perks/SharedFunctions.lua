@@ -50,3 +50,19 @@ function clearTooltips()
     perkTooltip3:Hide();
     perkBG:Hide()
 end
+
+function SetRankTexture(current, rank)
+    if not current.Rank then
+        current.Rank = current:CreateTexture(nil, "OVERLAY", nil, current:GetFrameLevel() + 3);
+    end
+    current.Rank:SetSize(current:GetWidth() / 2, current:GetHeight() / 2)
+    current.Rank:SetPoint("TOPRIGHT", -2, -2);
+
+    if (rank == 1) then
+        current.Rank:SetTexture(assets.rankone)
+    elseif (rank == 2) then
+        current.Rank:SetTexture(assets.ranktwo)
+    elseif (rank == 3) then
+        current.Rank:SetTexture(assets.rankthree)
+    end
+end
