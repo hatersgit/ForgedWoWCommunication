@@ -11,24 +11,13 @@ perkInspectFrame:SetScript("OnShow", function(self)
         createInspectPerkFrames();
     end
 
-    currentSelectionName = UnitName("player") -- target
+    currentSelectionName = UnitName("target") -- target
     -- request perks from server
-    targetPerks[currentSelectionName] = {
-        [8000000] = {{
-            ["rank"] = 1
-        }},
-        [48469] = {{
-            ["rank"] = 2
-        }},
-        [48441] = {{
-            ["rank"] = 3
-        }}
-    }
-    LoadTargetPerks(currentSelectionName)
+    PushForgeMessage(ForgeTopic.GET_INSPECT_PERKS, currentSelectionName);
 end)
 
-local tooltipContact = CreateFrame("Frame","ttlink",perkInspectFrame);
-tooltipContact:SetSize(30,30)
+local tooltipContact = CreateFrame("Frame", "ttlink", perkInspectFrame);
+tooltipContact:SetSize(30, 30)
 tooltipContact:SetPoint("TOPLEFT", perkInspectFrame, "TOPRIGHT", -32, -70)
 
 SubscribeToForgeTopic(ForgeTopic.GET_INSPECT_PERKS, function(msg)
