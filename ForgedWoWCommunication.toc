@@ -17,6 +17,7 @@ Components\Perks\Constants.lua
 Components\Perks\SharedFunctions.lua
 Components\Perks\Explorer.lua
 Components\Perks\Selection.lua
+Components\Perks\Inspect.lua
 Components\Perks\Initialize.lua
 
 Components\Tooltips\items.lua

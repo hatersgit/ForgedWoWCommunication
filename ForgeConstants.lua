@@ -106,7 +106,8 @@ ForgeTopic = {
     REROLL_PERK_ERROR = 60,
     RESET_ALL_PERKS = 61,
     OFFER_SELECTION = 62,
-    GET_PERK_CATALOGUE = 63
+    GET_PERK_CATALOGUE = 63,
+    GET_INSPECT_PERKS = 64
 }
 
 -- These are the object definitions. Keyed by the same forge topic key.
