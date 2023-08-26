@@ -11,8 +11,7 @@ perkInspectFrame:SetScript("OnShow", function(self)
         createInspectPerkFrames();
     end
 
-    currentSelectionName = UnitName("target") -- target
-    -- request perks from server
+    currentSelectionName = UnitName("target")
     PushForgeMessage(ForgeTopic.GET_INSPECT_PERKS, currentSelectionName);
 end)
 
@@ -21,21 +20,13 @@ tooltipContact:SetSize(30, 30)
 tooltipContact:SetPoint("TOPLEFT", perkInspectFrame, "TOPRIGHT", -32, -70)
 
 SubscribeToForgeTopic(ForgeTopic.GET_INSPECT_PERKS, function(msg)
-    -- print(msg);
     targetPerks[currentSelectionName] = {};
-    local perks = DeserializeMessage(PerkDeserializerDefinitions.PERKCHAR, msg);
-    for specId, perk in ipairs(perks) do
-        if not targetPerks[currentSelectionName][specId] then
-            targetPerks[currentSelectionName][specId] = {};
-        end
-        if perk then
-            -- print(dump(perk))
-            for id, spell in pairs(perk["Perk"]) do
-                if not targetPerks[currentSelectionName][specId][spell["spellId"]] then
-                    targetPerks[currentSelectionName][specId][spell["spellId"]] = {};
-                end
-                table.insert(targetPerks[currentSelectionName][specId][spell["spellId"]], spell["Meta"][1]);
+    for _, perk in ipairs(DeserializeMessage(PerkDeserializerDefinitions.PERKCHAR, msg)) do
+        for id, spell in pairs(perk["Perk"]) do
+            if not targetPerks[currentSelectionName][spell["spellId"]] then
+                targetPerks[currentSelectionName][spell["spellId"]] = {};
             end
+            table.insert(targetPerks[currentSelectionName][spell["spellId"]], spell["Meta"][1]);
         end
     end
     LoadTargetPerks(currentSelectionName)
@@ -84,7 +75,7 @@ function createInspectPerkFrames()
         local texture = iconFrame:CreateTexture(nil, "ARTWORK", nil, perkInspectFrame:GetFrameLevel() + 3);
         texture:SetAllPoints(iconFrame);
         texture:SetPoint("CENTER", 0, 0);
-
+        iconFrame:Hide()
         iconFrame.Texture = texture;
         perkInspectFrame.perks[i] = iconFrame;
         columnID = columnID + 1;
@@ -99,10 +90,9 @@ function LoadTargetPerks(name)
     local i = 1;
     for spellId, meta in pairs(targetPerks[name]) do
         local name, _, icon = GetSpellInfo(spellId);
-        local rank = meta[1].rank;
         local current = perkInspectFrame.perks[i]
         current.Texture:SetTexture(icon);
-        SetRankTexture(current, rank)
+        SetRankTexture(current, meta[1].rank)
 
         current:HookScript("OnEnter", function()
             SetUpRankedTooltip(tooltipContact, spellId, "ANCHOR_RIGHT");

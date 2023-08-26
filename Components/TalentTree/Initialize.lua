@@ -53,7 +53,9 @@ function GetCharacterSpecs(msg)
         InitializeTalentLeft();
         InitializeForgePoints();
         InitializeTabForSpellsToForge(TalentTree.FORGE_SPELLS_PAGES);
-        SelectTab(TalentTree.FORGE_TABS[1]);
+        if (TalentTree.FORGE_TABS[1]) then
+            SelectTab(TalentTree.FORGE_TABS[1]);
+        end
     end
     TalentTree.INITIALIZED = true;
 end
