@@ -2,7 +2,15 @@ local subnameOptions = {
     [1] = "Heroic",
     [2] = "Mythic",
     [3] = "World Tier 1",
-    [4] = "World Tier 2"
+    [4] = "World Tier 2",
+    [5] = "World Tier 3",
+    [6] = "World Tier 4",
+    [7] = "World Tier 5",
+    [8] = "World Tier 6",
+    [9] = "World Tier 7",
+    [10] = "World Tier 8",
+    [11] = "World Tier 9",
+    [12] = "World Tier 10"
 }
 
 local statOptions = {
