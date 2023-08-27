@@ -26,6 +26,7 @@ function InitializePerks(reloadUI)
         else
             print(msg)
         end
+        PushForgeMessage(ForgeTopic.OFFER_SELECTION, GetSpecID());
     end);
 
     SubscribeToForgeTopic(ForgeTopic.GET_PERK_CATALOGUE, function(msg)

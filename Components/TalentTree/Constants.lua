@@ -1,16 +1,16 @@
 PATH = "Interface\\AddOns\\ForgedWoWCommunication\\UI\\"
 CONSTANTS = {
     classIcon = {
-        ['DEATH KNIGHT'] = "Interface\\Icons\\spell_deathknight_classicon",
-        DRUID = "Interface\\Icons\\INV_Misc_MonsterClaw_04",
-        WARLOCK = "Interface\\Icons\\Spell_Nature_FaerieFire",
-        HUNTER = "Interface\\Icons\\INV_Weapon_Bow_07",
-        MAGE = "Interface\\Icons\\INV_Staff_13",
-        PRIEST = "Interface\\Icons\\INV_Staff_30",
         WARRIOR = "Interface\\Icons\\INV_Sword_27",
-        SHAMAN = "Interface\\Icons\\Spell_Nature_BloodLust",
         PALADIN = "Interface\\Icons\\Ability_Paladin_HammeroftheRighteous",
-        ROGUE = "Interface\\Icons\\inv_throwingknife_04"
+        HUNTER = "Interface\\Icons\\INV_Weapon_Bow_07",
+        ROGUE = "Interface\\Icons\\inv_throwingknife_04",
+        PRIEST = "Interface\\Icons\\INV_Staff_30",
+        ['DEATH KNIGHT'] = "Interface\\Icons\\spell_deathknight_classicon",
+        SHAMAN = "Interface\\Icons\\Spell_Nature_BloodLust",
+        MAGE = "Interface\\Icons\\INV_Staff_13",
+        WARLOCK = "Interface\\Icons\\Spell_Nature_FaerieFire",
+        DRUID = "Interface\\Icons\\INV_Misc_MonsterClaw_04"
     },
     UI = {
         SPECIALIZATION_BUTTON_BG_NORMAL = PATH .. "Buttons\\normal_button",
