@@ -1,8 +1,8 @@
 function InitializePerkExplorer()
-
     if (PerkExplorer) then
         return
     end
+
     PerkExplorer = CreateFrame("FRAME", "PerkExplorer", UIParent);
     PerkExplorer:SetSize(settings.width / 3, 30);
     PerkExplorer:SetPoint("CENTER", 0, 0);
@@ -57,50 +57,68 @@ function InitializePerkExplorer()
     PerkExplorer.body.subheader:SetFrameLevel(PerkExplorer.body:GetFrameLevel() + 2)
     SetTemplate(PerkExplorer.body.subheader);
 
-    -- YOUR PERKS TAB
-    PerkExplorer.body.subheader.yourPerksTab = CreateFrame("BUTTON", nil, PerkExplorer.body.subheader)
-    PerkExplorer.body.subheader.yourPerksTab:SetHighlightTexture("Interface\\Buttons\\WHITE8x8");
-    PerkExplorer.body.subheader.yourPerksTab:SetPushedTexture("Interface\\Buttons\\WHITE8x8");
-    PerkExplorer.body.subheader.yourPerksTab:SetSize(settings.width / 2, 30)
+    --createArchtype()
+    createYourPerks()
+    createCatalog()
+    ToggleBox(true);
+end
+
+function createArchtype()
+    -- ARCHTYPE TAB
+    PerkExplorer.body.subheader.archtypeTab = CreateTab("Archtype")
+    PerkExplorer.body.subheader.archtypeTab:SetPoint("TOPLEFT", 0, 0);
+    PerkExplorer.body.subheader.archtypeTab:SetScript("OnClick", function()
+        PerkExplorer.body.subheader.archtypeTab:SetButtonState("PUSHED", 1);
+        PerkExplorer.body.subheader.catalogue:SetButtonState("NORMAL");
+        PerkExplorer.body.subheader.yourPerksTab:SetButtonState("NORMAL");
+        PerkExplorer.body.archtype:Show();
+        PerkExplorer.body.catalogue:Hide();
+        PerkExplorer.body.perkbox:Hide();
+    end)
+
+    PerkExplorer.body.archtype = CreateFrame("FRAME", nil, PerkExplorer.body)
+    PerkExplorer.body.archtype:SetSize(settings.width, settings.height - 120);
+    PerkExplorer.body.archtype:SetPoint("TOP", 0, -30);
+    PerkExplorer.body.archtype:SetFrameLevel(PerkExplorer.body:GetFrameLevel() + 2);
+    SetTemplate(PerkExplorer.body.archtype);
+
+    PerkExplorer.body.archtype.yourArchtype = CreateFrame("FRAME", nil, PerkExplorer.body.archtype)
+    PerkExplorer.body.archtype.yourArchtype:SetSize(settings.width - 16, (settings.height - 90) / 3)
+    PerkExplorer.body.archtype.yourArchtype:SetPoint("TOP", 0, 0)
+    PerkExplorer.body.archtype.yourArchtype:SetFrameLevel(PerkExplorer.body.archtype:GetFrameLevel() + 2)
+
+    PerkExplorer.body.archtype.archtypes = {}
+    local iconSize = (settings.width - settings.gap) / (settings.iconsPerRow * .5)
+    for i = 1, 3 do
+        local iconFrame = CreateFrame("BUTTON", "iconFrame" .. i, PerkExplorer.body.archtype.yourArchtype)
+        iconFrame:SetHighlightTexture("Interface\\Buttons\\CheckButtonHilight")
+        iconFrame:SetFrameLevel(PerkExplorer.body:GetFrameLevel() + 2)
+        iconFrame:SetSize(iconSize, iconSize)
+        iconFrame:SetPoint("CENTER", 0, iconSize - ((iconSize + 10) * i))
+
+        local texture = iconFrame:CreateTexture(nil, "ARTWORK")
+        texture:SetAllPoints(iconFrame)
+        texture:SetPoint("CENTER")
+        texture:SetTexture(assets.maximize)
+
+        iconFrame.Texture = texture
+        PerkExplorer.body.archtype.archtypes[i] = iconFrame
+        iconFrame:Hide()
+    end
+end
+
+function createYourPerks()
+    PerkExplorer.body.subheader.yourPerksTab = CreateTab("Your Perks")
     PerkExplorer.body.subheader.yourPerksTab:SetPoint("TOPLEFT", 0, 0);
-    PerkExplorer.body.subheader.yourPerksTab:SetFrameLevel(PerkExplorer.body.subheader:GetFrameLevel() + 2)
     PerkExplorer.body.subheader.yourPerksTab:SetScript("OnClick", function()
         PerkExplorer.body.subheader.yourPerksTab:SetButtonState("PUSHED", 1);
         PerkExplorer.body.subheader.catalogue:SetButtonState("NORMAL");
+       -- PerkExplorer.body.subheader.archtypeTab:SetButtonState("NORMAL");
         PerkExplorer.body.perkbox:Show();
         PerkExplorer.body.catalogue:Hide();
+        --PerkExplorer.body.archtype:Hide();
     end)
     PerkExplorer.body.subheader.yourPerksTab:SetButtonState("PUSHED", 1);
-    SetTemplate(PerkExplorer.body.subheader.yourPerksTab);
-
-    PerkExplorer.body.subheader.yourPerksTab.title =
-        PerkExplorer.body.subheader.yourPerksTab:CreateFontString("OVERLAY");
-    PerkExplorer.body.subheader.yourPerksTab.title:SetPoint("CENTER", PerkExplorer.body.subheader.yourPerksTab, "CENTER");
-    PerkExplorer.body.subheader.yourPerksTab.title:SetFont(PATH .. "Fonts\\Expressway.TTF", 16);
-    PerkExplorer.body.subheader.yourPerksTab.title:SetText("Your Perks");
-    PerkExplorer.body.subheader.yourPerksTab.title:SetTextColor(1, 1, 1, 1);
-
-    -- CATALOGUE TAB
-    PerkExplorer.body.subheader.catalogue = CreateFrame("BUTTON", nil, PerkExplorer.body.subheader)
-    PerkExplorer.body.subheader.catalogue:SetHighlightTexture("Interface\\Buttons\\WHITE8x8");
-    PerkExplorer.body.subheader.catalogue:SetPushedTexture("Interface\\Buttons\\WHITE8x8");
-    PerkExplorer.body.subheader.catalogue:SetSize(settings.width / 2, 30)
-    PerkExplorer.body.subheader.catalogue:SetPoint("TOPRIGHT", 0, 0);
-    PerkExplorer.body.subheader.catalogue:SetFrameLevel(PerkExplorer.body.subheader:GetFrameLevel() + 2)
-    PerkExplorer.body.subheader.catalogue:SetScript("OnClick", function()
-        PerkExplorer.body.subheader.catalogue:SetButtonState("PUSHED", 1);
-        PerkExplorer.body.subheader.yourPerksTab:SetButtonState("NORMAL");
-        PerkExplorer.body.catalogue:Show();
-        PerkExplorer.body.perkbox:Hide();
-    end)
-    SetTemplate(PerkExplorer.body.subheader.catalogue);
-
-    PerkExplorer.body.subheader.catalogue.title = PerkExplorer.body.subheader.catalogue:CreateFontString("OVERLAY");
-    PerkExplorer.body.subheader.catalogue.title:SetPoint("CENTER", PerkExplorer.body.subheader.catalogue, "CENTER");
-    PerkExplorer.body.subheader.catalogue.title:SetFont(PATH .. "Fonts\\Expressway.TTF", 16);
-    -- PerkExplorer.body.subheader.catalogue.title:SetFont("Fonts\\FRIZQT__.TTF", 16)
-    PerkExplorer.body.subheader.catalogue.title:SetText("Perk Catalogue");
-    PerkExplorer.body.subheader.catalogue.title:SetTextColor(1, 1, 1, 1);
 
     -- PERKS LIST
     PerkExplorer.body.perkbox = CreateFrame("FRAME", nil, PerkExplorer.body)
@@ -114,39 +132,43 @@ function InitializePerkExplorer()
     PerkExplorer.body.perkbox.yourPerks:SetPoint("TOP", 0, 0)
     PerkExplorer.body.perkbox.yourPerks:SetFrameLevel(PerkExplorer.body.perkbox:GetFrameLevel() + 2)
 
-    PerkExplorer.body.perkbox.yourPerks.perks = {};
-    local rowCount = 1;
+    PerkExplorer.body.perkbox.yourPerks.perks = {}
     local iconSize = (settings.width - settings.gap) / (settings.iconsPerRow * 1.18)
-    local depth = iconSize;
-    for i = 1, 40, 1 do
-        if (rowCount > settings.iconsPerRow) then
-            rowCount = 1
-        end
-
-        local num = math.fmod(i, settings.iconsPerRow);
-        if (num == 1) then
+    local depth = iconSize
+    for i = 1, 40 do
+        local num = (i - 1) % settings.iconsPerRow + 1
+        if num == 1 then
             depth = depth - (settings.gap + iconSize)
         end
 
-        local iconFrame = CreateFrame("BUTTON", "iconFrame" .. i, PerkExplorer.body.perkbox);
-        iconFrame:SetHighlightTexture("Interface\\Buttons\\CheckButtonHilight");
-        iconFrame:SetFrameLevel(PerkExplorer.body.perkbox:GetFrameLevel() + 2);
-        iconFrame:SetSize(iconSize, iconSize);
-        iconFrame:SetPoint("TOPLEFT", settings.gap * rowCount + (rowCount - 1) * iconSize, depth);
+        local iconFrame = CreateFrame("BUTTON", "iconFrame" .. i, PerkExplorer.body.perkbox)
+        iconFrame:SetHighlightTexture("Interface\\Buttons\\CheckButtonHilight")
+        iconFrame:SetFrameLevel(PerkExplorer.body:GetFrameLevel() + 2)
+        iconFrame:SetSize(iconSize, iconSize)
+        iconFrame:SetPoint("TOPLEFT", settings.gap * (num - 1) + (num - 1) * iconSize, depth)
 
-        local texture = iconFrame:CreateTexture(nil, "ARTWORK", nil, PerkExplorer.body.perkbox:GetFrameLevel() + 3);
-        texture:SetAllPoints(iconFrame);
-        -- texture:SetTexCoord(.08, .92, .08, .92);
-        texture:SetPoint("CENTER", 0, 0);
+        local texture = iconFrame:CreateTexture(nil, "ARTWORK")
+        texture:SetAllPoints(iconFrame)
+        texture:SetPoint("CENTER")
 
-        iconFrame.Texture = texture;
-        PerkExplorer.body.perkbox.yourPerks.perks[i] = iconFrame;
-
-        PerkExplorer.body.perkbox.yourPerks.perks[i]:Hide();
-        rowCount = rowCount + 1;
+        iconFrame.Texture = texture
+        PerkExplorer.body.perkbox.yourPerks.perks[i] = iconFrame
+        iconFrame:Hide()
     end
+end
 
-    ToggleBox(true);
+function createCatalog()
+    -- CATALOGUE TAB
+    PerkExplorer.body.subheader.catalogue = CreateTab("Perk Catalogue") -- CreateFrame("BUTTON", nil, PerkExplorer.body.subheader)
+    PerkExplorer.body.subheader.catalogue:SetPoint("TOPRIGHT", 0, 0);
+    PerkExplorer.body.subheader.catalogue:SetScript("OnClick", function()
+        PerkExplorer.body.subheader.catalogue:SetButtonState("PUSHED", 1);
+        PerkExplorer.body.subheader.yourPerksTab:SetButtonState("NORMAL");
+       -- PerkExplorer.body.subheader.archtypeTab:SetButtonState("NORMAL");
+        PerkExplorer.body.catalogue:Show();
+        PerkExplorer.body.perkbox:Hide();
+       -- PerkExplorer.body.archtype:Hide();
+    end)
 
     PerkExplorer.body.catalogue = CreateFrame("FRAME", nil, PerkExplorer.body)
     PerkExplorer.body.catalogue:SetSize(settings.width, settings.height - 120);
@@ -189,8 +211,22 @@ function InitializePerkExplorer()
     scrollcat:SetSize(settings.width, settings.height)
     scrollcat.perks = {}
     PerkExplorer.body.catalogue.clipframe.scroll:SetScrollChild(scrollcat);
-
     PerkExplorer.body.catalogue:Hide();
+end
+
+function CreateTab(titleText)
+    local tab = CreateFrame("BUTTON", nil, PerkExplorer.body.subheader)
+    tab:SetHighlightTexture("Interface\\Buttons\\WHITE8x8");
+    tab:SetPushedTexture("Interface\\Buttons\\WHITE8x8");
+    tab:SetSize(settings.width / settings.tabCount, 30)
+    tab:SetFrameLevel(PerkExplorer.body.subheader:GetFrameLevel() + 2)
+    SetTemplate(tab);
+    tab.title = tab:CreateFontString("OVERLAY");
+    tab.title:SetPoint("CENTER", tab, "CENTER");
+    tab.title:SetFont(PATH .. "Fonts\\Expressway.TTF", 16);
+    tab.title:SetText(titleText);
+    tab.title:SetTextColor(1, 1, 1, 1);
+    return tab
 end
 
 function ToggleBox(visible)
