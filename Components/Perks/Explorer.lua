@@ -57,7 +57,7 @@ function InitializePerkExplorer()
     PerkExplorer.body.subheader:SetFrameLevel(PerkExplorer.body:GetFrameLevel() + 2)
     SetTemplate(PerkExplorer.body.subheader);
 
-    --createArchtype()
+    -- createArchtype()
     createYourPerks()
     createCatalog()
     ToggleBox(true);
@@ -113,10 +113,10 @@ function createYourPerks()
     PerkExplorer.body.subheader.yourPerksTab:SetScript("OnClick", function()
         PerkExplorer.body.subheader.yourPerksTab:SetButtonState("PUSHED", 1);
         PerkExplorer.body.subheader.catalogue:SetButtonState("NORMAL");
-       -- PerkExplorer.body.subheader.archtypeTab:SetButtonState("NORMAL");
+        -- PerkExplorer.body.subheader.archtypeTab:SetButtonState("NORMAL");
         PerkExplorer.body.perkbox:Show();
         PerkExplorer.body.catalogue:Hide();
-        --PerkExplorer.body.archtype:Hide();
+        -- PerkExplorer.body.archtype:Hide();
     end)
     PerkExplorer.body.subheader.yourPerksTab:SetButtonState("PUSHED", 1);
 
@@ -164,10 +164,10 @@ function createCatalog()
     PerkExplorer.body.subheader.catalogue:SetScript("OnClick", function()
         PerkExplorer.body.subheader.catalogue:SetButtonState("PUSHED", 1);
         PerkExplorer.body.subheader.yourPerksTab:SetButtonState("NORMAL");
-       -- PerkExplorer.body.subheader.archtypeTab:SetButtonState("NORMAL");
+        -- PerkExplorer.body.subheader.archtypeTab:SetButtonState("NORMAL");
         PerkExplorer.body.catalogue:Show();
         PerkExplorer.body.perkbox:Hide();
-       -- PerkExplorer.body.archtype:Hide();
+        -- PerkExplorer.body.archtype:Hide();
     end)
 
     PerkExplorer.body.catalogue = CreateFrame("FRAME", nil, PerkExplorer.body)
@@ -197,6 +197,66 @@ function createCatalog()
     searchtexBox:SetTexture("Interface\\COMMON\\Common-Input-Border.blp");
     searchtexBox:SetPoint("CENTER", PerkExplorer.body.catalogue.searchBar, "CENTER", -5, -5);
     searchtexBox:SetSize(300, 30);
+
+    PerkExplorer.body.catalogue.dropdown = CreateFrame("Frame", "classFilterDropdown", PerkExplorer.body.catalogue,
+        "UIDropDownMenuTemplate")
+    PerkExplorer.body.catalogue.dropdown:SetPoint("TOPRIGHT", -125, 0)
+    PerkExplorer.body.catalogue.dropdown.classFilters = {{
+        text = "Warrior",
+        value = 1
+    }, {
+        text = "Paladin",
+        value = 2
+    }, {
+        text = "Hunter",
+        value = 3
+    }, {
+        text = "Rogue",
+        value = 4
+    }, {
+        text = "Priest",
+        value = 5
+    }, {
+        text = "Death Knight",
+        value = 6
+    }, {
+        text = "Shaman",
+        value = 7
+    }, {
+        text = "Mage",
+        value = 8
+    }, {
+        text = "Warlock",
+        value = 9
+    }, {
+        text = "Druid",
+        value = 11
+    }}
+
+    UIDropDownMenu_Initialize(PerkExplorer.body.catalogue.dropdown, function(self, level, menuList)
+        for _, item in ipairs(self.classFilters) do
+            local info = UIDropDownMenu_CreateInfo()
+            info.text = item.text
+            info.value = item.value
+            info.func = function(self)
+                if (item.checked) then
+                    PerkExplorer.body.catalogue.dropdown.choice = 0
+                    UIDropDownMenu_SetSelectedID(PerkExplorer.body.catalogue.dropdown, -1)
+                    UIDropDownMenu_SetText(PerkExplorer.body.catalogue.dropdown, " ")
+                else
+                    PerkExplorer.body.catalogue.dropdown.choice = info.value
+                    UIDropDownMenu_SetSelectedID(PerkExplorer.body.catalogue.dropdown, self:GetID())
+                    UIDropDownMenu_SetText(PerkExplorer.body.catalogue.dropdown, item.text)
+                end
+                item.checked = not item.checked
+                CloseDropDownMenus()
+                LoadAllPerksList(PerkExplorer.body.catalogue.searchBar:GetText())
+            end
+            UIDropDownMenu_AddButton(info)
+        end
+        PerkExplorer.body.catalogue.dropdown.choice = 0;
+    end)
+    ToggleDropDownMenu(1, nil, PerkExplorer.body.catalogue.dropdown, "cursor", 0, 0)
 
     PerkExplorer.body.catalogue.clipframe = CreateFrame("FRAME", nil, PerkExplorer.body.catalogue)
     PerkExplorer.body.catalogue.clipframe:SetSize(settings.width, settings.height - 160)
@@ -265,7 +325,11 @@ function LoadAllPerksList(filterText)
         end
 
         if name then
-            if (string.match(string.upper(name), filterText) or filterText == "") then
+            local classMask = tonumber(metainfo["classMask"])
+            local group = metainfo["group"]
+
+            if ((string.match(string.upper(name), filterText) or filterText == "") and
+                isBitFlipped(classMask, PerkExplorer.body.catalogue.dropdown.choice)) then
                 perkFrame.perks[i] = CreateFrame("BUTTON", perkFrame.perks[i], perkFrame);
                 perkFrame.perks[i]:SetHighlightTexture("Interface\\Buttons\\CheckButtonHilight");
                 perkFrame.perks[i]:SetFrameLevel(perkFrame:GetFrameLevel());
@@ -304,7 +368,6 @@ function LoadAllPerksList(filterText)
                 perkFrame.perks[i]:Show();
                 rowCount = rowCount + 1;
                 i = i + 1;
-
             else
                 if perkFrame.perks[i] then
                     perkFrame.perks[i]:Hide();
@@ -350,5 +413,21 @@ end
 function HideCharPerks()
     for i = 1, 40, 1 do
         PerkExplorer.body.perkbox.yourPerks.perks[i]:Hide();
+    end
+end
+
+function isBitFlipped(number, bitPosition)
+    if (bitPosition == 0) then
+        return true
+    end
+    local binary = {}
+    while number > 0 do
+        table.insert(binary, 1, number % 2)
+        number = math.floor(number / 2)
+    end
+    if bitPosition > #binary then
+        return false
+    else
+        return binary[bitPosition] == 1
     end
 end
