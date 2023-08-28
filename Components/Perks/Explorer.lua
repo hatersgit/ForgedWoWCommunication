@@ -233,28 +233,29 @@ function createCatalog()
         value = 11
     }}
 
+    PerkExplorer.body.catalogue.dropdown.choice = 0;
+
     UIDropDownMenu_Initialize(PerkExplorer.body.catalogue.dropdown, function(self, level, menuList)
         for _, item in ipairs(self.classFilters) do
             local info = UIDropDownMenu_CreateInfo()
             info.text = item.text
             info.value = item.value
             info.func = function(self)
-                if (item.checked) then
+
+                if (PerkExplorer.body.catalogue.dropdown.choice == item.value) then
                     PerkExplorer.body.catalogue.dropdown.choice = 0
                     UIDropDownMenu_SetSelectedID(PerkExplorer.body.catalogue.dropdown, -1)
                     UIDropDownMenu_SetText(PerkExplorer.body.catalogue.dropdown, " ")
                 else
-                    PerkExplorer.body.catalogue.dropdown.choice = info.value
+                    PerkExplorer.body.catalogue.dropdown.choice = item.value
                     UIDropDownMenu_SetSelectedID(PerkExplorer.body.catalogue.dropdown, self:GetID())
                     UIDropDownMenu_SetText(PerkExplorer.body.catalogue.dropdown, item.text)
                 end
-                item.checked = not item.checked
                 CloseDropDownMenus()
                 LoadAllPerksList(PerkExplorer.body.catalogue.searchBar:GetText())
             end
             UIDropDownMenu_AddButton(info)
         end
-        PerkExplorer.body.catalogue.dropdown.choice = 0;
     end)
     ToggleDropDownMenu(1, nil, PerkExplorer.body.catalogue.dropdown, "cursor", 0, 0)
 
@@ -305,45 +306,43 @@ end
 
 function LoadAllPerksList(filterText)
     local iconsPerRow = 14;
-    local i = 1;
-    local rowCount = 1;
+    local columnID = 1;
     local iconSize = ((settings.width - 130) / 15)
     local depth = iconSize;
     local xOffset = 40
-
     local perkFrame = PerkExplorer.body.catalogue.clipframe.scroll:GetScrollChild();
     for i, v in ipairs(perkFrame.perks) do
         v:Hide()
     end
 
+    local i = 1;
     for spellId, meta in pairs(PerkExplorerInternal.PERKS_ALL) do
         local metainfo = meta[1];
         local name, _, icon = GetSpellInfo(spellId);
 
-        if (rowCount > iconsPerRow) then
-            rowCount = 1
+        if (columnID > iconsPerRow) then
+            columnID = 1
         end
-
         if name then
             local classMask = tonumber(metainfo["classMask"])
-            local group = metainfo["group"]
 
             if ((string.match(string.upper(name), filterText) or filterText == "") and
                 isBitFlipped(classMask, PerkExplorer.body.catalogue.dropdown.choice)) then
-                perkFrame.perks[i] = CreateFrame("BUTTON", perkFrame.perks[i], perkFrame);
-                perkFrame.perks[i]:SetHighlightTexture("Interface\\Buttons\\CheckButtonHilight");
-                perkFrame.perks[i]:SetFrameLevel(perkFrame:GetFrameLevel());
-                perkFrame.perks[i]:SetSize(iconSize, iconSize);
-                perkFrame.perks[i]:SetPoint("TOPLEFT", settings.gap * rowCount + (rowCount - 1) * iconSize + xOffset,
-                    -math.floor(i / (iconsPerRow + 1)) * (iconSize + settings.gap + 5));
-                perkFrame.perks[i].Texture = perkFrame.perks[i]:CreateTexture();
-                perkFrame.perks[i].Texture:SetAllPoints();
-                perkFrame.perks[i].Texture:SetPoint("CENTER", 0, 0);
+                if (not perkFrame.perks[i]) then
+                    perkFrame.perks[i] = CreateFrame("BUTTON", perkFrame.perks[i], perkFrame);
+                    perkFrame.perks[i]:SetHighlightTexture("Interface\\Buttons\\CheckButtonHilight");
+                    perkFrame.perks[i]:SetFrameLevel(perkFrame:GetFrameLevel());
+                    perkFrame.perks[i]:SetSize(iconSize, iconSize);
+                    perkFrame.perks[i]:SetPoint("TOPLEFT",
+                        settings.gap * columnID + (columnID - 1) * iconSize + xOffset, iconSize -
+                            math.ceil(i / iconsPerRow) * (iconSize + settings.gap + 5))
+                    perkFrame.perks[i].Texture = perkFrame.perks[i]:CreateTexture();
+                    perkFrame.perks[i].Texture:SetAllPoints();
+                    perkFrame.perks[i].Texture:SetPoint("CENTER", 0, 0);
+                end
                 perkFrame.perks[i].Texture:SetTexture(icon);
-
-                local unique = metainfo.unique;
-                if unique > 0 then
-                    perkFrame.perks[i]:HookScript("OnEnter", function()
+                if metainfo.unique > 0 then
+                    perkFrame.perks[i]:SetScript("OnEnter", function()
                         local side, _, _, xOfs = PerkExplorer:GetPoint()
                         if (side == "LEFT" or ((xOfs > -(GetScreenWidth() * .1879) and xOfs < 0) and side == "CENTER")) then
                             SetUpSingleTooltip(PerkExplorer.body.perkbox, spellId, "ANCHOR_RIGHT");
@@ -352,8 +351,7 @@ function LoadAllPerksList(filterText)
                         end
                     end);
                 else
-                    perkFrame.perks[i]:HookScript("OnEnter", function()
-
+                    perkFrame.perks[i]:SetScript("OnEnter", function()
                         local side, _, _, xOfs = PerkExplorer:GetPoint()
                         if (side == "LEFT" or ((xOfs > -(GetScreenWidth() * .1879) and xOfs < 0) and side == "CENTER")) then
                             SetUpRankedTooltip(PerkExplorer.body.perkbox, spellId, "ANCHOR_RIGHT");
@@ -366,12 +364,8 @@ function LoadAllPerksList(filterText)
                     clearTooltips()
                 end);
                 perkFrame.perks[i]:Show();
-                rowCount = rowCount + 1;
+                columnID = columnID + 1;
                 i = i + 1;
-            else
-                if perkFrame.perks[i] then
-                    perkFrame.perks[i]:Hide();
-                end
             end
         end
     end
@@ -416,18 +410,10 @@ function HideCharPerks()
     end
 end
 
-function isBitFlipped(number, bitPosition)
+function isBitFlipped(mask, bitPosition)
     if (bitPosition == 0) then
         return true
     end
-    local binary = {}
-    while number > 0 do
-        table.insert(binary, 1, number % 2)
-        number = math.floor(number / 2)
-    end
-    if bitPosition > #binary then
-        return false
-    else
-        return binary[bitPosition] == 1
-    end
+    local shifted = 2 ^ (bitPosition - 1)
+    return mask % (shifted * 2) >= shifted
 end
