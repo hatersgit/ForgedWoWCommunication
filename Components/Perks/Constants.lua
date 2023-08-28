@@ -3,7 +3,8 @@ settings = {
     iconsPerRow = 12,
     gap = 8,
     width = GetScreenWidth() / 2.18,
-    height = GetScreenHeight() / 1.4
+    height = GetScreenHeight() / 1.4,
+    tabCount = 2,
 }
 
 assets = {
