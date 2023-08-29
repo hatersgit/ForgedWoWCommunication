@@ -660,101 +660,88 @@ end
 function ShowSpellsToForge(spells)
     local posX = 0;
     local posY = 0;
+    local spellbookSpells = TalentTreeWindow.SpellBook.Spells
     for index, spell in pairs(spells) do
         local name, rank, icon, castTime, minRange, maxRange, spellID = GetSpellInfo(spell.SpellIconId)
-        if TalentTreeWindow.SpellBook.Spells[index] then
-            TalentTreeWindow.SpellBook.Spells[index].Icon:Hide();
-            TalentTreeWindow.SpellBook.Spells[index].Icon = nil;
-            TalentTreeWindow.SpellBook.Spells[index].SpellName:Hide();
-            TalentTreeWindow.SpellBook.Spells[index].SpellName = nil;
-            TalentTreeWindow.SpellBook.Spells[index].Texture:Hide();
-            TalentTreeWindow.SpellBook.Spells[index].Texture = nil;
+        if spellbookSpells[index] then
+            spellbookSpells[index].Icon:Hide();
+            -- spellbookSpells[index].Points:Hide();
+            -- spellbookSpells[index].Points.Text:Hide();
+            spellbookSpells[index].SpellName:Hide();
+            spellbookSpells[index].Texture:Hide();
+            -- spellbookSpells[index].Spell:Hide();
+            -- spellbookSpells[index].Hover:Hide();
+        else
+            spellbookSpells[index].Icon = CreateFrame("Button", spellbookSpells[index].Icon, TalentTreeWindow.SpellBook);
+            spellbookSpells[index].Icon:SetPoint("LEFT", posX, posY)
+            spellbookSpells[index].Icon:SetFrameLevel(12);
+            spellbookSpells[index].Icon:SetSize(36, 36);
+            spellbookSpells[index].Icon:SetBackdrop({
+                bgFile = icon
+            });
+
+            spellbookSpells[index].Points = CreateFrame("Button", spellbookSpells[index].Points,
+                spellbookSpells[index].Icon);
+            spellbookSpells[index].Points:SetPoint("BOTTOMRIGHT", 5, -5)
+            spellbookSpells[index].Points:SetFrameLevel(2000);
+            spellbookSpells[index].Points:SetSize(18, 18);
+            spellbookSpells[index].Points:SetBackdrop({
+                bgFile = CONSTANTS.UI.RING_POINTS
+            });
+
+            spellbookSpells[index].Points.Text = spellbookSpells[index].Points:CreateFontString();
+            spellbookSpells[index].Points.Text:SetFont("Fonts\\FRIZQT__.TTF", 9, "OUTLINE")
+            spellbookSpells[index].Points.Text:SetPoint("CENTER", 0, 0)
+            spellbookSpells[index].Points.Text:SetText("0");
+            local pointsSpent = GetPointSpendByTabId(spell.Id);
+            if pointsSpent then
+                spellbookSpells[index].Points.Text:SetText(pointsSpent);
+            end
+            spellbookSpells[index].SpellName = spellbookSpells[index].Icon:CreateFontString()
+            spellbookSpells[index].SpellName:SetFont("Fonts\\FRIZQT__.TTF", 10)
+            spellbookSpells[index].SpellName:SetSize(82, 200);
+            spellbookSpells[index].SpellName:SetPoint("RIGHT", 90, 0);
+            spellbookSpells[index].SpellName:SetShadowOffset(1, -1)
+            spellbookSpells[index].SpellName:SetJustifyH("LEFT");
+            spellbookSpells[index].SpellName:SetText(spell.Name)
+            spellbookSpells[index].Texture = CreateFrame("Frame", spellbookSpells[index].Texture,
+                TalentTreeWindow.SpellBook);
+            spellbookSpells[index].Texture:SetPoint("LEFT", posX - 42, posY)
+            spellbookSpells[index].Texture:SetFrameLevel(11);
+            spellbookSpells[index].Texture:SetSize(265, 265);
+            spellbookSpells[index].Texture:SetBackdrop({
+                bgFile = CONSTANTS.UI.SHADOW_TEXTURE
+            });
+
+            spellbookSpells[index].Spell = CreateFrame("Button", spellbookSpells[index].Spell,
+                TalentTreeWindow.SpellBook);
+            spellbookSpells[index].Spell:SetPoint("LEFT", posX - 6, posY)
+            spellbookSpells[index].Spell:SetFrameLevel(2000);
+            spellbookSpells[index].Spell:SetSize(200, 48);
+            spellbookSpells[index].Spell:SetScript("OnClick", function()
+                ShowForgeSkill(spell);
+            end)
+
+            spellbookSpells[index].Spell:SetScript("OnEnter", function()
+                spellbookSpells[index].Hover:Show()
+            end)
+
+            spellbookSpells[index].Spell:SetScript("OnLeave", function()
+                spellbookSpells[index].Hover:Hide()
+            end)
+
+            spellbookSpells[index].Hover =
+                CreateFrame("Frame", spellbookSpells[index].Hover, TalentTreeWindow.SpellBook);
+            spellbookSpells[index].Hover:SetPoint("LEFT", posX - 6, posY)
+            spellbookSpells[index].Hover:SetFrameLevel(3000);
+            spellbookSpells[index].Hover:SetSize(48, 50);
+            spellbookSpells[index].Hover:SetBackdrop({
+                bgFile = PATH .. "over-btn-forge"
+            });
+            spellbookSpells[index].Hover:Hide();
         end
-        TalentTreeWindow.SpellBook.Spells[index] = {};
-        TalentTreeWindow.SpellBook.Spells[index].Icon = CreateFrame("Button",
-            TalentTreeWindow.SpellBook.Spells[index].Icon, TalentTreeWindow.SpellBook);
-        TalentTreeWindow.SpellBook.Spells[index].Icon:SetPoint("LEFT", posX, posY)
-        TalentTreeWindow.SpellBook.Spells[index].Icon:SetFrameLevel(12);
-        TalentTreeWindow.SpellBook.Spells[index].Icon:SetSize(36, 36);
-        TalentTreeWindow.SpellBook.Spells[index].Icon:SetBackdrop({
-            bgFile = icon
-        });
-
-        TalentTreeWindow.SpellBook.Spells[index].Points = CreateFrame("Button",
-            TalentTreeWindow.SpellBook.Spells[index].Points, TalentTreeWindow.SpellBook.Spells[index].Icon);
-        TalentTreeWindow.SpellBook.Spells[index].Points:SetPoint("BOTTOMRIGHT", 5, -5)
-        TalentTreeWindow.SpellBook.Spells[index].Points:SetFrameLevel(2000);
-        TalentTreeWindow.SpellBook.Spells[index].Points:SetSize(18, 18);
-        TalentTreeWindow.SpellBook.Spells[index].Points:SetBackdrop({
-            bgFile = CONSTANTS.UI.RING_POINTS
-        });
-        TalentTreeWindow.SpellBook.Spells[index].Points.Text =
-            TalentTreeWindow.SpellBook.Spells[index].Points:CreateFontString();
-        TalentTreeWindow.SpellBook.Spells[index].Points.Text:SetFont("Fonts\\FRIZQT__.TTF", 9, "OUTLINE")
-        TalentTreeWindow.SpellBook.Spells[index].Points.Text:SetPoint("CENTER", 0, 0)
-        TalentTreeWindow.SpellBook.Spells[index].Points.Text:SetText("0");
-        local pointsSpent = GetPointSpendByTabId(spell.Id);
-        if pointsSpent then
-            TalentTreeWindow.SpellBook.Spells[index].Points.Text:SetText(pointsSpent);
-        end
-        TalentTreeWindow.SpellBook.Spells[index].SpellName =
-            TalentTreeWindow.SpellBook.Spells[index].Icon:CreateFontString()
-        TalentTreeWindow.SpellBook.Spells[index].SpellName:SetFont("Fonts\\FRIZQT__.TTF", 10)
-        TalentTreeWindow.SpellBook.Spells[index].SpellName:SetSize(82, 200);
-        TalentTreeWindow.SpellBook.Spells[index].SpellName:SetPoint("RIGHT", 90, 0);
-        TalentTreeWindow.SpellBook.Spells[index].SpellName:SetShadowOffset(1, -1)
-        TalentTreeWindow.SpellBook.Spells[index].SpellName:SetJustifyH("LEFT");
-        TalentTreeWindow.SpellBook.Spells[index].SpellName:SetText(spell.Name)
-        TalentTreeWindow.SpellBook.Spells[index].Texture = CreateFrame("Frame",
-            TalentTreeWindow.SpellBook.Spells[index].Texture, TalentTreeWindow.SpellBook);
-        TalentTreeWindow.SpellBook.Spells[index].Texture:SetPoint("LEFT", posX - 42, posY)
-        TalentTreeWindow.SpellBook.Spells[index].Texture:SetFrameLevel(11);
-        TalentTreeWindow.SpellBook.Spells[index].Texture:SetSize(265, 265);
-        TalentTreeWindow.SpellBook.Spells[index].Texture:SetBackdrop({
-            bgFile = CONSTANTS.UI.SHADOW_TEXTURE
-        });
-
-        TalentTreeWindow.SpellBook.Spells[index].Spell = CreateFrame("Button",
-            TalentTreeWindow.SpellBook.Spells[index].Spell, TalentTreeWindow.SpellBook);
-        TalentTreeWindow.SpellBook.Spells[index].Spell:SetPoint("LEFT", posX - 6, posY)
-        TalentTreeWindow.SpellBook.Spells[index].Spell:SetFrameLevel(2000);
-        TalentTreeWindow.SpellBook.Spells[index].Spell:SetSize(200, 48);
-
-        TalentTreeWindow.SpellBook.Spells[index].Hover = CreateFrame("Frame",
-            TalentTreeWindow.SpellBook.Spells[index].Hover, TalentTreeWindow.SpellBook);
-        TalentTreeWindow.SpellBook.Spells[index].Hover:SetPoint("LEFT", posX - 6, posY)
-        TalentTreeWindow.SpellBook.Spells[index].Hover:SetFrameLevel(3000);
-        TalentTreeWindow.SpellBook.Spells[index].Hover:SetSize(48, 50);
-        TalentTreeWindow.SpellBook.Spells[index].Hover:SetBackdrop({
-            bgFile = PATH .. "over-btn-forge"
-        });
-        TalentTreeWindow.SpellBook.Spells[index].Hover:Hide();
-        TalentTreeWindow.SpellBook.Spells[index].Spell:SetScript("OnClick", function()
-            ShowForgeSkill(spell);
-        end)
-
-        TalentTreeWindow.SpellBook.Spells[index].Spell:SetScript("OnEnter", function()
-            TalentTreeWindow.SpellBook.Spells[index].Hover:Show()
-        end)
-
-        TalentTreeWindow.SpellBook.Spells[index].Spell:SetScript("OnLeave", function()
-            TalentTreeWindow.SpellBook.Spells[index].Hover:Hide()
-        end)
-        posY = posY - 50
-        if index % 7 == 0 then
-            posY = 0;
-        end
-        if index == 7 then
-            posX = posX + 180
-        end
-
-        if index == 14 then
-            posX = posX + 220
-        end
-
-        if index == 21 then
-            posX = posX + 180
-        end
+        posY = (index % 7 == 0) and 0 or (posY - 50)
+        posX = posX + ((index == 7 and 180) or (index == 14 and 220) or (index == 21 and 180) or 0)
     end
 end
 
