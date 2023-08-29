@@ -747,32 +747,21 @@ end
 
 function switchPage(nextPage)
     if nextPage then
-        if TalentTree.FORGE_CURRENT_PAGE + 1 > TalentTree.FORGE_MAX_PAGE then
-            return;
+        if TalentTree.FORGE_CURRENT_PAGE + 1 <= TalentTree.FORGE_MAX_PAGE then
+            TalentTree.FORGE_CURRENT_PAGE = TalentTree.FORGE_CURRENT_PAGE + 1
         end
-        TalentTree.FORGE_CURRENT_PAGE = TalentTree.FORGE_CURRENT_PAGE + 1;
     else
-        if TalentTree.FORGE_CURRENT_PAGE - 1 < 1 then
-            return;
+        if TalentTree.FORGE_CURRENT_PAGE - 1 >= 1 then
+            TalentTree.FORGE_CURRENT_PAGE = TalentTree.FORGE_CURRENT_PAGE - 1
         end
-        TalentTree.FORGE_CURRENT_PAGE = TalentTree.FORGE_CURRENT_PAGE - 1;
     end
-    local page = TalentTree.FORGE_SPELLS_PAGES[TalentTree.FORGE_CURRENT_PAGE];
+    local page = TalentTree.FORGE_SPELLS_PAGES[TalentTree.FORGE_CURRENT_PAGE]
     if not page then
-        return;
+        return
     end
-    if (TalentTree.FORGE_CURRENT_PAGE - 1) <= 0 then
-        TalentTreeWindow.SpellBook.PreviousArrow:Disable();
-    else
-        TalentTreeWindow.SpellBook.PreviousArrow:Enable();
-    end
-
-    if TalentTree.FORGE_CURRENT_PAGE == TalentTree.FORGE_MAX_PAGE then
-        TalentTreeWindow.SpellBook.NextArrow:Disable();
-    else
-        TalentTreeWindow.SpellBook.NextArrow:Enable();
-    end
-    ShowSpellsToForge(page);
+    TalentTreeWindow.SpellBook.PreviousArrow:SetEnabled(TalentTree.FORGE_CURRENT_PAGE > 1)
+    TalentTreeWindow.SpellBook.NextArrow:SetEnabled(TalentTree.FORGE_CURRENT_PAGE < TalentTree.FORGE_MAX_PAGE)
+    ShowSpellsToForge(page)
 end
 
 function InitializeTabForSpellsToForge(SkillToForges)
