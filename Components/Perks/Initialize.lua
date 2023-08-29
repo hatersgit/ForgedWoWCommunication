@@ -55,7 +55,7 @@ function InitializePerks(reloadUI)
             print(index .. " " .. perk.SpellId)
             AddSelectCard(perk.SpellId, index, #perks, perk.carryover);
         end
-        TogglePerkSelectionFrame(false);
+        TogglePerkSelectionFrame(true);
     end);
 
     SubscribeToForgeTopic(ForgeTopic.LEARN_PERK_ERROR, function(msg)

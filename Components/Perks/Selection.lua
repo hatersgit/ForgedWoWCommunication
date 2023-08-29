@@ -56,13 +56,13 @@ function InitializeSelectionWindow()
     PerkSelectionWindow:Hide();
 end
 
-function TogglePerkSelectionFrame(off)
-    if (off) then
-        PerkSelectionWindow:Hide()
-        PlaySound("TalentScreenClose");
-    else
+function TogglePerkSelectionFrame(on)
+    if (on) then
         PerkSelectionWindow:Show()
         PlaySound("TalentScreenOpen");
+    else
+        PerkSelectionWindow:Hide()
+        PlaySound("TalentScreenClose");
     end
 end
 
