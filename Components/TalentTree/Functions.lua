@@ -572,68 +572,68 @@ function InitializeMiddleSpell()
 end
 
 function InitializeGridForForgeSkills()
-    if TalentTreeWindow.body.GridForgeSkill then
-        TalentTreeWindow.body.GridForgeSkill:Hide();
+    local forgeSkill = TalentTreeWindow.body.GridForgeSkill
+
+    if forgeSkill then
+        forgeSkill:Hide();
+    else
+        forgeSkill = CreateFrame("Frame", forgeSkill, TalentTreeWindow.body);
+        forgeSkill:SetPoint("LEFT", -375, 25);
+        forgeSkill:SetSize(946, 946);
+        forgeSkill.Talents = {};
+        forgeSkill:Hide();
     end
-    TalentTreeWindow.body.GridForgeSkill = CreateFrame("Frame", TalentTreeWindow.body.GridForgeSkill,
-        TalentTreeWindow.body);
-    TalentTreeWindow.body.GridForgeSkill:SetPoint("LEFT", -375, 25);
-    TalentTreeWindow.body.GridForgeSkill:SetSize(946, 946);
-    TalentTreeWindow.body.GridForgeSkill.Talents = {};
-    TalentTreeWindow.body.GridForgeSkill:Hide();
+
     local posX = 0;
     for i = 1, 20 do
-        TalentTreeWindow.body.GridForgeSkill.Talents[i] = {};
+        if (not forgeSkill.Talents[i]) then
+            forgeSkill.Talents[i] = {};
+        end
         local posY = 0;
         for j = 1, 9 do
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j] =
-                CreateFrame("Button", TalentTreeWindow.body.GridForgeSkill.Talents[i][j],
-                    TalentTreeWindow.body.GridForgeSkill);
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j]:SetPoint("CENTER", posX, posY)
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j]:SetFrameLevel(9);
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j]:SetSize(30, 30);
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].TextureIcon =
-                TalentTreeWindow.body.GridForgeSkill.Talents[i][j]:CreateTexture();
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].TextureIcon:SetAllPoints()
+            local talent = forgeSkill.Talents[i][j]
+            if (not talent) then
+                talent = CreateFrame("Button", talent, forgeSkill);
+                talent:SetPoint("CENTER", posX, posY)
+                talent:SetFrameLevel(9);
+                talent:SetSize(30, 30);
+                talent.TextureIcon = talent:CreateTexture();
+                talent.TextureIcon:SetAllPoints()
 
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Border =
-                CreateFrame("Frame", TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Border,
-                    TalentTreeWindow.body.GridForgeSkill.Talents[i][j])
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Border:SetFrameLevel(10);
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Border:SetPoint("CENTER", 0, 0);
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Border:SetSize(48, 48);
+                talent.Border = CreateFrame("Frame", talent.Border, talent)
+                talent.Border:SetFrameLevel(10);
+                talent.Border:SetPoint("CENTER", 0, 0);
+                talent.Border:SetSize(48, 48);
 
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Exclusivity =
-                CreateFrame("Frame", TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Exclusivity,
-                    TalentTreeWindow.body.GridForgeSkill.Talents[i][j])
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Exclusivity:SetFrameLevel(12);
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Exclusivity:SetPoint("CENTER", 0, 0);
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Exclusivity:SetSize(48, 48);
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Exclusivity:SetBackdrop({
-                bgFile = CONSTANTS.UI.BORDER_EXCLUSIVITY
-            })
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Exclusivity:Hide();
+                talent.Exclusivity = CreateFrame("Frame", talent.Exclusivity, talent)
+                talent.Exclusivity:SetFrameLevel(12);
+                talent.Exclusivity:SetPoint("CENTER", 0, 0);
+                talent.Exclusivity:SetSize(48, 48);
+                talent.Exclusivity:SetBackdrop({
+                    bgFile = CONSTANTS.UI.BORDER_EXCLUSIVITY
+                })
+                talent.Exclusivity:Hide();
 
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Ranks =
-                CreateFrame("Frame", TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Ranks,
-                    TalentTreeWindow.body.GridForgeSkill.Talents[i][j]);
+                talent.Ranks = CreateFrame("Frame", talent.Ranks, talent);
 
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Ranks:SetFrameLevel(1001);
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Ranks:SetPoint("BOTTOM", 0, -12);
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Ranks:SetSize(32, 26);
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Ranks:SetBackdrop({
-                bgFile = PATH .. "rank_placeholder"
-            })
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].RankText =
-                TalentTreeWindow.body.GridForgeSkill.Talents[i][j].Ranks:CreateFontString()
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].RankText:SetFont("Fonts\\FRIZQT__.TTF", 9, "OUTLINE")
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].RankText:SetPoint("BOTTOM", 0, 8.5)
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j].node = {};
-            TalentTreeWindow.body.GridForgeSkill.Talents[i][j]:Hide()
+                talent.Ranks:SetFrameLevel(1001);
+                talent.Ranks:SetPoint("BOTTOM", 0, -12);
+                talent.Ranks:SetSize(32, 26);
+                talent.Ranks:SetBackdrop({
+                    bgFile = PATH .. "rank_placeholder"
+                })
+                talent.RankText = talent.Ranks:CreateFontString()
+                talent.RankText:SetFont("Fonts\\FRIZQT__.TTF", 9, "OUTLINE")
+                talent.RankText:SetPoint("BOTTOM", 0, 8.5)
+            end
+            talent.node = {};
+            talent:Hide()
             posY = posY + 40
+            forgeSkill.Talents[i][j] = talent
         end
         posX = posX + 40
     end
+    TalentTreeWindow.body.GridForgeSkill = forgeSkill
 end
 
 function HideForgeSkills()
@@ -661,7 +661,6 @@ function ShowSpellsToForge(spells)
     local posX = 0;
     local posY = 0;
     for index, spell in pairs(spells) do
-
         local name, rank, icon, castTime, minRange, maxRange, spellID = GetSpellInfo(spell.SpellIconId)
         if TalentTreeWindow.SpellBook.Spells[index] then
             TalentTreeWindow.SpellBook.Spells[index].Icon:Hide();
