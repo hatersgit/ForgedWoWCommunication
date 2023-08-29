@@ -100,7 +100,7 @@ function RankUpTalent(frame, rank, talent, tabId)
     if frame then
         frame.Ranks.RankText:SetText(CurrentRankSpell(rank) .. "/" .. talent.NumberOfRanks);
         local CurrentRank, SpellId, NextSpellId = GetSpellIdAndNextRank(tabId, talent);
-        if IsUnlocked(CurrentRank, talent.NumberOfRanks) then
+        if IsUnlocked(tonumber(CurrentRank), tonumber(talent.NumberOfRanks)) then
             frame.Border:SetBackdrop({
                 bgFile = CONSTANTS.UI.BORDER_UNLOCKED
             })
@@ -172,7 +172,7 @@ function GetPositionXY(frame)
 end
 
 function IsNodeUnlocked(talent, CurrentRank)
-    return CurrentRank ~= -1 or IsUnlocked(CurrentRank, tonumber((talent.NumberOfRanks)))
+    return CurrentRank ~= -1 or IsUnlocked(tonumber(CurrentRank), tonumber((talent.NumberOfRanks)))
 end
 
 -- TODO FIX DRAWING
@@ -492,85 +492,73 @@ function GetSpellIdAndNextRank(tabId, spell)
     return CurrentRank, SpellId, NextSpellId;
 end
 
-function IsUnlocked(CurrentRank, NumberOfRanks, NextSpellId)
-    if tonumber(NumberOfRanks) == 1 and tonumber(CurrentRank) == 1 then
-        return tonumber(CurrentRank) == tonumber(NumberOfRanks);
+function IsUnlocked(CurrentRank, NumberOfRanks)
+    if NumberOfRanks == 1 and CurrentRank == 1 then
+        return CurrentRank == NumberOfRanks;
     end
-    if tonumber(NumberOfRanks) > 1 then
-        return tonumber(CurrentRank) == tonumber(NumberOfRanks);
+    if NumberOfRanks > 1 then
+        return CurrentRank == NumberOfRanks;
     end
 end
 
 function InitializeViewFromGrid(children, spells, tabId, offset)
-    for index, spell in pairs(spells) do
+    for _, spell in pairs(spells) do
         local frame = children.Talents[tonumber(spell.ColumnIndex)][tonumber(spell.RowIndex)];
         if not frame then
             return;
         end
         local CurrentRank, SpellId, NextSpellId = GetSpellIdAndNextRank(tabId, spell);
-        local name, rank, icon, castTime, minRange, maxRange, spellID = GetSpellInfo(spell.SpellId)
-        if IsUnlocked(CurrentRank, tonumber(spell.NumberOfRanks)) then
+        local _, _, icon = GetSpellInfo(spell.SpellId)
+        if IsUnlocked(tonumber(CurrentRank), tonumber(spell.NumberOfRanks)) then
             frame.Border:SetBackdrop({
                 bgFile = CONSTANTS.UI.BORDER_UNLOCKED
             })
         else
+            local bg = CONSTANTS.UI.BORDER_ACTIVE
             if CurrentRank ~= -1 then
                 frame.TextureIcon:SetDesaturated(nil);
-                frame.Border:SetBackdrop({
-                    bgFile = CONSTANTS.UI.BORDER_ACTIVE
-                })
                 if spell.ExclusiveWith[1] then
                     frame.Exclusivity:Show();
                 end
             else
                 if CurrentRank < 1 then
                     frame.TextureIcon:SetDesaturated(1);
-                    frame.Border:SetBackdrop({
-                        bgFile = CONSTANTS.UI.BORDER_LOCKED
-                    })
-                else
-                    frame.Border:SetBackdrop({
-                        bgFile = CONSTANTS.UI.BORDER_ACTIVE
-                    })
+                    bg = CONSTANTS.UI.BORDER_LOCKED
                 end
                 if spell.ExclusiveWith[1] then
                     frame.Exclusivity:Hide();
                 end
             end
+            frame.Border:SetBackdrop({
+                bgFile = bg
+            })
         end
         if spell.Prereqs then
             InitializePreReqAndDrawNodes(spells, spell, children.Talents, children, offset, CurrentRank)
         end
         frame.Init = true;
-        if NumberOfRanks == 0 then
-            frame:SetSize(38, 38);
-            frame.Ranks:Hide();
-            frame.Border:Hide();
-            frame.TextureIcon:SetTexture(icon);
-        else
-            frame:SetScript("OnEnter", function()
-                CreateTooltip(spell, SpellId, NextSpellId, frame, CurrentRank);
-                frame.IsTooltipActive = true;
-            end)
-            frame:SetScript("OnLeave", function()
-                FirstRankToolTip:SetSize(0, 0);
-                SecondRankToolTip:SetSize(0, 0);
-                FirstRankToolTip:Hide();
-                SecondRankToolTip:Hide();
-                frame.IsTooltipActive = false;
-            end)
-            frame.Ranks.RankText:SetText(CurrentRankSpell(CurrentRank) .. "/" .. spell.NumberOfRanks)
-            frame:SetScript("OnClick", function()
-                LearnTalent(tabId, spell)
-            end)
-            SetPortraitToTexture(frame.TextureIcon, icon)
-        end
+        frame:SetScript("OnEnter", function()
+            CreateTooltip(spell, SpellId, NextSpellId, frame, CurrentRank);
+            frame.IsTooltipActive = true;
+        end)
+        frame:SetScript("OnLeave", function()
+            FirstRankToolTip:SetSize(0, 0);
+            SecondRankToolTip:SetSize(0, 0);
+            FirstRankToolTip:Hide();
+            SecondRankToolTip:Hide();
+            frame.IsTooltipActive = false;
+        end)
+        frame.Ranks.RankText:SetText(CurrentRankSpell(CurrentRank) .. "/" .. spell.NumberOfRanks)
+        frame:SetScript("OnClick", function()
+            LearnTalent(tabId, spell)
+        end)
+        SetPortraitToTexture(frame.TextureIcon, icon)
         frame:Show();
     end
 end
 
 function CurrentRankSpell(CurrentRank)
-    if CurrentRank == "-1" or CurrentRank == -1 then
+    if tonumber(CurrentRank) == -1 then
         return 0;
     end
     return CurrentRank;
