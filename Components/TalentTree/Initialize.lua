@@ -46,7 +46,7 @@ function GetCharacterSpecs(msg)
             table.insert(TalentTree.FORGE_SPEC_SLOTS, spec)
         end
     end
-    if TalentTree.INITIALIZED then
+    if TalentTree.INITIALIZED and TalentTree.FORGE_SELECTED_TAB then
         local strTalentType = GetStrByCharacterPointType(TalentTree.FORGE_SELECTED_TAB.TalentType);
         ShowTypeTalentPoint(TalentTree.FORGE_SELECTED_TAB.TalentType, strTalentType)
     else
