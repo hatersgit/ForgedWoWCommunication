@@ -765,43 +765,41 @@ function switchPage(nextPage)
 end
 
 function InitializeTabForSpellsToForge(SkillToForges)
-    TalentTreeWindow.SpellBook = CreateFrame("Frame", TalentTreeWindow.SpellBook, TalentTreeWindow);
-    TalentTreeWindow.SpellBook:SetPoint("CENTER", 120, 330);
-    TalentTreeWindow.SpellBook:SetSize(800, 600);
-    TalentTreeWindow.SpellBook.Spells = {};
-    TalentTreeWindow.SpellBook:Hide();
-    TalentTreeWindow.SpellBook.NextArrow = CreateFrame("Button", TalentTreeWindow.SpellBook.NextArrow,
-        TalentTreeWindow.SpellBook);
-    TalentTreeWindow.SpellBook.NextArrow:SetNormalTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Up")
-    TalentTreeWindow.SpellBook.NextArrow:SetPushedTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Down")
-    TalentTreeWindow.SpellBook.NextArrow:SetDisabledTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Disabled")
-    TalentTreeWindow.SpellBook.NextArrow:SetPoint("BOTTOMRIGHT", -100, -40);
-    TalentTreeWindow.SpellBook.NextArrow:SetFrameLevel(1000);
-    TalentTreeWindow.SpellBook.NextArrow:SetSize(32, 32);
-    TalentTreeWindow.SpellBook.NextArrow:SetText("Next page")
-    TalentTreeWindow.SpellBook.NextArrow:SetScript("OnClick", function()
+    local sb = CreateFrame("Frame", sb, TalentTreeWindow);
+    sb:SetPoint("CENTER", 120, 330);
+    sb:SetSize(800, 600);
+    sb.Spells = {};
+    sb:Hide();
+    sb.NextArrow = CreateFrame("Button", sb.NextArrow, sb);
+    sb.NextArrow:SetNormalTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Up")
+    sb.NextArrow:SetPushedTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Down")
+    sb.NextArrow:SetDisabledTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Disabled")
+    sb.NextArrow:SetPoint("BOTTOMRIGHT", -100, -40);
+    sb.NextArrow:SetFrameLevel(1000);
+    sb.NextArrow:SetSize(32, 32);
+    sb.NextArrow:SetText("Next page")
+    sb.NextArrow:SetScript("OnClick", function()
         switchPage(true);
     end)
-    TalentTreeWindow.SpellBook.PreviousArrow = CreateFrame("Button", TalentTreeWindow.SpellBook.NextArrow,
-        TalentTreeWindow.SpellBook);
 
-    TalentTreeWindow.SpellBook.PreviousArrow:SetNormalTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Up")
-    TalentTreeWindow.SpellBook.PreviousArrow:SetPushedTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Down")
-    TalentTreeWindow.SpellBook.PreviousArrow:SetDisabledTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Disabled")
-    TalentTreeWindow.SpellBook.PreviousArrow:SetPoint("BOTTOMLEFT", 15, -40);
-    TalentTreeWindow.SpellBook.PreviousArrow:SetFrameLevel(1000);
-    TalentTreeWindow.SpellBook.PreviousArrow:SetSize(32, 32);
-    TalentTreeWindow.SpellBook.PreviousArrow:SetText("Previous page")
-    TalentTreeWindow.SpellBook.PreviousArrow:SetScript("OnClick", function()
+    sb.PreviousArrow = CreateFrame("Button", sb.NextArrow, sb);
+    sb.PreviousArrow:SetNormalTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Up")
+    sb.PreviousArrow:SetPushedTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Down")
+    sb.PreviousArrow:SetDisabledTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Disabled")
+    sb.PreviousArrow:SetPoint("BOTTOMLEFT", 15, -40);
+    sb.PreviousArrow:SetFrameLevel(1000);
+    sb.PreviousArrow:SetSize(32, 32);
+    sb.PreviousArrow:SetText("Previous page")
+    sb.PreviousArrow:SetScript("OnClick", function()
         switchPage(false);
     end)
+
     TalentTree.FORGE_SPELLS_PAGES = SplitSpellsByChunk(SkillToForges, 27);
     TalentTree.FORGE_MAX_PAGE = Tablelength(TalentTree.FORGE_SPELLS_PAGES);
     switchPage(true);
+    TalentTreeWindow.SpellBook = sb
 end
 
--- Define the UnlearnTalents function   
 function UnlearnTalents()
-    -- Call the WoW API function to confirm talent wipe 
     ConfirmTalentWipe()
 end

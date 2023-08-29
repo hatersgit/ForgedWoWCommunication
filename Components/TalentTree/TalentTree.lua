@@ -91,7 +91,6 @@ resetButton:SetPoint("TOPLEFT", 8, 0) -- Position the button at the top right of
 resetButton:SetText("R")
 
 resetButton:SetScript("OnClick", function()
-    -- Call the UnlearnTalents function when the button is clicked
     UnlearnTalents()
     PushForgeMessage(ForgeTopic.UNLEARN_TALENT, "-1" .. ";" .. TalentTree.FORGE_SELECTED_TAB.Id);
 end)
