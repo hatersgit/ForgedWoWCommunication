@@ -61,8 +61,7 @@ function createInspectPerkFrames()
             columnID = 1
         end
 
-        local num = math.fmod(i, perRow);
-        if (num == 1) then
+        if (math.fmod(i, perRow) == 1) then
             depth = depth - (settings.gap + iconSize)
         end
 
