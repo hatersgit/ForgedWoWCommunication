@@ -101,5 +101,18 @@ prestigeButton:SetPoint("TOPLEFT", settings.headerheight + 16, 0)
 prestigeButton:SetText("P") -- Set the text of the button
 
 prestigeButton:SetScript("OnClick", function()
-    PushForgeMessage(ForgeTopic.PRESTIGE, "");
+    StaticPopup_Show("PRESTIGE_CONFIRM", name)
 end)
+
+StaticPopupDialogs["PRESTIGE_CONFIRM"] = {
+    text = "Are you sure you want to prestige? This will strip your character and reset you to level 1, giving you new options for perks. Your currently equipped gear will be mailed to you. If you are not max level, this will delete your current perks and reset your previously carried over perks.",
+    button1 = "Yes",
+    button2 = "No",
+    OnAccept = function(self)
+        PushForgeMessage(ForgeTopic.PRESTIGE, "");
+    end,
+    sound = "levelup2",
+    timeout = 30,
+    whileDead = false,
+    hideOnEscape = true
+}
