@@ -56,13 +56,13 @@ function InitializeSelectionWindow()
     PerkSelectionWindow:Hide();
 end
 
-function TogglePerkSelectionFrame(off)
-    if (off) then
-        PerkSelectionWindow:Hide()
-        PlaySound("TalentScreenClose");
-    else
+function TogglePerkSelectionFrame(on)
+    if (on) then
         PerkSelectionWindow:Show()
         PlaySound("TalentScreenOpen");
+    else
+        PerkSelectionWindow:Hide()
+        PlaySound("TalentScreenClose");
     end
 end
 
@@ -87,12 +87,10 @@ function AddSelectCard(id, index, count, carryover)
     end);
     curPool:SetScript("OnClick", function()
         if (PerkExplorerInternal.PERKS_ALL[id][1]["unique"] == 1) then
-            for specId, perk in ipairs(PerkExplorerInternal.PERKS_SPEC) do
-                for spellId, meta in pairs(PerkExplorerInternal.PERKS_SPEC[specId]) do
-                    if (id == spellId) then
-                        print("You already have this unique!")
-                        return
-                    end
+            for _, specPerks in pairs(PerkExplorerInternal.PERKS_SPEC) do
+                if specPerks[id] then
+                    print("You already have this unique!")
+                    return
                 end
             end
         end

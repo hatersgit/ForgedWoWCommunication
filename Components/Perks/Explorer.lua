@@ -269,7 +269,7 @@ function createCatalog()
     PerkExplorer.body.catalogue.clipframe.scroll:SetPoint("BOTTOMRIGHT", -30, 10);
 
     local scrollcat = CreateFrame("FRAME");
-    scrollcat:SetSize(settings.width, settings.height)
+    scrollcat:SetSize(1,1)
     scrollcat.perks = {}
     PerkExplorer.body.catalogue.clipframe.scroll:SetScrollChild(scrollcat);
     PerkExplorer.body.catalogue:Hide();
@@ -324,10 +324,8 @@ function LoadAllPerksList(filterText)
             columnID = 1
         end
         if name then
-            local classMask = tonumber(metainfo["classMask"])
-
             if ((string.match(string.upper(name), filterText) or filterText == "") and
-                isBitFlipped(classMask, PerkExplorer.body.catalogue.dropdown.choice)) then
+                isBitFlipped(tonumber(metainfo["classMask"]), PerkExplorer.body.catalogue.dropdown.choice)) then
                 if (not perkFrame.perks[i]) then
                     perkFrame.perks[i] = CreateFrame("BUTTON", perkFrame.perks[i], perkFrame);
                     perkFrame.perks[i]:SetHighlightTexture("Interface\\Buttons\\CheckButtonHilight");
@@ -369,7 +367,6 @@ function LoadAllPerksList(filterText)
             end
         end
     end
-    perkFrame:SetSize(settings.width, -1 * (depth - (iconSize + settings.gap)));
 end
 
 function LoadCurrentPerks(spec)

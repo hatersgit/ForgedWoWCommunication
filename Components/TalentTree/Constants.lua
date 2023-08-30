@@ -35,13 +35,7 @@ CONSTANTS = {
         BORDER_UNLOCKED = PATH .. "NodeBorder\\border_unlocked",
         BORDER_EXCLUSIVITY = PATH .. "exclusive",
         BACKGROUND_SPECS = PATH .. "tabsUI\\specsUI"
-    },
-    PERK = {
-        star = PATH .. "Perk\\star",
-        hourglass = PATH .. "Perk\\hourglass",
-        highlight = PATH .. "Perk\\highlight"
-    },
-    CLASS = UnitClass("player")
+    }
 }
 
 settings = {
