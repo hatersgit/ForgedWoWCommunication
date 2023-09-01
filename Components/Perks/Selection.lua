@@ -1,3 +1,12 @@
+local xPositions = {{0}, -- 1 option
+{-settings.selectionIconSize, settings.selectionIconSize}, -- 2 options
+{-settings.selectionIconSize * 1.85, 0, settings.selectionIconSize * 1.85}, -- 3 options
+{-2.3 * settings.selectionIconSize, -settings.selectionIconSize * 0.8, settings.selectionIconSize * 0.8,
+ 2.3 * settings.selectionIconSize}, -- 4 options
+{-2.3 * settings.selectionIconSize, -settings.selectionIconSize * 0.8, 0, settings.selectionIconSize * 0.8,
+ 2.3 * settings.selectionIconSize} -- 5 options
+}
+
 function InitializeSelectionWindow()
     PerkSelectionWindow = CreateFrame("FRAME", "PerkSelectionWindow", UIParent);
     PerkSelectionWindow:SetSize(10, 10);
@@ -13,7 +22,7 @@ function InitializeSelectionWindow()
 
     PerkSelectionWindow.background = CreateFrame("Frame", nil, PerkSelectionWindow)
     PerkSelectionWindow.background:SetPoint("CENTER", PerkSelectionWindow.Title, "CENTER", 0, -50)
-    PerkSelectionWindow.background:SetSize(350, 150)
+    PerkSelectionWindow.background:SetSize(365, 150)
     PerkSelectionWindow.background:SetBackdrop({
         bgFile = "Interface/TutorialFrame/TutorialFrameBackground",
         edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
@@ -32,11 +41,14 @@ function InitializeSelectionWindow()
     PerkSelectionWindow.SelectionPool = CreateFrame("FRAME", PerkSelectionWindow.SelectionPool, PerkSelectionWindow);
     PerkSelectionWindow.SelectionPool:SetPoint("TOP", 0, (GetScreenHeight() / 2) - 150);
     PerkSelectionWindow.SelectionPool.Pool = {};
+    PerkSelectionWindow.SelectionPool:SetSize(7 * settings.selectionIconSize, settings.selectionIconSize);
 
-    for i = 1, 4, 1 do
+    for i = 1, #xPositions, 1 do
         PerkSelectionWindow.SelectionPool.Pool[i] = CreateFrame("Button", PerkSelectionWindow.SelectionPool.Pool[i],
             PerkSelectionWindow.SelectionPool);
         local cur = PerkSelectionWindow.SelectionPool.Pool[i]
+        cur:SetFrameLevel(1);
+        cur:SetSize(settings.selectionIconSize, settings.selectionIconSize);
 
         cur.Icon = CreateFrame("FRAME", cur.Icon, cur);
         cur.Icon:SetPoint("CENTER", 0, 0)
@@ -66,35 +78,43 @@ function TogglePerkSelectionFrame(on)
     end
 end
 
-function AddSelectCard(id, index, count, carryover)
-    local _, _, icon = GetSpellInfo(id);
+function showPerkSelections(perks)
+    -- if(archtype) then
+    --     PerkSelectionWindow.Title:SetText("Select A Archtype");
+    -- else
+    --     PerkSelectionWindow.Title:SetText("Select A Perk");
+    -- end
+
+    for index, perk in ipairs(perks) do
+        print(index .. " " .. perk.SpellId)
+        AddSelectCard(perk.SpellId, index, perk.carryover, xPositions[#perks][index]);
+    end
+    TogglePerkSelectionFrame(true);
+end
+
+function AddSelectCard(spellID, index, isFromLastPrestige, xPos)
+    local _, _, icon = GetSpellInfo(spellID);
     local curPool = PerkSelectionWindow.SelectionPool.Pool[index]
-    curPool:SetFrameLevel(1);
-    curPool:SetPoint("TOPLEFT", (index - 1) * (settings.selectionIconSize + settings.selectionIconSize), 0);
-    curPool:SetSize(settings.selectionIconSize, settings.selectionIconSize);
+    curPool:Show()
+    curPool:SetPoint("CENTER", xPos, 0);
     curPool.Icon.Texture:SetTexture(icon);
-    if (carryover > 0) then
+    if (isFromLastPrestige > 0) then
         curPool.Icon.Carried:Show();
     else
         curPool.Icon.Carried:Hide();
     end
 
     curPool:HookScript("OnEnter", function()
-        SetUpRankedTooltip(curPool, id, "ANCHOR_BOTTOM");
+        SetUpRankedTooltip(curPool, spellID, "ANCHOR_BOTTOM");
     end);
     curPool:SetScript("OnLeave", function()
         clearTooltips()
     end);
     curPool:SetScript("OnClick", function()
-        if (PerkExplorerInternal.PERKS_ALL[id][1]["unique"] == 1) then
-            for _, specPerks in pairs(PerkExplorerInternal.PERKS_SPEC) do
-                if specPerks[id] then
-                    print("You already have this unique!")
-                    return
-                end
-            end
+        for i = 1, #PerkSelectionWindow.SelectionPool.Pool, 1 do
+            PerkSelectionWindow.SelectionPool.Pool[i]:Hide()
         end
-        PushForgeMessage(ForgeTopic.LEARN_PERK, GetSpecID() .. ";" .. id);
+        PushForgeMessage(ForgeTopic.LEARN_PERK, GetSpecID() .. ";" .. spellID);
         PerkSelectionWindow:Hide();
     end);
 end

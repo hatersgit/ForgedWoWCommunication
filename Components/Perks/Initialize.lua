@@ -49,13 +49,7 @@ function InitializePerks(reloadUI)
     SubscribeToForgeTopic(ForgeTopic.OFFER_SELECTION, function(msg)
         -- print(msg)
         local perks = DeserializeMessage(PerkDeserializerDefinitions.PERKSEL, msg);
-        PerkSelectionWindow.SelectionPool:SetSize(#perks * settings.selectionIconSize + (#perks - 1) *
-                                                      settings.selectionIconSize, settings.selectionIconSize);
-        for index, perk in ipairs(perks) do
-            print(index .. " " .. perk.SpellId)
-            AddSelectCard(perk.SpellId, index, #perks, perk.carryover);
-        end
-        TogglePerkSelectionFrame(true);
+        showPerkSelections(perks)
     end);
 
     SubscribeToForgeTopic(ForgeTopic.LEARN_PERK_ERROR, function(msg)
