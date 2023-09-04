@@ -13,3 +13,7 @@ end)
 GameMenuFrame:HookScript("OnShow", function()
     HideMainWindow();
 end)
+
+GlyphFrame:HookScript("OnShow", function()
+    HideMainWindow();
+end)

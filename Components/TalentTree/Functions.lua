@@ -26,6 +26,9 @@ function ToggleMainWindow()
     if FriendsFrame:IsShown() then
         FriendsFrame:Hide();
     end
+    if GlyphFrame:IsShown() then
+        GlyphFrame:Hide();
+    end
 end
 
 TalentTreeWindow:HookScript("OnHide", function()
