@@ -1,3 +1,4 @@
+UIParentLoadAddOn("Blizzard_GlyphUI");
 TalentTree = {
     FORGE_TABS = {},
     FORGE_ACTIVE_SPEC = {},
@@ -116,3 +117,14 @@ StaticPopupDialogs["PRESTIGE_CONFIRM"] = {
     whileDead = false,
     hideOnEscape = true
 }
+
+-- Reset Talents --
+local petTalent = CreateFrame("Button", "petTalentButton", TalentTreeWindow.header, "UIPanelButtonTemplate")
+petTalent:SetSize(settings.headerheight, settings.headerheight) -- Set the size of the button
+petTalent:SetPoint("TOPLEFT", (2 * settings.headerheight) + 20, 0) -- Position the button at the top right of the TalentTreeWindow
+petTalent:SetText("G")
+
+petTalent:SetScript("OnClick", function()
+    ToggleMainWindow();
+    GlyphFrame_Toggle()
+end)
