@@ -79,6 +79,7 @@ TalentTreeWindow.body.bgbox.bg:SetFrameLevel(3)
 TalentTreeWindow.body.bgbox.bg:SetSize(TalentTreeWindow.body:GetHeight() -
                                            (TalentTreeWindow.body.ChoiceSpecs:GetHeight() - 1),
     TalentTreeWindow.body:GetHeight() - (TalentTreeWindow.body.ChoiceSpecs:GetHeight() - 1))
+SetTemplate(TalentTreeWindow.body.bgbox)
 
 TalentTreeWindow.body.bgbox.bg.texture = TalentTreeWindow.body.bgbox.bg:CreateTexture(nil, "OVERLAY");
 TalentTreeWindow.body.bgbox.bg.texture:SetAllPoints();

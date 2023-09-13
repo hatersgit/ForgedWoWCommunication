@@ -10,7 +10,7 @@ function ToggleTalentFrame(openPet)
 end
 
 function InitializeTalentTree()
-    InitializeGridForForgeSkills();
+    --InitializeGridForForgeSkills();
     InitializeGridForTalent();
     FirstRankToolTip = CreateFrame("GameTooltip", "firstRankToolTip", WorldFrame, "GameTooltipTemplate");
     SecondRankToolTip = CreateFrame("GameTooltip", "secondRankToolTip", WorldFrame, "GameTooltipTemplate");
@@ -29,9 +29,17 @@ function GetTalentTreeLayout(msg)
     for i, tab in ipairs(DeserializeMessage(DeserializerDefinitions.TalentTree_LAYOUT, msg)) do
         if tab.TalentType == CharacterPointType.TALENT_SKILL_TREE or tab.TalentType == CharacterPointType.RACIAL_TREE or
             tab.TalentType == CharacterPointType.PRESTIGE_TREE or tab.TalentType == CharacterPointType.SKILL_PAGE then
-            table.insert(TalentTree.FORGE_TABS, tab);
-        elseif tab.TalentType == CharacterPointType.FORGE_SKILL_TREE then
-            table.insert(TalentTree.FORGE_SPELLS_PAGES, tab);
+            if not TalentTree.FORGE_TABS[tab.Id] then
+                TalentTree.FORGE_TABS[tab.Id] = {};
+                table.insert(TalentTree.FORGE_TABS[tab.Id], tab);
+            else
+                local talents = TalentTree.FORGE_TABS[tab.Id][1].Talents
+                for index, talent in ipairs(tab.Talents) do
+                    talents[#talents+1] = talent
+                end
+            end
+        -- elseif tab.TalentType == CharacterPointType.FORGE_SKILL_TREE then
+        --     table.insert(TalentTree.FORGE_SPELLS_PAGES, tab);
         elseif tab.TalentType == CharacterPointType.LEVEL_10_TAB then
             TalentTree.FORGE_SPECS_TAB = tab;
         end
@@ -46,18 +54,43 @@ function GetCharacterSpecs(msg)
             table.insert(TalentTree.FORGE_SPEC_SLOTS, spec)
         end
     end
+    local classMask = tostring(2^(GetClassId(UnitClass("player"))-1))
     if TalentTree.INITIALIZED and TalentTree.FORGE_SELECTED_TAB then
         local strTalentType = GetStrByCharacterPointType(TalentTree.FORGE_SELECTED_TAB.TalentType);
         ShowTypeTalentPoint(TalentTree.FORGE_SELECTED_TAB.TalentType, strTalentType)
     else
         InitializeTalentLeft();
         InitializeForgePoints();
-        InitializeTabForSpellsToForge(TalentTree.FORGE_SPELLS_PAGES);
-        if (TalentTree.FORGE_TABS[1]) then
-            SelectTab(TalentTree.FORGE_TABS[1]);
+        --InitializeTabForSpellsToForge(TalentTree.FORGE_SPELLS_PAGES);
+        if (TalentTree.FORGE_TABS[classMask]) then
+            SelectTab(TalentTree.FORGE_TABS[classMask][1]);
         end
     end
     TalentTree.INITIALIZED = true;
+end
+
+function GetClassId (classString)
+    if classString == "Warrior" then
+        return 1;
+    elseif classString == "Paladin" then
+        return 2;
+    elseif classString == "Hunter" then
+        return 3;
+    elseif classString == "Rogue" then
+        return 4;
+    elseif classString == "Priest" then
+        return 5;
+    elseif classString == "Death Knight" then
+        return 6;
+    elseif classString == "Shaman" then
+        return 7;
+    elseif classString == "Mage" then
+        return 8;
+    elseif classString == "Warlock" then
+        return 9;
+    else
+        return 11;
+    end
 end
 
 SubscribeToForgeTopic(ForgeTopic.LEARN_TALENT_ERROR, function(msg)
@@ -65,6 +98,7 @@ SubscribeToForgeTopic(ForgeTopic.LEARN_TALENT_ERROR, function(msg)
 end)
 
 SubscribeToForgeTopic(ForgeTopic.GET_TALENTS, function(msg)
+    --print(msg)
     if not TalentTree.FORGE_TALENTS then
         TalentTree.FORGE_TALENTS = {};
     end

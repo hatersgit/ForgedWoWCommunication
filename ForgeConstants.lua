@@ -390,9 +390,14 @@ DeserializerDefinitions = {
             }, {
                 NAME = "PointType"
             }, {
-                NAME = "Talents",
-                OBJECT = "*",
-                DICT = "~" -- will build dict of basic KVP without fields defined.
+                DELIMITER = "K",
+                FIELDS = {{
+                    NAME = "SpecId"                
+                }, {
+                    NAME = "Talents",
+                    OBJECT = "*",
+                    DICT = "~" -- will build dict of basic KVP without fields defined.
+                }}
             }}
         }
     },
@@ -444,6 +449,8 @@ DeserializerDefinitions = {
                 FIELDS = {
                     DELIMITER = "&",
                     FIELDS = {{
+                        NAME = "SpecId"
+                    },{
                         NAME = "SpellId"
                     }, {
                         NAME = "ColumnIndex"
