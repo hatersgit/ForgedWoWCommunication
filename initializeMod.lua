@@ -7,6 +7,7 @@ Forgeframe:SetScript("OnEvent", function(self, event)
         initializeItemTooltips()
         InitializePerks()
         initializeAllStats()
+        InitializeTransmog()
     else
         PushForgeMessage(ForgeTopic.OFFER_SELECTION, GetSpecID());
     end

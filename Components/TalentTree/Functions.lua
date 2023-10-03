@@ -159,6 +159,9 @@ function GetStrByCharacterPointType(talentType)
     if talentType == CharacterPointType.FORGE_SKILL_TREE then
         return "forge";
     end
+    if talentType == CharacterPointType.PET_TALENT then
+        return "pet";
+    end
 end
 
 function GetPositionXY(frame)
@@ -263,7 +266,7 @@ function SelectTab(tab)
     --     TalentTreeWindow.SpellBook:Hide();
     -- end
     if tab.TalentType == CharacterPointType.RACIAL_TREE or tab.TalentType == CharacterPointType.TALENT_SKILL_TREE or
-        tab.TalentType == CharacterPointType.PRESTIGE_TREE then
+        tab.TalentType == CharacterPointType.PRESTIGE_TREE or tab.TalentType == CharacterPointType.PET_TALENT then
         InitializeGridForTalent();
         if tab.Talents then
             InitializeViewFromGrid(TalentTreeWindow.body.GridTalent, tab.Talents, tab.Id, 392);
@@ -279,6 +282,8 @@ function SelectTab(tab)
         ShowTypeTalentPoint(CharacterPointType.PRESTIGE_TREE, strTalentType)
     elseif tab.TalentType == CharacterPointType.TALENT_SKILL_TREE then
         ShowTypeTalentPoint(CharacterPointType.TALENT_SKILL_TREE, strTalentType)
+    elseif tab.TalentType == CharacterPointType.PET_TALENT then
+        ShowTypeTalentPoint(CharacterPointType.PET_TALENT, strTalentType)
     end
     --TalentTreeWindow.body.bgbox.bg.texture:SetTexture(PATH .. "tabBG\\" .. tab.Background);
 end
@@ -320,7 +325,6 @@ function InitializeTalentLeft()
     local x = 2
     local choiceSpecs = TalentTreeWindow.body.ChoiceSpecs
     local choiceSpecsWidth = choiceSpecs:GetWidth()
-
     for tabId, super in pairs(TalentTree.FORGE_TABS) do
         for index, tab in ipairs (super) do
             local tabButton = choiceSpecs[tabId]

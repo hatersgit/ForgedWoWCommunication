@@ -28,7 +28,9 @@ end
 function GetTalentTreeLayout(msg)
     for i, tab in ipairs(DeserializeMessage(DeserializerDefinitions.TalentTree_LAYOUT, msg)) do
         if tab.TalentType == CharacterPointType.TALENT_SKILL_TREE or tab.TalentType == CharacterPointType.RACIAL_TREE or
-            tab.TalentType == CharacterPointType.PRESTIGE_TREE or tab.TalentType == CharacterPointType.SKILL_PAGE then
+            tab.TalentType == CharacterPointType.PRESTIGE_TREE or tab.TalentType == CharacterPointType.SKILL_PAGE 
+            or tab.TalentType == CharacterPointType.PET_TALENT then
+            print(tab.TalentType .. " " .. tab.Id)
             if not TalentTree.FORGE_TABS[tab.Id] then
                 TalentTree.FORGE_TABS[tab.Id] = {};
                 table.insert(TalentTree.FORGE_TABS[tab.Id], tab);
@@ -98,10 +100,10 @@ SubscribeToForgeTopic(ForgeTopic.LEARN_TALENT_ERROR, function(msg)
 end)
 
 SubscribeToForgeTopic(ForgeTopic.GET_TALENTS, function(msg)
-    --print(msg)
     if not TalentTree.FORGE_TALENTS then
         TalentTree.FORGE_TALENTS = {};
     end
+    --print(msg)
     for i, talent in ipairs(DeserializeMessage(DeserializerDefinitions.GET_TALENTS, msg)) do
         if talent.Talents then
             for spellId, rank in pairs(talent.Talents) do

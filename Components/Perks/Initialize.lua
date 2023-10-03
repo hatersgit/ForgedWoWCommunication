@@ -30,7 +30,6 @@ function InitializePerks(reloadUI)
     end);
 
     SubscribeToForgeTopic(ForgeTopic.GET_PERK_CATALOGUE, function(msg)
-        local it = 1;
         -- print(msg);
         PerkExplorerInternal.PERKS_ALL = {};
         local perks = DeserializeMessage(PerkDeserializerDefinitions.PERKCAT, msg);
@@ -40,7 +39,6 @@ function InitializePerks(reloadUI)
             end
             if perk then
                 table.insert(PerkExplorerInternal.PERKS_ALL[perk["spellId"]], perk["Meta"][1]);
-                it = it + 1;
             end
         end
         LoadAllPerksList("");

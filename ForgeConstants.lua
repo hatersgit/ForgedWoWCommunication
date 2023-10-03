@@ -32,7 +32,8 @@ CharacterPointType = {
     RACIAL_TREE = "4",
     SKILL_PAGE = "5",
     PRESTIGE_COUNT = "6",
-    LEVEL_10_TAB = "7"
+    LEVEL_10_TAB = "7",
+    PET_TALENT = "8",
 }
 
 ForgeTopic = {
@@ -75,10 +76,10 @@ ForgeTopic = {
     SET_GAME_MODES_ERROR = 29,
     END_GAME_MODES = 30,
     COLLECTION_INIT = 31,
-    OUTFIT_COST = 32,
+    GET_XMOG_SETS = 32,
     LOAD_XMOG_SET = 33,
     LOAD_XMOG_SET_ERROR = 34,
-    SEARCH_XMOG = 35,
+    XMOG_OK = 35,
     LOAD_XMOG = 36,
     LOAD_MOUNTS = 37,
     LOAD_PETS = 38,
@@ -381,6 +382,27 @@ DeserializerDefinitions = {
         OBJECT = "%",
         DICT = "~" -- will build dict of basic KVP without fields defined.
     },
+    GET_COLLECTION = {
+        OBJECT = ";",
+        FIELDS = {
+            DELIMITER = "K",
+            FIELDS = {{
+                NAME = "slotId"
+            }, {
+                NAME = "META",
+                OBJECT = "*",
+                FIELDS = {
+                    DELIMITER = "^",
+                    FIELDS = {{
+                        NAME = "ItemId"                
+                    },{
+                        NAME = "Class"                
+                    }, {
+                        NAME = "SubClass"
+                    }}
+                }
+            }}
+    }},
     GET_TALENTS = {
         OBJECT = ";",
         FIELDS = {
@@ -534,7 +556,74 @@ DeserializerDefinitions = {
                 }
             }}
         }
-    }
+    },
+    XMOG_OK = {
+        OBJECT = ";",
+        FIELDS = {
+            DELIMITER = "^",
+            FIELDS = {{
+                NAME = "slot"
+            }, {
+                NAME = "target"
+            }, {
+                NAME = "tmog"
+            }}
+        }
+    },
+    LOAD_XMOG_SET = {
+        OBJECT = ";",
+        FIELDS = {
+            DELIMITER = "^",
+            FIELDS = {{
+                NAME = "setid",
+                TYPE = FieldType.NUMBER
+            }, {
+                NAME = "name"
+            }, {
+                NAME = "head",
+                TYPE = FieldType.NUMBER
+            }, {
+                NAME = "shoulders",
+                TYPE = FieldType.NUMBER
+            }, {
+                NAME = "shirt",
+                TYPE = FieldType.NUMBER
+            }, {
+                NAME = "chest",
+                TYPE = FieldType.NUMBER
+            }, {
+                NAME = "waist",
+                TYPE = FieldType.NUMBER
+            }, {
+                NAME = "legs",
+                TYPE = FieldType.NUMBER
+            }, {
+                NAME = "feet",
+                TYPE = FieldType.NUMBER
+            }, {
+                NAME = "wrists",
+                TYPE = FieldType.NUMBER
+            }, {
+                NAME = "hands",
+                TYPE = FieldType.NUMBER
+            }, {
+                NAME = "back",
+                TYPE = FieldType.NUMBER
+            }, {
+                NAME = "mh",
+                TYPE = FieldType.NUMBER
+            }, {
+                NAME = "oh",
+                TYPE = FieldType.NUMBER
+            }, {
+                NAME = "ranged",
+                TYPE = FieldType.NUMBER
+            }, {
+                NAME = "tabard",
+                TYPE = FieldType.NUMBER
+            }}
+        }
+    },
 }
 
 function GetSpecID()
